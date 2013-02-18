@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2b6e9e92-8bae-47d0-b66c-79878340c52f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/priority_queue_spec.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/algorithms.js" afterPath="$PROJECT_DIR$/algorithms.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/SpecRunner.html" afterPath="$PROJECT_DIR$/test/SpecRunner.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/graph_spec.js" afterPath="$PROJECT_DIR$/test/graph_spec.js" />
-    </list>
+    <list default="true" id="2b6e9e92-8bae-47d0-b66c-79878340c52f" name="Default" comment="" />
     <ignored path="javascript_algorithms.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
