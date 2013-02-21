@@ -67,7 +67,4 @@ describe("PriorityQueue", function() {
         queue.addAll([20, 6, 11, 7, 1, 4]);
         expect(underlyingData).toEqual([1, 6, 4, 20, 7, 11]);
     });
-
-    //add elements
-    //delete elements
 });
