@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b6e9e92-8bae-47d0-b66c-79878340c52f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/algorithms.js" afterPath="$PROJECT_DIR$/algorithms.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/priority_queue_spec.js" afterPath="$PROJECT_DIR$/test/priority_queue_spec.js" />
     </list>
@@ -33,19 +32,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="priority_queue_spec.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="priority_queue_spec.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/priority_queue_spec.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="7" selection-start="1822" selection-end="1822" vertical-scroll-proportion="1.3056995">
+            <state line="48" column="5" selection-start="1503" selection-end="1503" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="algorithms.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="algorithms.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/algorithms.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="24" selection-start="1332" selection-end="1332" vertical-scroll-proportion="0.0">
+            <state line="64" column="30" selection-start="1678" selection-end="1678" vertical-scroll-proportion="0.61139894">
               <folding />
             </state>
           </provider>
@@ -76,8 +75,8 @@
         <option value="$PROJECT_DIR$/test/linked_list_spec.js" />
         <option value="$PROJECT_DIR$/test/graph_spec.js" />
         <option value="$PROJECT_DIR$/test/SpecRunner.html" />
-        <option value="$PROJECT_DIR$/algorithms.js" />
         <option value="$PROJECT_DIR$/test/priority_queue_spec.js" />
+        <option value="$PROJECT_DIR$/algorithms.js" />
       </list>
     </option>
   </component>
@@ -289,9 +288,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1024" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15872058" sideWeight="0.6710963" order="0" side_tool="false" content_ui="combo" />
@@ -443,13 +442,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/graph_spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="5" selection-start="44" selection-end="44" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/SpecRunner.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="60" selection-start="675" selection-end="675" vertical-scroll-proportion="0.0">
@@ -457,16 +449,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/algorithms.js">
+    <entry file="file://$PROJECT_DIR$/test/graph_spec.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="24" selection-start="1332" selection-end="1332" vertical-scroll-proportion="0.0">
+        <state line="1" column="5" selection-start="44" selection-end="44" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/priority_queue_spec.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="7" selection-start="1822" selection-end="1822" vertical-scroll-proportion="1.3056995">
+        <state line="48" column="5" selection-start="1503" selection-end="1503" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/algorithms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="30" selection-start="1678" selection-end="1678" vertical-scroll-proportion="0.61139894">
           <folding />
         </state>
       </provider>

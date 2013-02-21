@@ -57,4 +57,17 @@ describe("PriorityQueue", function() {
         queue.add(9);
         expect(underlyingData).toEqual([5, 8, 19, 20, 9]);
     });
+
+    it("should be able to add multiple items at the same time", function() {
+        queue.addAll(8, 3, 5, 1, 9);
+        expect(underlyingData).toEqual([1, 3, 5, 8, 9]);
+    });
+
+    it("should be able to add an array of items at the same time", function() {
+        queue.addAll([20, 6, 11, 7, 1, 4]);
+        expect(underlyingData).toEqual([1, 6, 4, 20, 7, 11]);
+    });
+
+    //add elements
+    //delete elements
 });

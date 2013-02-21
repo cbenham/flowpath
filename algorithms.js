@@ -28,11 +28,6 @@ ajs.Node.prototype.findEdgeTo = function(targetSuccessorData) {
 };
 
 ajs.PriorityQueue = function() {
-//    this.queue = [];
-//    var seedData = arguments[0];
-//    for(var index in seedData) {
-//        this.queue.push(arguments[0][index]);
-//    }
     this.queue = arguments[0];
 };
 
@@ -53,11 +48,21 @@ ajs.PriorityQueue.prototype.add = function(item) {
     this.heapifyUpwards(this.queue.length);
 };
 
+ajs.PriorityQueue.prototype.addAll = function() {
+    var items = arguments;
+    if(arguments.length == 1 && Object.prototype.toString.call(arguments[0]) === "[object Array]") {
+        items = arguments[0];
+    }
+    for(var itemIndex in items) {
+        this.add(items[itemIndex]);
+    }
+};
+
 ajs.PriorityQueue.prototype.heapifyUpwards = function(currentIndex) {
     if(currentIndex <= 1) {
         return;
     }
-    var parentIndex = currentIndex / 2;
+    var parentIndex = Math.floor(currentIndex / 2);
     var parentItem = this.queue[parentIndex - 1];
     var currentItem = this.queue[currentIndex - 1];
     if(currentItem < parentItem) {
