@@ -50,7 +50,7 @@ ajs.PriorityQueue.prototype.add = function(item) {
 
 ajs.PriorityQueue.prototype.addAll = function() {
     var items = arguments;
-    if(arguments.length == 1 && Object.prototype.toString.call(arguments[0]) === "[object Array]") {
+    if(arguments.length == 1 && arguments[0] instanceof Array) {
         items = arguments[0];
     }
     for(var itemIndex in items) {
@@ -69,5 +69,39 @@ ajs.PriorityQueue.prototype.heapifyUpwards = function(currentIndex) {
         this.queue[parentIndex - 1] = currentItem;
         this.queue[currentIndex - 1] = parentItem;
         this.heapifyUpwards(parentIndex);
+    }
+};
+
+ajs.PriorityQueue.prototype.poll = function() {
+    if(this.isEmpty()) {
+        return null;
+    }
+
+    var valueToReturn = this.queue.splice(0, 1)[0];
+    this.heapifyDownwards(0);
+    return valueToReturn;
+};
+
+ajs.PriorityQueue.prototype.heapifyDownwards = function(currentIndex) {
+    var length = this.queue.length;
+    var indexOfLeftChild = (currentIndex * 2) + 1;
+    var indexOfRightChild = indexOfLeftChild + 1;
+    var minimumIndex;
+
+    if(indexOfRightChild > length) {
+        return;
+    } else if(indexOfRightChild < length) {
+        var left = this.queue[indexOfLeftChild];
+        var right = this.queue[indexOfRightChild];
+        minimumIndex = left < right ? indexOfLeftChild : indexOfRightChild;
+    } else {
+        minimumIndex = indexOfLeftChild;
+    }
+
+    if(this.queue[minimumIndex] < this.queue[currentIndex]){
+        var temp = this.queue[minimumIndex];
+        this.queue[minimumIndex] = this.queue[currentIndex];
+        this.queue[currentIndex] = temp;
+        this.heapifyDownwards(minimumIndex);
     }
 };

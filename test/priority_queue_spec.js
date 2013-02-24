@@ -16,13 +16,6 @@ describe("PriorityQueue", function() {
         expect(queue.size()).toBe(3);
     });
 
-    xit("should copy the seed data it is constructed with so it is entirely within control", function() {
-        var underlyingData = [];
-        var queue = new ajs.PriorityQueue(underlyingData);
-        underlyingData.push(22);
-        expect(queue.size()).toBe(0);
-    });
-
     it("should be empty when it has no data", function() {
         expect(queue.isEmpty()).toBe(true);
     });
@@ -66,5 +59,33 @@ describe("PriorityQueue", function() {
     it("should be able to add an array of items at the same time", function() {
         queue.addAll([20, 6, 11, 7, 1, 4]);
         expect(underlyingData).toEqual([1, 6, 4, 20, 7, 11]);
+    });
+
+    it("should yield null when removing from the head of an empty queue", function() {
+        expect(queue.poll()).toBeNull();
+    });
+
+    it("should yield and remove the root node when there is only when item", function() {
+        underlyingData.push(5);
+        expect(queue.poll()).toBe(5);
+        expect(queue.isEmpty()).toBe(true);
+    });
+
+    it("should reorganise when polling and there are two elements", function() {
+        underlyingData.push(4, 5);
+        expect(queue.poll()).toBe(4);
+        expect(underlyingData).toEqual([5]);
+    });
+
+    it("should reorganise when polling and there are three elements", function() {
+        underlyingData.push(6, 5, 4);
+        expect(queue.poll()).toBe(6);
+        expect(underlyingData).toEqual([4, 5]);
+    });
+
+    it("should reorganise when polling and there are four elements", function() {
+        underlyingData.push(6, 5, 4, 3);
+        expect(queue.poll()).toBe(6);
+        expect(underlyingData).toEqual([3, 4, 5]);
     });
 });
