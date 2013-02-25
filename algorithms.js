@@ -28,10 +28,14 @@ ajs.Node.prototype.findEdgeTo = function(targetSuccessorData) {
 };
 
 ajs.PriorityQueue = function() {
-    this.queue = arguments[0];
+    this.queue = [];
+    this.addAll(arguments[0]);
 };
 
 ajs.PriorityQueue.prototype.peek = function() {
+    if(this.isEmpty()) {
+        return null;
+    }
     return this.queue[0];
 };
 
