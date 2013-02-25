@@ -77,7 +77,10 @@ ajs.PriorityQueue.prototype.poll = function() {
         return null;
     }
 
-    var valueToReturn = this.queue.splice(0, 1)[0];
+    var valueToReturn = this.queue[0];
+    var lastElementIndex = this.size() - 1;
+    this.queue[0] = this.queue[lastElementIndex];
+    this.queue.splice(lastElementIndex, 1);
     this.heapifyDownwards(0);
     return valueToReturn;
 };

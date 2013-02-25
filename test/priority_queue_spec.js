@@ -51,9 +51,19 @@ describe("PriorityQueue", function() {
         expect(underlyingData).toEqual([5, 8, 19, 20, 9]);
     });
 
+    it("should be able to add a single item in bulk", function() {
+        queue.addAll(64);
+        expect(underlyingData).toEqual([64]);
+    });
+
     it("should be able to add multiple items at the same time", function() {
         queue.addAll(8, 3, 5, 1, 9);
         expect(underlyingData).toEqual([1, 3, 5, 8, 9]);
+    });
+
+    it("should be able to add an array with a single item in bulk", function() {
+        queue.addAll([34]);
+        expect(underlyingData).toEqual([34]);
     });
 
     it("should be able to add an array of items at the same time", function() {
@@ -71,21 +81,34 @@ describe("PriorityQueue", function() {
         expect(queue.isEmpty()).toBe(true);
     });
 
-    it("should reorganise when polling and there are two elements", function() {
+    it("should yield and remove head when polling with two elements", function() {
         underlyingData.push(4, 5);
         expect(queue.poll()).toBe(4);
         expect(underlyingData).toEqual([5]);
     });
 
-    it("should reorganise when polling and there are three elements", function() {
-        underlyingData.push(6, 5, 4);
-        expect(queue.poll()).toBe(6);
-        expect(underlyingData).toEqual([4, 5]);
+    it("should yield and remove head when polling with three elements", function() {
+        underlyingData.push(4, 5, 6);
+        expect(queue.poll()).toBe(4);
+        expect(underlyingData).toEqual([5, 6]);
     });
 
-    it("should reorganise when polling and there are four elements", function() {
-        underlyingData.push(6, 5, 4, 3);
-        expect(queue.poll()).toBe(6);
-        expect(underlyingData).toEqual([3, 4, 5]);
+    it("should yield and remove head when polling with four elements", function() {
+        underlyingData.push(3, 4, 5, 6);
+        expect(queue.poll()).toBe(3);
+        expect(underlyingData).toEqual([4, 6, 5]);
     });
+
+    it("should be able to delete all elements in ascending order until the queue becomes empty", function() {
+        queue.addAll(6, 11, 3, 20, 44, 22, 75, 90, 10, 2);
+        assertOrderOfDeletion([2, 3, 6, 10, 11, 20, 22, 44, 75, 90]);
+    });
+
+    function assertOrderOfDeletion(orderOfDeletedElements) {
+        expect(queue.size()).toBe(orderOfDeletedElements.length);
+
+        while(!queue.isEmpty()) {
+            expect(queue.poll()).toBe(orderOfDeletedElements.shift());
+        }
+    }
 });

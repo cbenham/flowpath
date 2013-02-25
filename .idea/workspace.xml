@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2b6e9e92-8bae-47d0-b66c-79878340c52f" name="Default" comment="">
+    <list default="true" id="2b6e9e92-8bae-47d0-b66c-79878340c52f" name="Default" comment="Added ability to delete items from the head of the queue.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/algorithms.js" afterPath="$PROJECT_DIR$/algorithms.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/priority_queue_spec.js" afterPath="$PROJECT_DIR$/test/priority_queue_spec.js" />
@@ -35,10 +35,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="priority_queue_spec.js" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="priority_queue_spec.js" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/test/priority_queue_spec.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="88" column="50" selection-start="2906" selection-end="2906" vertical-scroll-proportion="1.2862191">
+                <state line="98" column="50" selection-start="3224" selection-end="3224" vertical-scroll-proportion="0.9416961">
                   <folding />
                 </state>
               </provider>
@@ -47,7 +47,7 @@
           <file leaf-file-name="algorithms.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/algorithms.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="92" column="5" selection-start="2458" selection-end="2458" vertical-scroll-proportion="0.0">
+                <state line="95" column="5" selection-start="2583" selection-end="2583" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -66,10 +66,10 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="algorithms.js" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="algorithms.js" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/algorithms.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="56" column="23" selection-start="1469" selection-end="1469" vertical-scroll-proportion="0.33333334">
+                <state line="68" column="50" selection-start="1851" selection-end="1851" vertical-scroll-proportion="0.34715027">
                   <folding />
                 </state>
               </provider>
@@ -93,8 +93,8 @@
         <option value="$PROJECT_DIR$/test/linked_list_spec.js" />
         <option value="$PROJECT_DIR$/test/graph_spec.js" />
         <option value="$PROJECT_DIR$/test/SpecRunner.html" />
-        <option value="$PROJECT_DIR$/test/priority_queue_spec.js" />
         <option value="$PROJECT_DIR$/algorithms.js" />
+        <option value="$PROJECT_DIR$/test/priority_queue_spec.js" />
       </list>
     </option>
   </component>
@@ -281,7 +281,11 @@
       <created>1360454644058</created>
       <updated>1360454644058</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added ability to delete items from the head of the queue.">
+      <created>1361743167611</created>
+      <updated>1361743167611</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -306,10 +310,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1024" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15872058" sideWeight="0.6710963" order="0" side_tool="false" content_ui="combo" />
@@ -482,16 +486,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/priority_queue_spec.js">
+    <entry file="file://$PROJECT_DIR$/algorithms.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="50" selection-start="2906" selection-end="2906" vertical-scroll-proportion="1.2862191">
+        <state line="95" column="5" selection-start="2583" selection-end="2583" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/algorithms.js">
+    <entry file="file://$PROJECT_DIR$/test/priority_queue_spec.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="23" selection-start="1469" selection-end="1469" vertical-scroll-proportion="0.33333334">
+        <state line="98" column="50" selection-start="3224" selection-end="3224" vertical-scroll-proportion="0.9416961">
           <folding />
         </state>
       </provider>
