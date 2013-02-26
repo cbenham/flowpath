@@ -135,14 +135,19 @@ describe("PriorityQueue", function() {
     });
 
     it("should take a comparator to order the initial items in descending order", function() {
-        queue = new ajs.PriorityQueue([6, 9, 8, 4, 7], new ajs.DescendingNumericComparator());
+        queue = new ajs.PriorityQueue([6, 9, 8, 4, 7], new ajs.DescendingRelationalComparator());
         assertOrderOfDeletion(queue, [9, 8, 7, 6, 4]);
     });
 
     it("should take a comparator without items and order added items in descending order", function() {
-        queue = new ajs.PriorityQueue(new ajs.DescendingNumericComparator());
+        queue = new ajs.PriorityQueue(new ajs.DescendingRelationalComparator());
         queue.addAll(4, 2, 8, 1, 9, 5);
         assertOrderOfDeletion(queue, [9, 8, 5, 4, 2, 1]);
+    });
+
+    it("should be able to order a non numeric value", function() {
+        queue = new ajs.PriorityQueue(["a", "c", "d", "b"]);
+        assertOrderOfDeletion(queue, ["a", "b", "c", "d"]);
     });
 
     function assertOrderOfDeletion(queue, orderOfDeletedElements) {

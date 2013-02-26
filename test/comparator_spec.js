@@ -2,7 +2,7 @@ describe("AscendingNumericComparator", function() {
     var comparator;
 
     beforeEach(function() {
-        comparator = new ajs.AscendingNumericComparator();
+        comparator = new ajs.AscendingRelationalComparator();
     });
 
     it("should yield a negative number when the left hand side is less than the right hand side", function() {
@@ -22,7 +22,7 @@ describe("NegationComparator", function() {
     var comparator;
 
     beforeEach(function() {
-        comparator = new ajs.NegationComparator(new ajs.AscendingNumericComparator());
+        comparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
     });
 
     it("should yield a negative number when the right hand side is less then the right", function() {
@@ -42,7 +42,7 @@ describe("DescendingNumericComparator", function() {
     var comparator;
 
     beforeEach(function() {
-        comparator = new ajs.DescendingNumericComparator();
+        comparator = new ajs.DescendingRelationalComparator();
     });
 
     it("should yield a negative number when the right hand side is less then the right", function() {

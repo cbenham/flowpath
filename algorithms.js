@@ -1,8 +1,8 @@
 var ajs = {};
 
-ajs.AscendingNumericComparator = function() {
+ajs.AscendingRelationalComparator = function() {
 };
-ajs.AscendingNumericComparator.prototype.compare = function(left, right) {
+ajs.AscendingRelationalComparator.prototype.compare = function(left, right) {
     if (left < right) {
         return -1;
     } else if (left > right) {
@@ -19,10 +19,10 @@ ajs.NegationComparator.prototype.compare = function(left, right) {
     return this.delegateComparator.compare(left, right) * -1;
 };
 
-ajs.DescendingNumericComparator = function() {
-    this.delegateComparator = new ajs.NegationComparator(new ajs.AscendingNumericComparator());
+ajs.DescendingRelationalComparator = function() {
+    this.delegateComparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
 };
-ajs.DescendingNumericComparator.prototype.compare = function(left, right) {
+ajs.DescendingRelationalComparator.prototype.compare = function(left, right) {
     return this.delegateComparator.compare(left, right);
 };
 
@@ -56,7 +56,7 @@ ajs.Node.prototype.findEdgeTo = function(targetSuccessorData) {
 ajs.PriorityQueue = function() {
     this.queue = [];
     var items = [];
-    this.comparator = new ajs.AscendingNumericComparator();
+    this.comparator = new ajs.AscendingRelationalComparator();
 
     if (arguments.length == 1) {
         if (arguments[0] instanceof Array) {
