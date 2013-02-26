@@ -116,11 +116,33 @@ describe("PriorityQueue", function() {
         assertOrderOfDeletion(queue, [1, 5, 7, 15, 17, 19, 20, 30, 60]);
     });
 
-    xit("should make a copy of the underlying data so the queue cannot be tampered with", function() {
+    it("should make a copy of the underlying data so the queue cannot be tampered with", function() {
         var data = [];
         queue = new ajs.PriorityQueue(data);
         data.push(9);
         expect(queue.isEmpty()).toBe(true);
+    });
+
+    it("should default to ascending order when constructed without items or comparator", function() {
+        queue = new ajs.PriorityQueue();
+        queue.addAll(7, 3, 9, 5);
+        assertOrderOfDeletion(queue, [3, 5, 7, 9]);
+    });
+
+    it("should apply ascending order when constructed with items but no comparator", function() {
+        queue = new ajs.PriorityQueue([9, 4, 7, 1]);
+        assertOrderOfDeletion(queue, [1, 4, 7, 9]);
+    });
+
+    it("should take a comparator to order the initial items in descending order", function() {
+        queue = new ajs.PriorityQueue([6, 9, 8, 4, 7], new ajs.DescendingNumericComparator());
+        assertOrderOfDeletion(queue, [9, 8, 7, 6, 4]);
+    });
+
+    it("should take a comparator without items and order added items in descending order", function() {
+        queue = new ajs.PriorityQueue(new ajs.DescendingNumericComparator());
+        queue.addAll(4, 2, 8, 1, 9, 5);
+        assertOrderOfDeletion(queue, [9, 8, 5, 4, 2, 1]);
     });
 
     function assertOrderOfDeletion(queue, orderOfDeletedElements) {
