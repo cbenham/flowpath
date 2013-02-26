@@ -128,11 +128,11 @@ ajs.PriorityQueue.prototype.poll = function () {
     var lastElementIndex = this.size() - 1;
     this.queue[0] = this.queue[lastElementIndex];
     this.queue.splice(lastElementIndex, 1);
-    this.heapifyDownwards(0);
+    this.siftDown(0);
     return valueToReturn;
 };
 
-ajs.PriorityQueue.prototype.heapifyDownwards = function (currentIndex) {
+ajs.PriorityQueue.prototype.siftDown = function (currentIndex) {
     var length = this.queue.length;
     var indexOfLeftChild = (currentIndex * 2) + 1;
     var indexOfRightChild = indexOfLeftChild + 1;
@@ -152,6 +152,6 @@ ajs.PriorityQueue.prototype.heapifyDownwards = function (currentIndex) {
         var temp = this.queue[minimumIndex];
         this.queue[minimumIndex] = this.queue[currentIndex];
         this.queue[currentIndex] = temp;
-        this.heapifyDownwards(minimumIndex);
+        this.siftDown(minimumIndex);
     }
 };
