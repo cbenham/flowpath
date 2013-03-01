@@ -71,96 +71,100 @@ ajs.PriorityQueue = function() {
     this.addAll(items);
 };
 
-ajs.PriorityQueue.prototype.peek = function() {
-    if (this.isEmpty()) {
-        return null;
-    }
-    return this.queue[0];
-};
+(function() {
 
-ajs.PriorityQueue.prototype.size = function() {
-    return this.queue.length;
-};
-
-ajs.PriorityQueue.prototype.isEmpty = function() {
-    return this.queue.length == 0;
-};
-
-ajs.PriorityQueue.prototype.add = function(item) {
-    this.queue.push(item);
-    this.siftUp(this.queue.length);
-};
-
-ajs.PriorityQueue.prototype.addAll = function() {
-    var items = arguments;
-    if (arguments.length == 1 && arguments[0] instanceof Array) {
-        items = arguments[0];
-    }
-    for (var itemIndex in items) {
-        this.add(items[itemIndex]);
-    }
-};
-
-ajs.PriorityQueue.prototype.siftUp = function(initialIndex) {
-    var currentIndex = initialIndex;
-    var topReached = false;
-    while(currentIndex > 1 && !topReached) {
-        var parentIndex = Math.floor(currentIndex / 2);
-        var parentItem = this.queue[parentIndex - 1];
-        var currentItem = this.queue[currentIndex - 1];
-
-        if (this.comparator.compare(currentItem, parentItem) < 0) {
-            this.queue[parentIndex - 1] = currentItem;
-            this.queue[currentIndex - 1] = parentItem;
-            currentIndex = parentIndex;
-        } else {
-            topReached = true;
+    this.peek = function() {
+        if (this.isEmpty()) {
+            return null;
         }
-    }
-};
+        return this.queue[0];
+    };
 
-ajs.PriorityQueue.prototype.poll = function() {
-    if (this.isEmpty()) {
-        return null;
-    }
+    this.size = function() {
+        return this.queue.length;
+    };
 
-    var valueToReturn = this.queue[0];
-    var lastElementIndex = this.size() - 1;
-    this.queue[0] = this.queue[lastElementIndex];
-    this.queue.splice(lastElementIndex, 1);
-    this.siftDown(0);
-    return valueToReturn;
-};
+    this.isEmpty = function() {
+        return this.queue.length == 0;
+    };
 
-ajs.PriorityQueue.prototype.siftDown = function(initialIndex) {
-    var length = this.queue.length;
-    var currentIndex = initialIndex;
+    this.add = function(item) {
+        this.queue.push(item);
+        siftUp.call(this, this.queue.length);
+    };
 
-    var atEnd = false;
-    while(!atEnd) {
-        var indexOfLeftChild = (currentIndex * 2) + 1;
-        var indexOfRightChild = indexOfLeftChild + 1;
-        var minimumIndex;
+    this.addAll = function() {
+        var items = arguments;
+        if (arguments.length == 1 && arguments[0] instanceof Array) {
+            items = arguments[0];
+        }
+        for (var itemIndex in items) {
+            this.add(items[itemIndex]);
+        }
+    };
 
-        if (indexOfRightChild <= length) {
-            if (indexOfRightChild < length) {
-                var left = this.queue[indexOfLeftChild];
-                var right = this.queue[indexOfRightChild];
-                minimumIndex = this.comparator.compare(left, right) < 0 ? indexOfLeftChild : indexOfRightChild;
+    function siftUp(initialIndex) {
+        var currentIndex = initialIndex;
+        var topReached = false;
+        while(currentIndex > 1 && !topReached) {
+            var parentIndex = Math.floor(currentIndex / 2);
+            var parentItem = this.queue[parentIndex - 1];
+            var currentItem = this.queue[currentIndex - 1];
+
+            if (this.comparator.compare(currentItem, parentItem) < 0) {
+                this.queue[parentIndex - 1] = currentItem;
+                this.queue[currentIndex - 1] = parentItem;
+                currentIndex = parentIndex;
             } else {
-                minimumIndex = indexOfLeftChild;
+                topReached = true;
             }
+        }
+    };
 
-            if (this.comparator.compare(this.queue[minimumIndex], this.queue[currentIndex]) < 0) {
-                var temp = this.queue[minimumIndex];
-                this.queue[minimumIndex] = this.queue[currentIndex];
-                this.queue[currentIndex] = temp;
-                currentIndex = minimumIndex;
+    this.poll = function() {
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        var valueToReturn = this.queue[0];
+        var lastElementIndex = this.size() - 1;
+        this.queue[0] = this.queue[lastElementIndex];
+        this.queue.splice(lastElementIndex, 1);
+        siftDown.call(this, 0);
+        return valueToReturn;
+    };
+
+    var siftDown = function(initialIndex) {
+        var length = this.queue.length;
+        var currentIndex = initialIndex;
+
+        var atEnd = false;
+        while(!atEnd) {
+            var indexOfLeftChild = (currentIndex * 2) + 1;
+            var indexOfRightChild = indexOfLeftChild + 1;
+            var minimumIndex;
+
+            if (indexOfRightChild <= length) {
+                if (indexOfRightChild < length) {
+                    var left = this.queue[indexOfLeftChild];
+                    var right = this.queue[indexOfRightChild];
+                    minimumIndex = this.comparator.compare(left, right) < 0 ? indexOfLeftChild : indexOfRightChild;
+                } else {
+                    minimumIndex = indexOfLeftChild;
+                }
+
+                if (this.comparator.compare(this.queue[minimumIndex], this.queue[currentIndex]) < 0) {
+                    var temp = this.queue[minimumIndex];
+                    this.queue[minimumIndex] = this.queue[currentIndex];
+                    this.queue[currentIndex] = temp;
+                    currentIndex = minimumIndex;
+                } else {
+                    atEnd = true;
+                }
             } else {
                 atEnd = true;
             }
-        } else {
-            atEnd = true;
         }
-    }
-};
+    };
+
+}).call(ajs.PriorityQueue.prototype);
