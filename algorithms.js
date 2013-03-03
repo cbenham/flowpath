@@ -72,7 +72,6 @@ ajs.PriorityQueue = function() {
 };
 
 (function() {
-
     this.peek = function() {
         if (this.isEmpty()) {
             return null;
@@ -103,6 +102,19 @@ ajs.PriorityQueue = function() {
         }
     };
 
+    this.poll = function() {
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        var valueToReturn = this.queue[0];
+        var lastElementIndex = this.size() - 1;
+        this.queue[0] = this.queue[lastElementIndex];
+        this.queue.splice(lastElementIndex, 1);
+        siftDown.call(this, 0);
+        return valueToReturn;
+    };
+
     function siftUp(initialIndex) {
         var currentIndex = initialIndex;
         var topReached = false;
@@ -119,22 +131,9 @@ ajs.PriorityQueue = function() {
                 topReached = true;
             }
         }
-    };
+    }
 
-    this.poll = function() {
-        if (this.isEmpty()) {
-            return null;
-        }
-
-        var valueToReturn = this.queue[0];
-        var lastElementIndex = this.size() - 1;
-        this.queue[0] = this.queue[lastElementIndex];
-        this.queue.splice(lastElementIndex, 1);
-        siftDown.call(this, 0);
-        return valueToReturn;
-    };
-
-    var siftDown = function(initialIndex) {
+    function siftDown(initialIndex) {
         var length = this.queue.length;
         var currentIndex = initialIndex;
 
@@ -165,6 +164,5 @@ ajs.PriorityQueue = function() {
                 atEnd = true;
             }
         }
-    };
-
+    }
 }).call(ajs.PriorityQueue.prototype);
