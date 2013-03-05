@@ -1,5 +1,9 @@
 var ajs = {};
 
+/**
+ * Ascending order
+ * @constructor
+ */
 ajs.AscendingRelationalComparator = function() {
 };
 ajs.AscendingRelationalComparator.prototype.compare = function(left, right) {
@@ -53,6 +57,15 @@ ajs.Node.prototype.findEdgeTo = function(targetSuccessorData) {
     return foundEdge;
 };
 
+/**
+ * Creates a PriorityQueue. By default the queue will be in ascending order using {@link ajs.AscendingRelationalComparator}.
+ * @param {Array} [initialItems] the items that should initially be placed in the queue.
+ * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
+ *                     have a method compare, that takes two arguments and returns -1, 0 or 1
+ *                     when the left hand argument is less than, equal to or greater than the right
+ *                     hand argument.
+ * @constructor
+ */
 ajs.PriorityQueue = function() {
     this.queue = [];
     var items = [];
