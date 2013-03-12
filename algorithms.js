@@ -1,4 +1,4 @@
-var ajs = {};
+ajs = {};
 
 /**
  * Ascending order

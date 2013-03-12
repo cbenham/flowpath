@@ -11,9 +11,16 @@ module.exports = function(grunt) {
                     'algorithms.min.js': ['algorithms.js']
                 }
             }
+        },
+        jasmine_node: {
+            matchall: true,
+            projectRoot: ".",
+            requirejs: false,
+            forceExit: true
         }
     });
+    grunt.loadNpmTasks('grunt-jasmine-node');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['jasmine_node', 'uglify']);
 };
