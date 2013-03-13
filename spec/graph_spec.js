@@ -11,7 +11,7 @@ describe("DirectedGraph", function() {
 
 describe("Node", function() {
 
-    var predecessor, successor = new ajs.Node("successor");
+    var predecessor, successor;
 
     beforeEach(function() {
         predecessor = new ajs.Node("predecessor");
