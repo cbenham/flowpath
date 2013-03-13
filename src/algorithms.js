@@ -56,7 +56,8 @@ ajs = (function () {
     };
 
     /**
-     * Creates a PriorityQueue. By default the queue will be in ascending order using {@link AscendingRelationalComparator}.
+     * Creates a PriorityQueue. By default the queue will be in ascending order using
+     * {@link AscendingRelationalComparator}.
      * @param {Array} [initialItems] the items that should initially be placed in the queue.
      * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
      *                     have a method compare, that takes two arguments and returns -1, 0 or 1
@@ -144,6 +145,22 @@ ajs = (function () {
             }
         }
 
+        function indexOfMinimumChild(indexOfRightChild, indexOfLeftChild) {
+            if (indexOfRightChild < this.queue.length) {
+                var left = this.queue[indexOfLeftChild];
+                var right = this.queue[indexOfRightChild];
+                return this.comparator.compare(left, right) < 0 ? indexOfLeftChild : indexOfRightChild;
+            } else {
+                return indexOfLeftChild;
+            }
+        }
+
+        function swap(indexOfMinimumItem, currentIndex) {
+            var minimumItem = this.queue[indexOfMinimumItem];
+            this.queue[indexOfMinimumItem] = this.queue[currentIndex];
+            this.queue[currentIndex] = minimumItem;
+        }
+
         function siftDown(initialIndex) {
             var length = this.queue.length;
             var currentIndex = initialIndex;
@@ -152,22 +169,12 @@ ajs = (function () {
             while (!atEnd) {
                 var indexOfLeftChild = (currentIndex * 2) + 1;
                 var indexOfRightChild = indexOfLeftChild + 1;
-                var minimumIndex;
 
                 if (indexOfRightChild <= length) {
-                    if (indexOfRightChild < length) {
-                        var left = this.queue[indexOfLeftChild];
-                        var right = this.queue[indexOfRightChild];
-                        minimumIndex = this.comparator.compare(left, right) < 0 ? indexOfLeftChild : indexOfRightChild;
-                    } else {
-                        minimumIndex = indexOfLeftChild;
-                    }
-
-                    if (this.comparator.compare(this.queue[minimumIndex], this.queue[currentIndex]) < 0) {
-                        var temp = this.queue[minimumIndex];
-                        this.queue[minimumIndex] = this.queue[currentIndex];
-                        this.queue[currentIndex] = temp;
-                        currentIndex = minimumIndex;
+                    var indexOfMinimumItem = indexOfMinimumChild.call(this, indexOfRightChild, indexOfLeftChild);
+                    if (this.comparator.compare(this.queue[indexOfMinimumItem], this.queue[currentIndex]) < 0) {
+                        swap.call(this, indexOfMinimumItem, currentIndex);
+                        currentIndex = indexOfMinimumItem;
                     } else {
                         atEnd = true;
                     }
@@ -177,5 +184,6 @@ ajs = (function () {
             }
         }
     }).call(PriorityQueue.prototype);
+
     return this;
 })();

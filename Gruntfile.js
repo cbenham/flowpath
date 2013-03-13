@@ -24,7 +24,16 @@ module.exports = function(grunt) {
                 latedef: true,
                 newcap: true,
                 noarg: true,
-                noempty: true
+                noempty: true,
+                nonew: true,
+                quotmark: 'single',
+                unused: true,
+                trailing: true,
+                maxparams: 3,
+                maxdepth: 3,
+                maxstatements: 14,
+                maxcomplexity: 4,
+                maxlen: 120
             }
         },
         jasmine_node: {
