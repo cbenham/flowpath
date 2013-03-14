@@ -55,5 +55,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['jasmine_node', 'jshint', 'uglify']);
-    grunt.registerTask("ci", ['jasmine_node', 'jshint']);
+    grunt.registerTask("ci", ['jasmine_node', 'jshint', 'uglify']);
 };
