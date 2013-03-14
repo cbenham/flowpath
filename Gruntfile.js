@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'algorithms.min.js': ['src/algorithms.js']
+                    'build/algorithms.min.js': ['src/algorithms.js']
                 }
             }
         },
@@ -27,14 +27,19 @@ module.exports = function(grunt) {
                 noempty: true,
                 nonew: true,
                 quotmark: 'single',
+                undef: true,
                 unused: true,
                 trailing: true,
                 maxparams: 3,
                 maxdepth: 3,
                 maxstatements: 14,
                 maxcomplexity: 4,
-                maxlen: 120
+                maxlen: 120,
+                globals: {
+                    ajs: true
+                }
             }
+
         },
         jasmine_node: {
             matchall: true,
@@ -55,5 +60,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['jasmine_node', 'jshint', 'uglify']);
-    grunt.registerTask("ci", ['jasmine_node', 'jshint', 'uglify']);
+    grunt.registerTask("ci", ['jasmine_node', 'jshint']);
 };

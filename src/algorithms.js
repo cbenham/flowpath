@@ -1,10 +1,12 @@
-ajs = (function () {
+(function () {
+    ajs = {};
+
     /**
      * Ascending order
      * @constructor
      */
-    AscendingRelationalComparator = function () {};
-    AscendingRelationalComparator.prototype.compare = function (left, right) {
+    ajs.AscendingRelationalComparator = function () {};
+    ajs.AscendingRelationalComparator.prototype.compare = function (left, right) {
         if (left < right) {
             return -1;
         } else if (left > right) {
@@ -14,38 +16,38 @@ ajs = (function () {
         }
     };
 
-    NegationComparator = function (delegateComparator) {
+    ajs.NegationComparator = function (delegateComparator) {
         this.delegateComparator = delegateComparator;
     };
-    NegationComparator.prototype.compare = function (left, right) {
+    ajs.NegationComparator.prototype.compare = function (left, right) {
         return this.delegateComparator.compare(left, right) * -1;
     };
 
-    DescendingRelationalComparator = function () {
-        this.delegateComparator = new NegationComparator(new AscendingRelationalComparator());
+    ajs.DescendingRelationalComparator = function () {
+        this.delegateComparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
     };
-    DescendingRelationalComparator.prototype.compare = function (left, right) {
+    ajs.DescendingRelationalComparator.prototype.compare = function (left, right) {
         return this.delegateComparator.compare(left, right);
     };
 
-    Edge = function (predecessor, successor, weight) {
+    ajs.Edge = function (predecessor, successor, weight) {
         this.predecessor = predecessor;
         this.successor = successor;
         this.weight = weight;
     };
-    Edge.prototype.hasSuccessorForData = function (targetData) {
+    ajs.Edge.prototype.hasSuccessorForData = function (targetData) {
         return this.successor.data === targetData;
     };
 
-    Node = function (data) {
+    ajs.Node = function (data) {
         this.data = data;
         this.adjacencies = [];
     };
-    Node.prototype.connectTo = function (successorNode, weight) {
-        var edge = new Edge(this, successorNode, weight);
+    ajs.Node.prototype.connectTo = function (successorNode, weight) {
+        var edge = new ajs.Edge(this, successorNode, weight);
         this.adjacencies.push(edge);
     };
-    Node.prototype.findEdgeTo = function (targetSuccessorData) {
+    ajs.Node.prototype.findEdgeTo = function (targetSuccessorData) {
         var foundEdge = null;
         this.adjacencies.forEach(function (edge) {
             if (edge.hasSuccessorForData(targetSuccessorData)) {
@@ -65,10 +67,10 @@ ajs = (function () {
      *                     hand argument.
      * @constructor
      */
-    PriorityQueue = function () {
+    ajs.PriorityQueue = function () {
         this.queue = [];
         var items = [];
-        this.comparator = new AscendingRelationalComparator();
+        this.comparator = new ajs.AscendingRelationalComparator();
 
         if (arguments.length === 1) {
             if (arguments[0] instanceof Array) {
@@ -183,7 +185,5 @@ ajs = (function () {
                 }
             }
         }
-    }).call(PriorityQueue.prototype);
-
-    return this;
+    }).call(ajs.PriorityQueue.prototype);
 })();
