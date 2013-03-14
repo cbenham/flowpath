@@ -52,8 +52,7 @@ ajs = (function () {
                 foundEdge = edge;
             }
         });
-//        return foundEdge;
-        return 1;
+        return foundEdge;
     };
 
     /**
