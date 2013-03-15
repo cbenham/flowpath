@@ -86,27 +86,51 @@
     };
 
     (function () {
-        this.peek = function () {
+        /**
+         * Get the highest priority item without modifying the queue. Use {@link ajs.PriorityQueue#poll|poll} to remove
+         * and retrieve and item at once.
+         * @returns {Object} the item with the highest priority or null if the queue is empty.
+         */
+        ajs.PriorityQueue.prototype.peek = function () {
             if (this.isEmpty()) {
                 return null;
             }
             return this.queue[0];
         };
 
-        this.size = function () {
+        /**
+         * Gets the size of the queue.
+         * @returns {Number} the number of elements in the queue.
+         */
+        ajs.PriorityQueue.prototype.size = function () {
             return this.queue.length;
         };
 
-        this.isEmpty = function () {
+        /**
+         * Determines whether the queue is empty or not.
+         * @returns {boolean} true if the queue is empty, false otherwise.
+         */
+        ajs.PriorityQueue.prototype.isEmpty = function () {
             return this.queue.length === 0;
         };
 
-        this.add = function (item) {
+        /**
+         * Adds a single item to the queue. Use this method to add items of type Array.
+         * To add multiple items at once consider using {@link ajs.PriorityQueue#addAll|addAll}.
+         * @param item the item to add, Arrays will be added to the queue (as opposed its elements).
+         */
+        ajs.PriorityQueue.prototype.add = function (item) {
             this.queue.push(item);
             siftUp.call(this, this.queue.length);
         };
 
-        this.addAll = function () {
+        /**
+         * Adds multiple items to the queue. This method should be used to add the contents of an array to the queue.
+         * Parameters passed as variable arguments will also be added to the queue.
+         * Use {@link ajs.PriorityQueue#add|add} to add an Array as an item in the queue itself.
+         * @param [...] the array of arguments or varargs whose elements will be added to the queue.
+         */
+        ajs.PriorityQueue.prototype.addAll = function () {
             var items = arguments;
             if (arguments.length === 1 && arguments[0] instanceof Array) {
                 items = arguments[0];
@@ -116,7 +140,11 @@
             }
         };
 
-        this.poll = function () {
+        /**
+         * Returns and removes the item with the highest priority.
+         * @returns {Object} the next item of highest priority.
+         */
+        ajs.PriorityQueue.prototype.poll = function () {
             if (this.isEmpty()) {
                 return null;
             }
@@ -185,5 +213,5 @@
                 }
             }
         }
-    }).call(ajs.PriorityQueue.prototype);
+    })();
 })();
