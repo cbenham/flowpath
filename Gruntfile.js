@@ -69,6 +69,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-coverjs');
 
     grunt.registerTask('default', ['jasmine_node', 'jshint', 'uglify']);
     grunt.registerTask('release', ['jasmine_node', 'jshint', 'uglify', 'jsdoc']);
