@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 
         },
         jasmine_node: {
-            matchall:true,
+            specNameMatcher:"*(spec|algorithms)",
             requirejs: false,
             forceExit: true
         },
@@ -56,6 +56,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+        clean: ["build", "docs"],
         watch: {
             scripts: {
                 files: ["<%= srcdir %>/**/*.js", "<%= specdir %>/**/*.js", "Gruntfile.js"],
@@ -72,6 +73,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-coverjs');
 
     grunt.registerTask('default', ['jasmine_node', 'jshint', 'uglify']);
-    grunt.registerTask('release', ['jasmine_node', 'jshint', 'uglify', 'jsdoc']);
+    grunt.registerTask('release', ['clean', 'jasmine_node', 'jshint', 'uglify', 'jsdoc']);
     grunt.registerTask("ci", ['jasmine_node', 'jshint']);
 };
