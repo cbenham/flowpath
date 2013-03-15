@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
     grunt.initConfig({
+        srcdir: "src",
+        specdir: "spec",
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             options: {
@@ -8,12 +10,12 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'build/algorithms.min.js': ['src/algorithms.js']
+                    'build/algorithms.min.js': ['<%= srcdir %>/algorithms.js']
                 }
             }
         },
         jshint: {
-            files: ['src/**/*.js'],
+            files: ['<%= srcdir %>/**/*.js'],
             options: {
                 curly: true,
                 camelcase: true,
@@ -42,14 +44,21 @@ module.exports = function(grunt) {
 
         },
         jasmine_node: {
-            matchall: true,
-            projectRoot: ".",
+            matchall:true,
             requirejs: false,
             forceExit: true
         },
+        jsdoc : {
+            dist : {
+                src: ['<%= srcdir %>/*.js'],
+                options: {
+                    destination: 'docs'
+                }
+            }
+        },
         watch: {
             scripts: {
-                files: ["src/**/*.js", "spec/**/*.js", "Gruntfile.js"],
+                files: ["<%= srcdir %>/**/*.js", "<%= specdir %>/**/*.js", "Gruntfile.js"],
                 tasks: ["jasmine_node", "jshint"]
             }
         }
@@ -58,7 +67,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('default', ['jasmine_node', 'jshint', 'uglify']);
+    grunt.registerTask('release', ['jasmine_node', 'jshint', 'uglify', 'jsdoc']);
     grunt.registerTask("ci", ['jasmine_node', 'jshint']);
 };

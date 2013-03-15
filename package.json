@@ -8,7 +8,9 @@
         "grunt-contrib-uglify":"0.1.2",
         "grunt-jasmine-node":"0.0.6",
         "grunt-contrib-jshint":"0.2.0",
-        "grunt-contrib-watch":"0.3.1"
+        "grunt-contrib-watch":"0.3.1",
+        "grunt-jsdoc":"0.2.4",
+        "grunt-contrib-clean":"0.4.0"
     },
     "scripts": {
         "test": "grunt ci --verbose"
