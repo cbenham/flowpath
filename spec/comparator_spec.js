@@ -45,7 +45,7 @@ describe("DescendingNumericComparator", function() {
         comparator = new ajs.DescendingRelationalComparator();
     });
 
-    it("should yield a negative number when the right hand side is less then the right", function() {
+    it("should yield a negative number when the right hand side is less than the right", function() {
         expect(comparator.compare(2, 1)).toBe(-1);
     });
 
@@ -55,5 +55,28 @@ describe("DescendingNumericComparator", function() {
 
     it("should yield zero when the left and right hand sides are of equal value", function() {
         expect(comparator.compare(1, 1)).toBe(0);
+    });
+});
+
+describe("CompareToComparator", function() {
+    var comparator;
+
+    var ComparableObject = function(compareToResult) {
+        this.compareToResult = compareToResult;
+    }
+    ComparableObject.prototype.compareTo = function(other) {
+        this.other = other;
+        return this.compareToResult;
+    }
+
+    beforeEach(function() {
+        comparator = new ajs.CompareToComparator();
+    });
+
+    it("should yield the result of the compareTo function of the underlying object", function() {
+        var otherObject = {};
+        var comparable = new ComparableObject(1);
+        expect(comparator.compare(comparable, otherObject)).toBe(1);
+        expect(comparable.other).toBe(otherObject);
     });
 });

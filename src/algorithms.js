@@ -1,6 +1,6 @@
-(function () {
-    ajs = {};
+ajs = {};
 
+(function comparators() {
     /**
      * Ascending order
      * @constructor
@@ -16,6 +16,15 @@
         }
     };
 
+    /**
+     * Needs documenting.
+     * @constructor
+     */
+    ajs.CompareToComparator = function () {};
+    ajs.CompareToComparator.prototype.compare = function(left, right) {
+        return left.compareTo(right);
+    };
+
     ajs.NegationComparator = function (delegateComparator) {
         this.delegateComparator = delegateComparator;
     };
@@ -29,6 +38,9 @@
     ajs.DescendingRelationalComparator.prototype.compare = function (left, right) {
         return this.delegateComparator.compare(left, right);
     };
+})();
+
+(function () {
 
     ajs.Edge = function (predecessor, successor, weight) {
         this.predecessor = predecessor;
@@ -58,11 +70,11 @@
     };
 
     /**
-     * Creates a PriorityQueue. By default the queue will be in ascending order using
-     * {@link AscendingRelationalComparator}.
+     * Creates a PriorityQueue. By default, ordering is handled by the {@link ajs.CompareToComparator}. A different
+     * strategy may be used by supplying an alternate Comparator as the second (optional) argument to this constructor.
      * @param {Array} [initialItems] the items that should initially be placed in the queue.
      * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
-     *                     have a method compare, that takes two arguments and returns -1, 0 or 1
+     *                     have a method compare, that takes two arguments (the items to compare) and returns -1, 0 or 1
      *                     when the left hand argument is less than, equal to or greater than the right
      *                     hand argument.
      * @constructor
@@ -70,7 +82,7 @@
     ajs.PriorityQueue = function () {
         this.queue = [];
         var items = [];
-        this.comparator = new ajs.AscendingRelationalComparator();
+        this.comparator = new ajs.CompareToComparator();
 
         if (arguments.length === 1) {
             if (arguments[0] instanceof Array) {
