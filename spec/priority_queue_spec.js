@@ -183,11 +183,47 @@ describe("PriorityQueue", function() {
         expect(queue.isEmpty()).toBe(true);
     });
 
+    foreach({"null": null, "undefined": undefined}, function(name, item) {
+        it("should raise an exception when " + name + " elements are added to it as single items", function() {
+            queue = new ajs.PriorityQueue();
+            var exceptionToBeThrownWhenAddingNullItem = function() {
+                queue.add(item);
+            };
+            expect(exceptionToBeThrownWhenAddingNullItem).toThrow('Cannot add null or undefined items');
+        });
+
+        it("should raise an exception when constructed with " + name + " elements", function() {
+            var exceptionToBeThrownWhenConstructingWithNullItem = function() {
+                new ajs.PriorityQueue([item])
+            };
+            expect(exceptionToBeThrownWhenConstructingWithNullItem).toThrow('Cannot add null or undefined items');
+        });
+    });
+
+    foreach({"null": null, "undefined": undefined, "null array": [null], "null arguments": [undefined]},
+        function(name, item) {
+            it("should raise an exception when adding " + name + " in bulk", function() {
+                var exceptionToBeThrownWhenAddingItemsInBulk = function() {
+                    queue = new ajs.PriorityQueue();
+                    queue.addAll(item);
+                };
+                expect(exceptionToBeThrownWhenAddingItemsInBulk).toThrow('Cannot add null or undefined items');
+            });
+        });
+
     function assertOrderOfDeletion(queue, orderOfDeletedElements) {
         expect(queue.size()).toBe(orderOfDeletedElements.length);
 
         while(!queue.isEmpty()) {
             expect(queue.poll()).toBe(orderOfDeletedElements.shift());
+        }
+    }
+
+    function foreach(map, callback) {
+        for(var property in map) {
+            if(map.hasOwnProperty(property)) {
+                callback(property, map[property]);
+            }
         }
     }
 });

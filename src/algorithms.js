@@ -74,11 +74,13 @@ ajs = {};
     /**
      * Creates a PriorityQueue. By default, ordering is handled by the {@link ajs.CompareToComparator}. A different
      * strategy may be used by supplying an alternate Comparator as the second (optional) argument to this constructor.
+     * It is not possible to add null items to this queue.
      * @param {Array} [initialItems] the items that should initially be placed in the queue.
      * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
      *                     have a method compare, that takes two arguments (the items to compare) and returns -1, 0 or 1
      *                     when the left hand argument is less than, equal to or greater than the right
      *                     hand argument.
+     * @throws an exception when an attempt is made to add a null or undefined item.
      * @constructor
      */
     ajs.PriorityQueue = function() {
@@ -139,8 +141,12 @@ ajs = {};
          * Adds a single item to the queue. Use this method to add items of type Array.
          * To add multiple items at once consider using {@link ajs.PriorityQueue#addAll|addAll}.
          * @param item the item to add, Arrays will be added to the queue (as opposed its elements).
+         * @throws an exception when an attempt is made to add a null or undefined item.
          */
         ajs.PriorityQueue.prototype.add = function(item) {
+            if(item === null || item === undefined) {
+                throw 'Cannot add null or undefined items';
+            }
             this.queue.push(item);
             siftUp.call(this, this.queue.length);
         };
@@ -150,6 +156,7 @@ ajs = {};
          * Parameters passed as variable arguments will also be added to the queue.
          * Use {@link ajs.PriorityQueue#add|add} to add an Array as an item in the queue itself.
          * @param [...] the array of arguments or varargs whose elements will be added to the queue.
+         * @throws an exception when an attempt is made to add a null or undefined item.
          */
         ajs.PriorityQueue.prototype.addAll = function() {
             var items = arguments;
