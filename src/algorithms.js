@@ -5,11 +5,12 @@ ajs = {};
      * Ascending order
      * @constructor
      */
-    ajs.AscendingRelationalComparator = function () {};
-    ajs.AscendingRelationalComparator.prototype.compare = function (left, right) {
-        if (left < right) {
+    ajs.AscendingRelationalComparator = function() {
+    };
+    ajs.AscendingRelationalComparator.prototype.compare = function(left, right) {
+        if(left < right) {
             return -1;
-        } else if (left > right) {
+        } else if(left > right) {
             return 1;
         } else {
             return 0;
@@ -20,49 +21,50 @@ ajs = {};
      * Needs documenting.
      * @constructor
      */
-    ajs.CompareToComparator = function () {};
+    ajs.CompareToComparator = function() {
+    };
     ajs.CompareToComparator.prototype.compare = function(left, right) {
         return left.compareTo(right);
     };
 
-    ajs.NegationComparator = function (delegateComparator) {
+    ajs.NegationComparator = function(delegateComparator) {
         this.delegateComparator = delegateComparator;
     };
-    ajs.NegationComparator.prototype.compare = function (left, right) {
+    ajs.NegationComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right) * -1;
     };
 
-    ajs.DescendingRelationalComparator = function () {
+    ajs.DescendingRelationalComparator = function() {
         this.delegateComparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
     };
-    ajs.DescendingRelationalComparator.prototype.compare = function (left, right) {
+    ajs.DescendingRelationalComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right);
     };
 })();
 
-(function () {
+(function() {
 
-    ajs.Edge = function (predecessor, successor, weight) {
+    ajs.Edge = function(predecessor, successor, weight) {
         this.predecessor = predecessor;
         this.successor = successor;
         this.weight = weight;
     };
-    ajs.Edge.prototype.hasSuccessorForData = function (targetData) {
+    ajs.Edge.prototype.hasSuccessorForData = function(targetData) {
         return this.successor.data === targetData;
     };
 
-    ajs.Node = function (data) {
+    ajs.Node = function(data) {
         this.data = data;
         this.adjacencies = [];
     };
-    ajs.Node.prototype.connectTo = function (successorNode, weight) {
+    ajs.Node.prototype.connectTo = function(successorNode, weight) {
         var edge = new ajs.Edge(this, successorNode, weight);
         this.adjacencies.push(edge);
     };
-    ajs.Node.prototype.findEdgeTo = function (targetSuccessorData) {
+    ajs.Node.prototype.findEdgeTo = function(targetSuccessorData) {
         var foundEdge = null;
-        this.adjacencies.forEach(function (edge) {
-            if (edge.hasSuccessorForData(targetSuccessorData)) {
+        this.adjacencies.forEach(function(edge) {
+            if(edge.hasSuccessorForData(targetSuccessorData)) {
                 foundEdge = edge;
             }
         });
@@ -79,32 +81,32 @@ ajs = {};
      *                     hand argument.
      * @constructor
      */
-    ajs.PriorityQueue = function () {
+    ajs.PriorityQueue = function() {
         this.queue = [];
         var items = [];
         this.comparator = new ajs.CompareToComparator();
 
-        if (arguments.length === 1) {
-            if (arguments[0] instanceof Array) {
+        if(arguments.length === 1) {
+            if(arguments[0] instanceof Array) {
                 items = arguments[0];
             } else {
                 this.comparator = arguments[0];
             }
-        } else if (arguments.length === 2) {
+        } else if(arguments.length === 2) {
             items = arguments[0];
             this.comparator = arguments[1];
         }
         this.addAll(items);
     };
 
-    (function () {
+    (function() {
         /**
          * Get the highest priority item without modifying the queue. Use {@link ajs.PriorityQueue#poll|poll} to remove
          * and retrieve and item at once.
          * @returns {Object} the item with the highest priority or null if the queue is empty.
          */
-        ajs.PriorityQueue.prototype.peek = function () {
-            if (this.isEmpty()) {
+        ajs.PriorityQueue.prototype.peek = function() {
+            if(this.isEmpty()) {
                 return null;
             }
             return this.queue[0];
@@ -114,7 +116,7 @@ ajs = {};
          * Gets the size of the queue.
          * @returns {Number} the number of elements in the queue.
          */
-        ajs.PriorityQueue.prototype.size = function () {
+        ajs.PriorityQueue.prototype.size = function() {
             return this.queue.length;
         };
 
@@ -122,8 +124,15 @@ ajs = {};
          * Determines whether the queue is empty or not.
          * @returns {boolean} true if the queue is empty, false otherwise.
          */
-        ajs.PriorityQueue.prototype.isEmpty = function () {
+        ajs.PriorityQueue.prototype.isEmpty = function() {
             return this.queue.length === 0;
+        };
+
+        /**
+         * Clears the queue, leaving it empty.
+         */
+        ajs.PriorityQueue.prototype.clear = function() {
+            this.queue.length = 0;
         };
 
         /**
@@ -131,7 +140,7 @@ ajs = {};
          * To add multiple items at once consider using {@link ajs.PriorityQueue#addAll|addAll}.
          * @param item the item to add, Arrays will be added to the queue (as opposed its elements).
          */
-        ajs.PriorityQueue.prototype.add = function (item) {
+        ajs.PriorityQueue.prototype.add = function(item) {
             this.queue.push(item);
             siftUp.call(this, this.queue.length);
         };
@@ -142,12 +151,12 @@ ajs = {};
          * Use {@link ajs.PriorityQueue#add|add} to add an Array as an item in the queue itself.
          * @param [...] the array of arguments or varargs whose elements will be added to the queue.
          */
-        ajs.PriorityQueue.prototype.addAll = function () {
+        ajs.PriorityQueue.prototype.addAll = function() {
             var items = arguments;
-            if (arguments.length === 1 && arguments[0] instanceof Array) {
+            if(arguments.length === 1 && arguments[0] instanceof Array) {
                 items = arguments[0];
             }
-            for (var index = 0; index < items.length; index++) {
+            for(var index = 0; index < items.length; index++) {
                 this.add(items[index]);
             }
         };
@@ -156,8 +165,8 @@ ajs = {};
          * Returns and removes the item with the highest priority.
          * @returns {Object} the next item of highest priority.
          */
-        ajs.PriorityQueue.prototype.poll = function () {
-            if (this.isEmpty()) {
+        ajs.PriorityQueue.prototype.poll = function() {
+            if(this.isEmpty()) {
                 return null;
             }
 
@@ -172,12 +181,12 @@ ajs = {};
         function siftUp(initialIndex) {
             var currentIndex = initialIndex;
             var topReached = false;
-            while (currentIndex > 1 && !topReached) {
+            while(currentIndex > 1 && !topReached) {
                 var parentIndex = Math.floor(currentIndex / 2);
                 var parentItem = this.queue[parentIndex - 1];
                 var currentItem = this.queue[currentIndex - 1];
 
-                if (this.comparator.compare(currentItem, parentItem) < 0) {
+                if(this.comparator.compare(currentItem, parentItem) < 0) {
                     this.queue[parentIndex - 1] = currentItem;
                     this.queue[currentIndex - 1] = parentItem;
                     currentIndex = parentIndex;
@@ -188,7 +197,7 @@ ajs = {};
         }
 
         function indexOfMinimumChild(indexOfRightChild, indexOfLeftChild) {
-            if (indexOfRightChild < this.queue.length) {
+            if(indexOfRightChild < this.queue.length) {
                 var left = this.queue[indexOfLeftChild];
                 var right = this.queue[indexOfRightChild];
                 return this.comparator.compare(left, right) < 0 ? indexOfLeftChild : indexOfRightChild;
@@ -208,13 +217,13 @@ ajs = {};
             var currentIndex = initialIndex;
 
             var atEnd = false;
-            while (!atEnd) {
+            while(!atEnd) {
                 var indexOfLeftChild = (currentIndex * 2) + 1;
                 var indexOfRightChild = indexOfLeftChild + 1;
 
-                if (indexOfRightChild <= length) {
+                if(indexOfRightChild <= length) {
                     var indexOfMinimumItem = indexOfMinimumChild.call(this, indexOfRightChild, indexOfLeftChild);
-                    if (this.comparator.compare(this.queue[indexOfMinimumItem], this.queue[currentIndex]) < 0) {
+                    if(this.comparator.compare(this.queue[indexOfMinimumItem], this.queue[currentIndex]) < 0) {
                         swap.call(this, indexOfMinimumItem, currentIndex);
                         currentIndex = indexOfMinimumItem;
                     } else {

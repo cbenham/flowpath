@@ -177,6 +177,12 @@ describe("PriorityQueue", function() {
         assertOrderOfDeletion(queue, ["a", "b", "c", "d"]);
     });
 
+    it("should become empty when cleared", function() {
+        queue = new ajs.PriorityQueue([1, 2, 3], new ajs.DescendingRelationalComparator());
+        queue.clear();
+        expect(queue.isEmpty()).toBe(true);
+    });
+
     function assertOrderOfDeletion(queue, orderOfDeletedElements) {
         expect(queue.size()).toBe(orderOfDeletedElements.length);
 
