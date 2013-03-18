@@ -2,11 +2,18 @@ ajs = {};
 
 (function comparators() {
     /**
-     * Ascending order
+     * Comparator for creating ascending orders.
      * @constructor
      */
     ajs.AscendingRelationalComparator = function() {
     };
+    /**
+     * Compares two objects to determine which is greater.
+     * @param left the left hand object to compare.
+     * @param right the right hand object to compare.
+     * @returns {number} -1, 0 or 1 as the left hand object is less than, equal to and greater than the right hand.
+     * object
+     */
     ajs.AscendingRelationalComparator.prototype.compare = function(left, right) {
         if(left < right) {
             return -1;
@@ -18,25 +25,62 @@ ajs = {};
     };
 
     /**
-     * Needs documenting.
+     * Compares two objects by delegating to the compareTo method on the object itself.
      * @constructor
      */
     ajs.CompareToComparator = function() {
     };
+    /**
+     * Compares two objects by delegating to the compareTo method on the left hand object. The compareTo method will
+     * be passed a single argument which will be the right hand object.
+     * @param left the object on which compareTo(Object) will be called.
+     * @param right the object that is passed to the compareTo method.
+     * @returns {number} returns the result of the call to the compareTo method. For ascending order, the compareTo
+     * method should return -1, 0 or 1 as the left hand object is less than, equal to or greater than the right hand
+     * object. For descending order, the compareTo method should return 1, 0 or -1 as the left hand object is
+     * greater than, equal to or less than the right hand object.
+     */
     ajs.CompareToComparator.prototype.compare = function(left, right) {
         return left.compareTo(right);
     };
 
+    /**
+     * Delegates to another comparator to negate it's outcome.
+     * @param delegateComparator the comparator that will be delegated to for negation.
+     * @constructor
+     */
     ajs.NegationComparator = function(delegateComparator) {
         this.delegateComparator = delegateComparator;
     };
+    /**
+     * Negates the outcome of the underlying comparator.
+     * @param left the left hand object to compare.
+     * @param right the right hand object to compare.
+     * @returns {number} the opposite of the underlying delegate. The following will be returned for given results from
+     * the delegate:
+     * <ul>
+     *   <li>when the delegate returns -1, this object will return 1</li>
+     *   <li>when the delegate returns 0, this object will return 0</li>
+     *   <li>when the delegate returns 1, this object will return -1</li>
+     * </ul>
+     */
     ajs.NegationComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right) * -1;
     };
 
+    /**
+     * Comparator for creating descending orders.
+     * @constructor
+     */
     ajs.DescendingRelationalComparator = function() {
         this.delegateComparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
     };
+    /**
+     * Compares two objects to determine which is greater.
+     * @param left the left hand object to compare.
+     * @param right the right hand object to compare.
+     * @returns {number} 1, 0 or -1 as the left hand object is greater than, equal to or less than the right hand.
+     */
     ajs.DescendingRelationalComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right);
     };
