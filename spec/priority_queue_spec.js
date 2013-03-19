@@ -185,7 +185,7 @@ describe("PriorityQueue", function() {
 
     it("should be possible to add items from one queue to another, leaving the source untouched", function() {
         var splicer = new ajs.PriorityQueue([8, 2, 6, 4], new ajs.DescendingRelationalComparator());
-        queue = new ajs.PriorityQueue([3, 1, 5, 7], new ajs.AscendingRelationalComparator());
+        queue = new ajs.PriorityQueue([3, 1, 5, 7], ascendingNumberComparator);
         queue.addAll(splicer);
         assertOrderOfDeletion(queue, [1, 2, 3, 4, 5, 6, 7, 8]);
         assertOrderOfDeletion(splicer, [8, 6, 4, 2]);
@@ -193,7 +193,7 @@ describe("PriorityQueue", function() {
 
     it("should be possible to construct a new queue using the elements of an existing queue", function() {
         var existingQueue = new ajs.PriorityQueue([5, 6, 3, 8], new ajs.DescendingRelationalComparator());
-        queue = new ajs.PriorityQueue(existingQueue, new ajs.AscendingRelationalComparator());
+        queue = new ajs.PriorityQueue(existingQueue, ascendingNumberComparator);
         assertOrderOfDeletion(queue, [3, 5, 6, 8]);
         assertOrderOfDeletion(existingQueue, [8, 6, 5, 3]);
     });

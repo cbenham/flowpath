@@ -117,14 +117,21 @@ ajs = {};
 
     /**
      * Creates a PriorityQueue. By default, ordering is handled by the {@link ajs.CompareToComparator}. A different
-     * strategy may be used by supplying an alternate Comparator as the second (optional) argument to this constructor.
-     * Null items are rejected.
+     * strategy may be used by supplying an alternate comparator as the second (optional) argument to this constructor.
+     * This constructor may be invoked with zero, one or two parameters.
+     * <ul>
+     *     <li>Zero parameters: creates an empty queue.</li>
+     *     <li> One parameter: when an array or priority queue, will add contents of said structure. Otherwise will
+     *         treat parameter as a comparator resulting in an empty queue.</li>
+     *     <li> Two parameters: the first parameter is treated as either an array or priority queue whose elements
+     *         will be added to this queue. Second parameter is treated as a comparator.</li>
+     * </ul>
+     * It is not possible to pass a variable set of arguments.
      * @param {Array|ajs.PriorityQueue} [initialItems] the items that will initially be placed in the queue. Unlike
      * {@link ajs.PriorityQueue#addAll|addAll}, this constructor does not accept variable arguments.
      * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
-     *                     have a method compare, that takes two arguments (the items to compare) and returns -1, 0 or 1
-     *                     when the left hand argument is less than, equal to or greater than the right
-     *                     hand argument.
+     * have a method called compare, that takes two arguments (the items to compare) and returns -1, 0 or 1 when the
+     * left hand argument is less than, equal to or greater than the right hand argument.
      * @throws an exception when an attempt is made to add a null or undefined item.
      * @constructor
      */
