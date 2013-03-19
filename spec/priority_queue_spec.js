@@ -183,6 +183,21 @@ describe("PriorityQueue", function() {
         expect(queue.isEmpty()).toBe(true);
     });
 
+    it("should be possible to add items from one queue to another, leaving the source untouched", function() {
+        var splicer = new ajs.PriorityQueue([8, 2, 6, 4], new ajs.DescendingRelationalComparator());
+        queue = new ajs.PriorityQueue([3, 1, 5, 7], new ajs.AscendingRelationalComparator());
+        queue.addAll(splicer);
+        assertOrderOfDeletion(queue, [1, 2, 3, 4, 5, 6, 7, 8]);
+        assertOrderOfDeletion(splicer, [8, 6, 4, 2]);
+    });
+
+    it("should be possible to construct a new queue using the elements of an existing queue", function() {
+        var existingQueue = new ajs.PriorityQueue([5, 6, 3, 8], new ajs.DescendingRelationalComparator());
+        queue = new ajs.PriorityQueue(existingQueue, new ajs.AscendingRelationalComparator());
+        assertOrderOfDeletion(queue, [3, 5, 6, 8]);
+        assertOrderOfDeletion(existingQueue, [8, 6, 5, 3]);
+    });
+
     foreach({"null": null, "undefined": undefined}, function(name, item) {
         it("should raise an exception when " + name + " elements are added to it as single items", function() {
             queue = new ajs.PriorityQueue();

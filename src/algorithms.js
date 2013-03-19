@@ -118,8 +118,9 @@ ajs = {};
     /**
      * Creates a PriorityQueue. By default, ordering is handled by the {@link ajs.CompareToComparator}. A different
      * strategy may be used by supplying an alternate Comparator as the second (optional) argument to this constructor.
-     * It is not possible to add null items to this queue.
-     * @param {Array} [initialItems] the items that should initially be placed in the queue.
+     * Null items are rejected.
+     * @param {Array|ajs.PriorityQueue} [initialItems] the items that will initially be placed in the queue. Unlike
+     * {@link ajs.PriorityQueue#addAll|addAll}, this constructor does not accept variable arguments.
      * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
      *                     have a method compare, that takes two arguments (the items to compare) and returns -1, 0 or 1
      *                     when the left hand argument is less than, equal to or greater than the right
@@ -196,16 +197,17 @@ ajs = {};
         };
 
         /**
-         * Adds multiple items to the queue. This method should be used to add the contents of an array to the queue.
-         * Parameters passed as variable arguments will also be added to the queue.
-         * Use {@link ajs.PriorityQueue#add|add} to add an Array as an item in the queue itself.
-         * @param [...] the array of arguments or varargs whose elements will be added to the queue.
+         * Adds multiple items to the queue. This method should be used to add the contents of an array, var args or
+         * another queue to this queue. Use {@link ajs.PriorityQueue#add|add} to add an array or another queue as an
+         * item in this queue.
+         * @param {Array|Varargs|ajs.PriorityQueue} Adds the contents of the supplied collection, leaving the
+         * parameter collection unchanged.
          * @throws an exception when an attempt is made to add a null or undefined item.
          */
         ajs.PriorityQueue.prototype.addAll = function() {
             var items = arguments;
-            if(arguments.length === 1 && arguments[0] instanceof Array) {
-                items = arguments[0];
+            if(arguments.length === 1) {
+                items = extractCollection(items, arguments[0]);
             }
             for(var index = 0; index < items.length; index++) {
                 this.add(items[index]);
@@ -228,6 +230,15 @@ ajs = {};
             siftDown.call(this, 0);
             return valueToReturn;
         };
+
+        function extractCollection(items, collection) {
+            if(collection instanceof Array) {
+                return collection;
+            } else if(collection instanceof ajs.PriorityQueue) {
+                return collection.queue;
+            }
+            return items;
+        }
 
         function siftUp(initialIndex) {
             var currentIndex = initialIndex;
