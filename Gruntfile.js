@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'build/algorithms.min.js': ['<%= srcdir %>/algorithms.js']
+                    'build/flowpath.min.js': ['<%= srcdir %>/flowpath.js']
                 }
             }
         },
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 
         },
         jasmine_node: {
-            specNameMatcher:"*(spec|algorithms)",
+            specNameMatcher:"*(spec|flowpath)",
             requirejs: false,
             forceExit: true
         },
