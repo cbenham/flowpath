@@ -304,4 +304,39 @@ ajs = {};
             }
         }
     })();
+
+    ajs.Map = function() {
+        this.entries = [];
+    };
+
+    (function() {
+        var Entry = function(key, value) {
+            this.key = key;
+            this.value = value;
+        };
+
+        ajs.Map.prototype.put = function(key, value) {
+            this.entries.push(new Entry(key, value));
+        };
+
+        ajs.Map.prototype.get = function(key) {
+            for(var index in this.entries) {
+                if(this.entries.hasOwnProperty(index)) {
+                    var entry = this.entries[index];
+                    if(entry.key === key) {
+                        return entry.value;
+                    }
+                }
+            }
+        };
+
+        ajs.Map.prototype.size = function() {
+            return this.entries.length;
+        };
+
+        ajs.Map.prototype.isEmpty = function() {
+            return this.entries.length === 0;
+        };
+    })();
+
 })();
