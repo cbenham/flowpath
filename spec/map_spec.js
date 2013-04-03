@@ -2,7 +2,7 @@ describe("Map", function() {
     var map;
 
     beforeEach(function() {
-        map = new ajs.Map();
+        map = new fp.Map();
     });
 
     describe("with no elements", function() {
@@ -30,7 +30,7 @@ describe("Map", function() {
             expect(map.get("secondKey")).toBe("secondValue");
         });
 
-        it("should accurately count the number of entries when there are entries", function() {
+        it("should accurately count the number of entries", function() {
             expect(map.size()).toBe(1);
         });
 

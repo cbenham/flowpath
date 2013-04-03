@@ -38,7 +38,7 @@ module.exports = function(grunt) {
                 maxcomplexity: 4,
                 maxlen: 120,
                 globals: {
-                    ajs: true
+                    fp: true
                 }
             }
 

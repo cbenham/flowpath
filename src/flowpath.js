@@ -1,11 +1,11 @@
-ajs = {};
+fp = {};
 
 (function comparators() {
     /**
      * Comparator for creating ascending orders.
      * @constructor
      */
-    ajs.AscendingRelationalComparator = function() {
+    fp.AscendingRelationalComparator = function() {
     };
     /**
      * Compares two objects to determine which is greater.
@@ -14,7 +14,7 @@ ajs = {};
      * @returns {number} -1, 0 or 1 as the left hand object is less than, equal to and greater than the right hand.
      * object
      */
-    ajs.AscendingRelationalComparator.prototype.compare = function(left, right) {
+    fp.AscendingRelationalComparator.prototype.compare = function(left, right) {
         if(left < right) {
             return -1;
         } else if(left > right) {
@@ -28,7 +28,7 @@ ajs = {};
      * Compares two objects by delegating to the compareTo method on the object itself.
      * @constructor
      */
-    ajs.CompareToComparator = function() {
+    fp.CompareToComparator = function() {
     };
     /**
      * Compares two objects by delegating to the compareTo method on the left hand object. The compareTo method will
@@ -40,7 +40,7 @@ ajs = {};
      * object. For descending order, the compareTo method should return 1, 0 or -1 as the left hand object is
      * greater than, equal to or less than the right hand object.
      */
-    ajs.CompareToComparator.prototype.compare = function(left, right) {
+    fp.CompareToComparator.prototype.compare = function(left, right) {
         return left.compareTo(right);
     };
 
@@ -49,7 +49,7 @@ ajs = {};
      * @param delegateComparator the comparator that will be delegated to for negation.
      * @constructor
      */
-    ajs.NegationComparator = function(delegateComparator) {
+    fp.NegationComparator = function(delegateComparator) {
         this.delegateComparator = delegateComparator;
     };
     /**
@@ -64,7 +64,7 @@ ajs = {};
      *   <li>when the delegate returns 1, this object will return -1</li>
      * </ul>
      */
-    ajs.NegationComparator.prototype.compare = function(left, right) {
+    fp.NegationComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right) * -1;
     };
 
@@ -72,8 +72,8 @@ ajs = {};
      * Comparator for creating descending orders.
      * @constructor
      */
-    ajs.DescendingRelationalComparator = function() {
-        this.delegateComparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
+    fp.DescendingRelationalComparator = function() {
+        this.delegateComparator = new fp.NegationComparator(new fp.AscendingRelationalComparator());
     };
     /**
      * Compares two objects to determine which is greater.
@@ -81,31 +81,31 @@ ajs = {};
      * @param right the right hand object to compare.
      * @returns {number} 1, 0 or -1 as the left hand object is greater than, equal to or less than the right hand.
      */
-    ajs.DescendingRelationalComparator.prototype.compare = function(left, right) {
+    fp.DescendingRelationalComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right);
     };
 })();
 
 (function() {
 
-    ajs.Edge = function(predecessor, successor, weight) {
+    fp.Edge = function(predecessor, successor, weight) {
         this.predecessor = predecessor;
         this.successor = successor;
         this.weight = weight;
     };
-    ajs.Edge.prototype.hasSuccessorForData = function(targetData) {
+    fp.Edge.prototype.hasSuccessorForData = function(targetData) {
         return this.successor.data === targetData;
     };
 
-    ajs.Node = function(data) {
+    fp.Node = function(data) {
         this.data = data;
         this.adjacencies = [];
     };
-    ajs.Node.prototype.connectTo = function(successorNode, weight) {
-        var edge = new ajs.Edge(this, successorNode, weight);
+    fp.Node.prototype.connectTo = function(successorNode, weight) {
+        var edge = new fp.Edge(this, successorNode, weight);
         this.adjacencies.push(edge);
     };
-    ajs.Node.prototype.findEdgeTo = function(targetSuccessorData) {
+    fp.Node.prototype.findEdgeTo = function(targetSuccessorData) {
         var foundEdge = null;
         this.adjacencies.forEach(function(edge) {
             if(edge.hasSuccessorForData(targetSuccessorData)) {
@@ -116,7 +116,7 @@ ajs = {};
     };
 
     /**
-     * Creates a PriorityQueue. By default, ordering is handled by the {@link ajs.CompareToComparator}. A different
+     * Creates a PriorityQueue. By default, ordering is handled by the {@link fp.CompareToComparator}. A different
      * strategy may be used by supplying an alternate comparator as the second (optional) argument to this constructor.
      * This constructor may be invoked with zero, one or two parameters.
      * <ul>
@@ -127,18 +127,18 @@ ajs = {};
      *         will be added to this queue. Second parameter is treated as a comparator.</li>
      * </ul>
      * It is not possible to pass a variable set of arguments.
-     * @param {Array|ajs.PriorityQueue} [initialItems] the items that will initially be placed in the queue. Unlike
-     * {@link ajs.PriorityQueue#addAll|addAll}, this constructor does not accept variable arguments.
+     * @param {Array|fp.PriorityQueue} [initialItems] the items that will initially be placed in the queue. Unlike
+     * {@link fp.PriorityQueue#addAll|addAll}, this constructor does not accept variable arguments.
      * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
      * have a method called compare, that takes two arguments (the items to compare) and returns -1, 0 or 1 when the
      * left hand argument is less than, equal to or greater than the right hand argument.
      * @throws an exception when an attempt is made to add a null or undefined item.
      * @constructor
      */
-    ajs.PriorityQueue = function() {
+    fp.PriorityQueue = function() {
         this.queue = [];
         var items = [];
-        this.comparator = new ajs.CompareToComparator();
+        this.comparator = new fp.CompareToComparator();
 
         if(arguments.length === 1) {
             if(arguments[0] instanceof Array) {
@@ -155,11 +155,11 @@ ajs = {};
 
     (function() {
         /**
-         * Get the highest priority item without modifying the queue. Use {@link ajs.PriorityQueue#poll|poll} to remove
+         * Get the highest priority item without modifying the queue. Use {@link fp.PriorityQueue#poll|poll} to remove
          * and retrieve and item at once.
          * @returns {Object} the item with the highest priority or null if the queue is empty.
          */
-        ajs.PriorityQueue.prototype.peek = function() {
+        fp.PriorityQueue.prototype.peek = function() {
             if(this.isEmpty()) {
                 return null;
             }
@@ -170,7 +170,7 @@ ajs = {};
          * Gets the size of the queue.
          * @returns {Number} the number of elements in the queue.
          */
-        ajs.PriorityQueue.prototype.size = function() {
+        fp.PriorityQueue.prototype.size = function() {
             return this.queue.length;
         };
 
@@ -178,24 +178,24 @@ ajs = {};
          * Determines whether the queue is empty or not.
          * @returns {boolean} true if the queue is empty, false otherwise.
          */
-        ajs.PriorityQueue.prototype.isEmpty = function() {
+        fp.PriorityQueue.prototype.isEmpty = function() {
             return this.queue.length === 0;
         };
 
         /**
          * Clears the queue, leaving it empty.
          */
-        ajs.PriorityQueue.prototype.clear = function() {
+        fp.PriorityQueue.prototype.clear = function() {
             this.queue.length = 0;
         };
 
         /**
          * Adds a single item to the queue. Use this method to add items of type Array.
-         * To add multiple items at once consider using {@link ajs.PriorityQueue#addAll|addAll}.
+         * To add multiple items at once consider using {@link fp.PriorityQueue#addAll|addAll}.
          * @param item the item to add, Arrays will be added to the queue (as opposed its elements).
          * @throws an exception when an attempt is made to add a null or undefined item.
          */
-        ajs.PriorityQueue.prototype.add = function(item) {
+        fp.PriorityQueue.prototype.add = function(item) {
             if(item === null || item === undefined) {
                 throw 'Cannot add null or undefined items';
             }
@@ -205,13 +205,13 @@ ajs = {};
 
         /**
          * Adds multiple items to the queue. This method should be used to add the contents of an array, var args or
-         * another queue to this queue. Use {@link ajs.PriorityQueue#add|add} to add an array or another queue as an
+         * another queue to this queue. Use {@link fp.PriorityQueue#add|add} to add an array or another queue as an
          * item in this queue.
-         * @param {Array|Varargs|ajs.PriorityQueue} Adds the contents of the supplied collection, leaving the
+         * @param {Array|Varargs|fp.PriorityQueue} Adds the contents of the supplied collection, leaving the
          * parameter collection unchanged.
          * @throws an exception when an attempt is made to add a null or undefined item.
          */
-        ajs.PriorityQueue.prototype.addAll = function() {
+        fp.PriorityQueue.prototype.addAll = function() {
             var items = arguments;
             if(arguments.length === 1) {
                 items = extractCollection(items, arguments[0]);
@@ -225,7 +225,7 @@ ajs = {};
          * Returns and removes the item with the highest priority.
          * @returns {Object} the next item of highest priority.
          */
-        ajs.PriorityQueue.prototype.poll = function() {
+        fp.PriorityQueue.prototype.poll = function() {
             if(this.isEmpty()) {
                 return null;
             }
@@ -241,7 +241,7 @@ ajs = {};
         function extractCollection(items, collection) {
             if(collection instanceof Array) {
                 return collection;
-            } else if(collection instanceof ajs.PriorityQueue) {
+            } else if(collection instanceof fp.PriorityQueue) {
                 return collection.queue;
             }
             return items;
@@ -305,7 +305,7 @@ ajs = {};
         }
     })();
 
-    ajs.Map = function() {
+    fp.Map = function() {
         this.entries = [];
     };
 
@@ -315,11 +315,11 @@ ajs = {};
             this.value = value;
         };
 
-        ajs.Map.prototype.put = function(key, value) {
+        fp.Map.prototype.put = function(key, value) {
             this.entries.push(new Entry(key, value));
         };
 
-        ajs.Map.prototype.get = function(key) {
+        fp.Map.prototype.get = function(key) {
             for(var index in this.entries) {
                 if(this.entries.hasOwnProperty(index)) {
                     var entry = this.entries[index];
@@ -330,11 +330,11 @@ ajs = {};
             }
         };
 
-        ajs.Map.prototype.size = function() {
+        fp.Map.prototype.size = function() {
             return this.entries.length;
         };
 
-        ajs.Map.prototype.isEmpty = function() {
+        fp.Map.prototype.isEmpty = function() {
             return this.entries.length === 0;
         };
     })();

@@ -3,52 +3,52 @@ describe("PriorityQueue", function() {
     var ascendingNumberComparator;
 
     beforeEach(function() {
-        ascendingNumberComparator = new ajs.AscendingRelationalComparator();
+        ascendingNumberComparator = new fp.AscendingRelationalComparator();
     });
 
     it("should yield null when peeking on an empty queue", function() {
-        expect(new ajs.PriorityQueue([], ascendingNumberComparator).peek()).toBeNull();
+        expect(new fp.PriorityQueue([], ascendingNumberComparator).peek()).toBeNull();
     });
 
     it("should yield the first element when peeking", function() {
-        expect(new ajs.PriorityQueue([2, 67], ascendingNumberComparator).peek()).toBe(2);
+        expect(new fp.PriorityQueue([2, 67], ascendingNumberComparator).peek()).toBe(2);
     });
 
     it("should yield its size", function() {
-        expect(new ajs.PriorityQueue([5, 3, 77], ascendingNumberComparator).size()).toBe(3);
+        expect(new fp.PriorityQueue([5, 3, 77], ascendingNumberComparator).size()).toBe(3);
     });
 
     it("should be empty when it has no data", function() {
-        expect(new ajs.PriorityQueue([], ascendingNumberComparator).isEmpty()).toBe(true);
+        expect(new fp.PriorityQueue([], ascendingNumberComparator).isEmpty()).toBe(true);
     });
 
     it("should not be empty when it has data", function() {
-        expect(new ajs.PriorityQueue([44], ascendingNumberComparator).isEmpty()).toBe(false);
+        expect(new fp.PriorityQueue([44], ascendingNumberComparator).isEmpty()).toBe(false);
     });
 
     it("should be able to add a single item", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.add(4);
         expect(queue.peek()).toBe(4);
         expect(queue.size()).toBe(1);
     });
 
     it("should be able to add a child whose priority is greater than the root priority", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.add(5);
         queue.add(6);
         assertOrderOfDeletion(queue, [5, 6]);
     });
 
     it("should be able to add a child whose priority is less than the priority of the root", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.add(5);
         queue.add(4);
         assertOrderOfDeletion(queue, [4, 5]);
     });
 
     it("should be able to add an item that will have a parent and a child", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.add(5);
         queue.add(8);
         queue.add(19);
@@ -58,72 +58,72 @@ describe("PriorityQueue", function() {
     });
 
     it("should be able to add a single item in bulk", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.addAll(64);
         expect(queue.size()).toBe(1);
         expect(queue.peek()).toBe(64);
     });
 
     it("should be able to add multiple items at the same time", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.addAll(8, 3, 5, 1, 9);
         assertOrderOfDeletion(queue, [1, 3, 5, 8, 9]);
     });
 
     it("should be able to add an array with a single item in bulk", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.addAll([34]);
         expect(queue.size()).toBe(1);
         expect(queue.peek()).toBe(34);
     });
 
     it("should be able to add an array of items at the same time", function() {
-        queue = new ajs.PriorityQueue([], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([], ascendingNumberComparator);
         queue.addAll([20, 6, 11, 7, 1, 4]);
         assertOrderOfDeletion(queue, [1, 4, 6, 7, 11, 20]);
     });
 
     it("should yield null when removing from the head of an empty queue", function() {
-        expect(new ajs.PriorityQueue([], ascendingNumberComparator).poll()).toBeNull();
+        expect(new fp.PriorityQueue([], ascendingNumberComparator).poll()).toBeNull();
     });
 
     it("should yield and remove the root node when there is only when item", function() {
-        queue = new ajs.PriorityQueue([5], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([5], ascendingNumberComparator);
         expect(queue.poll()).toBe(5);
         expect(queue.isEmpty()).toBe(true);
     });
 
     it("should yield and remove head when polling with two elements", function() {
-        queue = new ajs.PriorityQueue([4, 5], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([4, 5], ascendingNumberComparator);
         expect(queue.poll()).toBe(4);
         expect(queue.peek()).toBe(5);
     });
 
     it("should yield and remove head when polling with three elements", function() {
-        queue = new ajs.PriorityQueue([4, 5, 6], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([4, 5, 6], ascendingNumberComparator);
         expect(queue.poll()).toBe(4);
         assertOrderOfDeletion(queue, [5, 6]);
     });
 
     it("should yield and remove head when polling with four elements", function() {
-        queue = new ajs.PriorityQueue([3, 4, 5, 6], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([3, 4, 5, 6], ascendingNumberComparator);
         expect(queue.poll()).toBe(3);
         assertOrderOfDeletion(queue, [4, 5, 6]);
     });
 
     it("should be able to delete all elements in ascending order until the queue becomes empty", function() {
-        queue = new ajs.PriorityQueue([6, 11, 3, 20, 44, 22, 75, 90, 10, 2], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([6, 11, 3, 20, 44, 22, 75, 90, 10, 2], ascendingNumberComparator);
         assertOrderOfDeletion(queue, [2, 3, 6, 10, 11, 20, 22, 44, 75, 90]);
     });
 
     it("should order the elements it is constructed with", function() {
-        queue = new ajs.PriorityQueue([5, 20, 1, 19, 30, 15, 7, 60, 17], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([5, 20, 1, 19, 30, 15, 7, 60, 17], ascendingNumberComparator);
         assertOrderOfDeletion(queue, [1, 5, 7, 15, 17, 19, 20, 30, 60]);
     });
 
     it("should make a copy of the underlying data so the queue cannot be tampered with", function() {
         var data = [];
-        queue = new ajs.PriorityQueue(data, ascendingNumberComparator);
+        queue = new fp.PriorityQueue(data, ascendingNumberComparator);
         data.push(9);
         expect(queue.isEmpty()).toBe(true);
     });
@@ -141,7 +141,7 @@ describe("PriorityQueue", function() {
             return 1;
         };
 
-        queue = new ajs.PriorityQueue();
+        queue = new fp.PriorityQueue();
 
         var firstItem = new Item(7);
         var secondItem = new Item(3);
@@ -157,50 +157,50 @@ describe("PriorityQueue", function() {
     });
 
     it("should apply ascending order when constructed with items but no comparator", function() {
-        queue = new ajs.PriorityQueue([9, 4, 7, 1], ascendingNumberComparator);
+        queue = new fp.PriorityQueue([9, 4, 7, 1], ascendingNumberComparator);
         assertOrderOfDeletion(queue, [1, 4, 7, 9]);
     });
 
     it("should take a comparator to order the initial items in descending order", function() {
-        queue = new ajs.PriorityQueue([6, 9, 8, 4, 7], new ajs.DescendingRelationalComparator());
+        queue = new fp.PriorityQueue([6, 9, 8, 4, 7], new fp.DescendingRelationalComparator());
         assertOrderOfDeletion(queue, [9, 8, 7, 6, 4]);
     });
 
     it("should take a comparator without items and order added items in descending order", function() {
-        queue = new ajs.PriorityQueue(new ajs.DescendingRelationalComparator());
+        queue = new fp.PriorityQueue(new fp.DescendingRelationalComparator());
         queue.addAll(4, 2, 8, 1, 9, 5);
         assertOrderOfDeletion(queue, [9, 8, 5, 4, 2, 1]);
     });
 
     it("should be able to order a non numeric value", function() {
-        queue = new ajs.PriorityQueue(["a", "c", "d", "b"], ascendingNumberComparator);
+        queue = new fp.PriorityQueue(["a", "c", "d", "b"], ascendingNumberComparator);
         assertOrderOfDeletion(queue, ["a", "b", "c", "d"]);
     });
 
     it("should become empty when cleared", function() {
-        queue = new ajs.PriorityQueue([1, 2, 3], new ajs.DescendingRelationalComparator());
+        queue = new fp.PriorityQueue([1, 2, 3], new fp.DescendingRelationalComparator());
         queue.clear();
         expect(queue.isEmpty()).toBe(true);
     });
 
     it("should be possible to add items from one queue to another, leaving the source untouched", function() {
-        var splicer = new ajs.PriorityQueue([8, 2, 6, 4], new ajs.DescendingRelationalComparator());
-        queue = new ajs.PriorityQueue([3, 1, 5, 7], ascendingNumberComparator);
+        var splicer = new fp.PriorityQueue([8, 2, 6, 4], new fp.DescendingRelationalComparator());
+        queue = new fp.PriorityQueue([3, 1, 5, 7], ascendingNumberComparator);
         queue.addAll(splicer);
         assertOrderOfDeletion(queue, [1, 2, 3, 4, 5, 6, 7, 8]);
         assertOrderOfDeletion(splicer, [8, 6, 4, 2]);
     });
 
     it("should be possible to construct a new queue using the elements of an existing queue", function() {
-        var existingQueue = new ajs.PriorityQueue([5, 6, 3, 8], new ajs.DescendingRelationalComparator());
-        queue = new ajs.PriorityQueue(existingQueue, ascendingNumberComparator);
+        var existingQueue = new fp.PriorityQueue([5, 6, 3, 8], new fp.DescendingRelationalComparator());
+        queue = new fp.PriorityQueue(existingQueue, ascendingNumberComparator);
         assertOrderOfDeletion(queue, [3, 5, 6, 8]);
         assertOrderOfDeletion(existingQueue, [8, 6, 5, 3]);
     });
 
     foreach({"null": null, "undefined": undefined}, function(name, item) {
         it("should raise an exception when " + name + " elements are added to it as single items", function() {
-            queue = new ajs.PriorityQueue();
+            queue = new fp.PriorityQueue();
             var exceptionToBeThrownWhenAddingNullItem = function() {
                 queue.add(item);
             };
@@ -209,7 +209,7 @@ describe("PriorityQueue", function() {
 
         it("should raise an exception when constructed with " + name + " elements", function() {
             var exceptionToBeThrownWhenConstructingWithNullItem = function() {
-                new ajs.PriorityQueue([item])
+                new fp.PriorityQueue([item])
             };
             expect(exceptionToBeThrownWhenConstructingWithNullItem).toThrow('Cannot add null or undefined items');
         });
@@ -219,7 +219,7 @@ describe("PriorityQueue", function() {
         function(name, item) {
             it("should raise an exception when adding " + name + " in bulk", function() {
                 var exceptionToBeThrownWhenAddingItemsInBulk = function() {
-                    queue = new ajs.PriorityQueue();
+                    queue = new fp.PriorityQueue();
                     queue.addAll(item);
                 };
                 expect(exceptionToBeThrownWhenAddingItemsInBulk).toThrow('Cannot add null or undefined items');

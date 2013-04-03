@@ -2,7 +2,7 @@ describe("AscendingNumericComparator", function() {
     var comparator;
 
     beforeEach(function() {
-        comparator = new ajs.AscendingRelationalComparator();
+        comparator = new fp.AscendingRelationalComparator();
     });
 
     it("should yield a negative number when the left hand side is less than the right hand side", function() {
@@ -22,7 +22,7 @@ describe("NegationComparator", function() {
     var comparator;
 
     beforeEach(function() {
-        comparator = new ajs.NegationComparator(new ajs.AscendingRelationalComparator());
+        comparator = new fp.NegationComparator(new fp.AscendingRelationalComparator());
     });
 
     it("should yield a negative number when the right hand side is less then the right", function() {
@@ -42,7 +42,7 @@ describe("DescendingNumericComparator", function() {
     var comparator;
 
     beforeEach(function() {
-        comparator = new ajs.DescendingRelationalComparator();
+        comparator = new fp.DescendingRelationalComparator();
     });
 
     it("should yield a negative number when the right hand side is less than the right", function() {
@@ -70,7 +70,7 @@ describe("CompareToComparator", function() {
     }
 
     beforeEach(function() {
-        comparator = new ajs.CompareToComparator();
+        comparator = new fp.CompareToComparator();
     });
 
     it("should yield the result of the compareTo function of the underlying object", function() {
