@@ -30,6 +30,17 @@ describe("Map", function() {
             expect(map.get("secondKey")).toBe("secondValue");
         });
 
+        it("should replace the value of an existing key", function() {
+            var expectedValue = "anotherValue";
+            map.put("firstKey", expectedValue);
+            expect(map.get("firstKey")).toBe(expectedValue);
+        });
+
+        it("should not grow in size when replacing an existing value", function() {
+            map.put("firstKey", "anotherValue");
+            expect(map.size()).toBe(1);
+        });
+
         it("should accurately count the number of entries", function() {
             expect(map.size()).toBe(1);
         });

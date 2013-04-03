@@ -316,8 +316,25 @@ fp = {};
         };
 
         fp.Map.prototype.put = function(key, value) {
-            this.entries.push(new Entry(key, value));
+            if (!replaceExistingKeyIfFound.call(this, key, value)) {
+                this.entries = [new Entry(key, value)].concat(this.entries);
+            }
         };
+
+        function replaceExistingKeyIfFound(key, value) {
+            var added = false;
+
+            for(var index = 0; index < this.entries.length && !added; index++) {
+                if(this.entries.hasOwnProperty(index)) {
+                    var entry = this.entries[index];
+                    if(entry.key === key) {
+                        added = true;
+                        entry.value = value;
+                    }
+                }
+            }
+            return added;
+        }
 
         fp.Map.prototype.get = function(key) {
             for(var index in this.entries) {
