@@ -343,6 +343,18 @@ fp = {};
         fp.Map.prototype.contains = function(key) {
             return this.entries.hasOwnProperty(this.hashFunction.hashCode(key));
         };
+
+        fp.Map.prototype.remove = function(key) {
+            var hashCode = this.hashFunction.hashCode(key);
+            if(!this.contains(key)) {
+                return null;
+
+            }
+            var valueToReturn = this.get(key);
+            delete this.entries[hashCode];
+            this.count--;
+            return valueToReturn;
+        };
     })();
 
 })();

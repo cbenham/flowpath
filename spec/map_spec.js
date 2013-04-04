@@ -17,6 +17,10 @@ describe("Map", function() {
         it("should not contain an arbitrary key", function() {
             expect(map.contains('arbitraryKey')).toBe(false);
         });
+
+        it("should return null when attempting to remove an element", function() {
+            expect(map.remove("arbitraryKey")).toBeNull();
+        });
     });
 
     describe("with elements", function() {
@@ -55,6 +59,20 @@ describe("Map", function() {
 
         it("should contain the given key", function() {
             expect(map.contains("firstKey")).toBe(true);
+        });
+
+        it("should yield the value of a key that is removed", function() {
+            expect(map.remove("firstKey")).toBe("firstValue");
+        });
+
+        it("should not contain a removed key", function() {
+            map.remove("firstKey");
+            expect(map.contains("firstKey")).toBe(false);
+        });
+
+        it("should have one fewer elements when a key is removed", function() {
+            map.remove("firstKey");
+            expect(map.size()).toBe(0);
         });
     });
 });
