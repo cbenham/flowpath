@@ -86,6 +86,14 @@ fp = {};
     };
 })();
 
+(function hashFunctions() {
+    fp.StringHashFunction = function() {};
+
+    fp.StringHashFunction.prototype.hashCode = function(integralValue) {
+        return integralValue.toString();
+    };
+})();
+
 (function() {
 
     fp.Edge = function(predecessor, successor, weight) {
@@ -115,45 +123,45 @@ fp = {};
         return foundEdge;
     };
 
-    /**
-     * Creates a PriorityQueue. By default, ordering is handled by the {@link fp.CompareToComparator}. A different
-     * strategy may be used by supplying an alternate comparator as the second (optional) argument to this constructor.
-     * This constructor may be invoked with zero, one or two parameters.
-     * <ul>
-     *     <li>Zero parameters: creates an empty queue.</li>
-     *     <li> One parameter: when an array or priority queue, will add contents of said structure. Otherwise will
-     *         treat parameter as a comparator resulting in an empty queue.</li>
-     *     <li> Two parameters: the first parameter is treated as either an array or priority queue whose elements
-     *         will be added to this queue. Second parameter is treated as a comparator.</li>
-     * </ul>
-     * It is not possible to pass a variable set of arguments.
-     * @param {Array|fp.PriorityQueue} [initialItems] the items that will initially be placed in the queue. Unlike
-     * {@link fp.PriorityQueue#addAll|addAll}, this constructor does not accept variable arguments.
-     * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
-     * have a method called compare, that takes two arguments (the items to compare) and returns -1, 0 or 1 when the
-     * left hand argument is less than, equal to or greater than the right hand argument.
-     * @throws an exception when an attempt is made to add a null or undefined item.
-     * @constructor
-     */
-    fp.PriorityQueue = function() {
-        this.queue = [];
-        var items = [];
-        this.comparator = new fp.CompareToComparator();
+    (function priorityQueueMethods() {
+        /**
+         * Creates a PriorityQueue. By default, ordering is handled by the {@link fp.CompareToComparator}. A different
+         * strategy may be used by supplying an alternate comparator as the second (optional) argument to this
+         * constructor. This constructor may be invoked with zero, one or two parameters.
+         * <ul>
+         *     <li>Zero parameters: creates an empty queue.</li>
+         *     <li> One parameter: when an array or priority queue, will add contents of said structure. Otherwise will
+         *         treat parameter as a comparator resulting in an empty queue.</li>
+         *     <li> Two parameters: the first parameter is treated as either an array or priority queue whose elements
+         *         will be added to this queue. Second parameter is treated as a comparator.</li>
+         * </ul>
+         * It is not possible to pass a variable set of arguments.
+         * @param {Array|fp.PriorityQueue} [initialItems] the items that will initially be placed in the queue. Unlike
+         * {@link fp.PriorityQueue#addAll|addAll}, this constructor does not accept variable arguments.
+         * @param {Comparator} [comparator] the comparator that will be used to order the items. The comparator should
+         * have a method called compare, that takes two arguments (the items to compare) and returns -1, 0 or 1 when the
+         * left hand argument is less than, equal to or greater than the right hand argument.
+         * @throws an exception when an attempt is made to add a null or undefined item.
+         * @constructor
+         */
+        fp.PriorityQueue = function() {
+            this.queue = [];
+            var items = [];
+            this.comparator = new fp.CompareToComparator();
 
-        if(arguments.length === 1) {
-            if(arguments[0] instanceof Array) {
+            if(arguments.length === 1) {
+                if(arguments[0] instanceof Array) {
+                    items = arguments[0];
+                } else {
+                    this.comparator = arguments[0];
+                }
+            } else if(arguments.length === 2) {
                 items = arguments[0];
-            } else {
-                this.comparator = arguments[0];
+                this.comparator = arguments[1];
             }
-        } else if(arguments.length === 2) {
-            items = arguments[0];
-            this.comparator = arguments[1];
-        }
-        this.addAll(items);
-    };
+            this.addAll(items);
+        };
 
-    (function() {
         /**
          * Get the highest priority item without modifying the queue. Use {@link fp.PriorityQueue#poll|poll} to remove
          * and retrieve and item at once.
@@ -305,11 +313,11 @@ fp = {};
         }
     })();
 
-    fp.Map = function() {
-        this.entries = [];
-    };
+    (function mapMethods() {
+        fp.Map = function() {
+            this.entries = [];
+        };
 
-    (function() {
         var Entry = function(key, value) {
             this.key = key;
             this.value = value;
