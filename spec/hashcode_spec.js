@@ -2,7 +2,7 @@ describe("Numeric Hashcode", function() {
     var hashFunction;
 
     beforeEach(function() {
-        hashFunction = new fp.StringHashFunction();
+        hashFunction = new fp.ToStringHashFunction();
     });
 
     it("should use the underlying numeric value to create a hash code", function() {

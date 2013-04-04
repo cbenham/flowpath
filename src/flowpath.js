@@ -87,10 +87,10 @@ fp = {};
 })();
 
 (function hashFunctions() {
-    fp.StringHashFunction = function() {};
+    fp.ToStringHashFunction = function() {};
 
-    fp.StringHashFunction.prototype.hashCode = function(integralValue) {
-        return integralValue.toString();
+    fp.ToStringHashFunction.prototype.hashCode = function(object) {
+        return object.toString();
     };
 })();
 
@@ -315,52 +315,33 @@ fp = {};
 
     (function mapMethods() {
         fp.Map = function() {
+            this.hashFunction = new fp.ToStringHashFunction();
             this.entries = [];
-        };
-
-        var Entry = function(key, value) {
-            this.key = key;
-            this.value = value;
+            this.count = 0;
         };
 
         fp.Map.prototype.put = function(key, value) {
-            if (!replaceExistingKeyIfFound.call(this, key, value)) {
-                this.entries = [new Entry(key, value)].concat(this.entries);
+            var hashCode = this.hashFunction.hashCode(key);
+            if (!this.contains(key)) {
+                this.count++;
             }
+            this.entries[hashCode] = value;
         };
 
-        function replaceExistingKeyIfFound(key, value) {
-            var added = false;
-
-            for(var index = 0; index < this.entries.length && !added; index++) {
-                if(this.entries.hasOwnProperty(index)) {
-                    var entry = this.entries[index];
-                    if(entry.key === key) {
-                        added = true;
-                        entry.value = value;
-                    }
-                }
-            }
-            return added;
-        }
-
         fp.Map.prototype.get = function(key) {
-            for(var index in this.entries) {
-                if(this.entries.hasOwnProperty(index)) {
-                    var entry = this.entries[index];
-                    if(entry.key === key) {
-                        return entry.value;
-                    }
-                }
-            }
+            return this.entries[this.hashFunction.hashCode(key)];
         };
 
         fp.Map.prototype.size = function() {
-            return this.entries.length;
+            return this.count;
         };
 
         fp.Map.prototype.isEmpty = function() {
-            return this.entries.length === 0;
+            return this.count === 0;
+        };
+
+        fp.Map.prototype.contains = function(key) {
+            return this.entries.hasOwnProperty(this.hashFunction.hashCode(key));
         };
     })();
 

@@ -13,6 +13,10 @@ describe("Map", function() {
         it("should initially be empty", function() {
             expect(map.isEmpty()).toBe(true);
         });
+
+        it("should not contain an arbitrary key", function() {
+            expect(map.contains('arbitraryKey')).toBe(false);
+        });
     });
 
     describe("with elements", function() {
@@ -47,6 +51,10 @@ describe("Map", function() {
 
         it("should not be empty", function() {
             expect(map.isEmpty()).toBe(false);
+        });
+
+        it("should contain the given key", function() {
+            expect(map.contains("firstKey")).toBe(true);
         });
     });
 });
