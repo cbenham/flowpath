@@ -96,33 +96,6 @@ fp = {};
 
 (function() {
 
-    fp.Edge = function(predecessor, successor, weight) {
-        this.predecessor = predecessor;
-        this.successor = successor;
-        this.weight = weight;
-    };
-    fp.Edge.prototype.hasSuccessorForData = function(targetData) {
-        return this.successor.data === targetData;
-    };
-
-    fp.Node = function(data) {
-        this.data = data;
-        this.adjacencies = [];
-    };
-    fp.Node.prototype.connectTo = function(successorNode, weight) {
-        var edge = new fp.Edge(this, successorNode, weight);
-        this.adjacencies.push(edge);
-    };
-    fp.Node.prototype.findEdgeTo = function(targetSuccessorData) {
-        var foundEdge = null;
-        this.adjacencies.forEach(function(edge) {
-            if(edge.hasSuccessorForData(targetSuccessorData)) {
-                foundEdge = edge;
-            }
-        });
-        return foundEdge;
-    };
-
     (function priorityQueueMethods() {
         /**
          * Creates a PriorityQueue. By default, ordering is handled by the {@link fp.CompareToComparator}. A different
