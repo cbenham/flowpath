@@ -1,6 +1,6 @@
 fp = {};
 
-(function comparators() {
+(function comparatorFunctions() {
     /**
      * Comparator for creating ascending orders.
      * @constructor
@@ -94,9 +94,9 @@ fp = {};
     };
 })();
 
-(function() {
+(function collections() {
 
-    (function priorityQueueMethods() {
+    (function priorityQueueFunctions() {
         /**
          * Creates a PriorityQueue. By default, ordering is handled by the {@link fp.CompareToComparator}. A different
          * strategy may be used by supplying an alternate comparator as the second (optional) argument to this
@@ -286,7 +286,7 @@ fp = {};
         }
     })();
 
-    (function mapMethods() {
+    (function mapFunctions() {
         fp.Map = function() {
             this.hashFunction = new fp.ToStringHashFunction();
             this.entries = [];
