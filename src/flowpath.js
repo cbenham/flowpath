@@ -330,4 +330,45 @@ fp = {};
         };
     })();
 
+    (function listFunctions() {
+        fp.List = function() {
+            this.items = [];
+        };
+
+        fp.List.prototype.add = function(item) {
+            this.items.push(item);
+        };
+
+        fp.List.prototype.get = function(index) {
+            return this.items[index];
+        };
+
+        fp.List.prototype.isEmpty = function() {
+            return this.size() === 0;
+        };
+
+        fp.List.prototype.size = function() {
+            return this.items.length;
+        };
+
+        fp.List.prototype.first = function() {
+            return this.get(0);
+        };
+
+        fp.List.prototype.last = function() {
+            return this.get(this.size() - 1);
+        };
+
+        fp.List.prototype.addAll = function() {
+            var items = arguments;
+            if(arguments.length === 1) {
+                var firstArgument = arguments[0];
+                items = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
+            }
+            for(var index = 0; index < items.length; index++) {
+                this.add(items[index]);
+            }
+        };
+    })();
+
 })();
