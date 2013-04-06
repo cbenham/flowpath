@@ -333,6 +333,11 @@ fp = {};
     (function listFunctions() {
         fp.List = function() {
             this.items = [];
+            if(arguments.length === 1) {
+                var firstArgument = arguments[0];
+                var itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
+                this.addAll(itemArguments);
+            }
         };
 
         fp.List.prototype.add = function(item) {
@@ -360,13 +365,13 @@ fp = {};
         };
 
         fp.List.prototype.addAll = function() {
-            var items = arguments;
+            var itemArguments = arguments;
             if(arguments.length === 1) {
                 var firstArgument = arguments[0];
-                items = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
+                itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
             }
-            for(var index = 0; index < items.length; index++) {
-                this.add(items[index]);
+            for(var index = 0; index < itemArguments.length; index++) {
+                this.add(itemArguments[index]);
             }
         };
     })();

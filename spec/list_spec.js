@@ -5,7 +5,7 @@ describe("List", function() {
         list = new fp.List();
     });
 
-    var assertListContents = function(expected) {
+    var assertListContents = function(list, expected) {
         expect(list.size()).toBe(expected.length);
         for(var index in expected) {
             expect(list.get(index)).toBe(expected[index]);
@@ -24,12 +24,18 @@ describe("List", function() {
         it("should be able to add contents of a list", function() {
             var expected = [3, 4, 5, 6];
             list.addAll(expected);
-            assertListContents(expected);
+            assertListContents(list, expected);
         });
 
         it("should be able to add variable set of arguments", function() {
             list.addAll(8, 3, 7, 2);
-            assertListContents([8, 3, 7, 2]);
+            assertListContents(list, [8, 3, 7, 2]);
+        });
+
+        it("should be able to be constructed with an array", function() {
+            var expected = [5, 2, 6, 8];
+            list = new fp.List(expected);
+            assertListContents(list, expected);
         });
     });
 
@@ -75,10 +81,14 @@ describe("List", function() {
 
         it("should be able to add contents of one list to another", function() {
             var expectedSecondListContents = [3, 2, 6, 8];
-            var secondList = new fp.List();
-            secondList.addAll(expectedSecondListContents);
+            var secondList = new fp.List(expectedSecondListContents);
             list.addAll(secondList);
-            assertListContents(initialItems.concat(expectedSecondListContents));
+            assertListContents(list, initialItems.concat(expectedSecondListContents));
+        });
+
+        it("should be able to be constructed with contents of another list", function() {
+            var secondList = new fp.List(list);
+            assertListContents(secondList, initialItems);
         });
     });
 
