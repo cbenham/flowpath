@@ -374,6 +374,36 @@ fp = {};
                 this.add(itemArguments[index]);
             }
         };
+
+        fp.List.prototype.each = function(closure) {
+            for(var index = 0; index < this.items.length; index++) {
+                closure(this.items[index], index);
+            }
+        };
+
+        fp.List.prototype.eachWith = function(closure) {
+            var continueIterating = true;
+            for(var index = 0; index < this.items.length && continueIterating; index++) {
+                continueIterating = closure(this.items[index], index);
+            }
+        };
+
+        fp.List.prototype.indexOf = function(findable) {
+            for(var index = 0; index < this.items.length; index++) {
+                if(this.items[index] === findable) {
+                    return index;
+                }
+            }
+            return -1;
+        };
+
+        fp.List.prototype.contains = function(findable) {
+            return this.indexOf(findable) >= 0;
+        };
+
+        fp.List.prototype.deleteAt = function(index) {
+            this.items.splice(index, 1);
+        };
     })();
 
 })();
