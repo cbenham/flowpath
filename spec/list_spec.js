@@ -6,13 +6,12 @@ describe("List", function() {
     });
 
     var assertListContents = function(list, expected) {
-        expect(list.size()).toBe(expected.length);
-        for(var index in expected) {
-            expect(list.get(index)).toBe(expected[index]);
-        }
+        var expectedArguments = expected.join(", ");
+        var actualArguments = list.items.join(", ");
+        expect(actualArguments).toBe(expectedArguments);
     };
 
-    var assertArraysEqual = function (expectedItems, item) {
+    var assertArraysEqual = function(expectedItems, item) {
         expect(expectedItems.length).toBe(item.length);
     };
 
@@ -51,7 +50,7 @@ describe("List", function() {
         it("should take an item and store it", function() {
             expect(list.get(0)).toBe(5);
         });
-        
+
         it("should append newly added items to the end of the list", function() {
             list.add(4);
             expect(list.get(1)).toBe(4);
@@ -74,7 +73,7 @@ describe("List", function() {
                 list.add(initialItems[index]);
             }
         });
-        
+
         it("should yield the first element", function() {
             expect(list.first()).toBe(4);
         });
@@ -110,7 +109,7 @@ describe("List", function() {
         it("should be able to iterate over each item while condition holds true", function() {
             var eachElement = [];
             var eachIndex = [];
-            list.eachWith(function(item, index){
+            list.eachWith(function(item, index) {
                 eachElement.push(item);
                 eachIndex.push(index);
                 return item != 6;
@@ -144,6 +143,76 @@ describe("List", function() {
         it("should remove an item at a given location", function() {
             list.deleteAt(2);
             assertListContents(list, [4, 5, 3, 2, 1]);
+        });
+
+        it("should add items to the beginning", function() {
+            list.prepend(99);
+            assertListContents(list, [99].concat(initialItems));
+        });
+
+        it("should add contents of array to the beginning", function() {
+            var expectedItems = [99, 98, 97];
+            list.prependAll(expectedItems);
+            assertListContents(list, expectedItems.concat(initialItems));
+        });
+
+        it("should prepend variable arguments", function() {
+            list.prependAll(55, 66, 77);
+            assertListContents(list, [55, 66, 77].concat(initialItems));
+        });
+
+        it("should prepend list", function() {
+            var otherList = new fp.List([55, 66, 77]);
+            list.prependAll(otherList);
+            assertListContents(list, [55, 66, 77].concat(initialItems));
+        });
+
+        it("should be able to replace elements", function() {
+            expect(list.replace(5, 99)).toBe(1);
+            assertListContents(list, [4, 5, 6, 3, 2, 99]);
+        });
+
+        it("should raise an exception when replacing an element beyond the length of the list", function() {
+            var replacingItemBeyondEndOfList = function() {
+                list.replace(initialItems.length + 1, 8);
+            };
+
+            expect(replacingItemBeyondEndOfList).toThrow("Cannot replace element at index that does not exist: "
+                + (initialItems.length + 1));
+        });
+
+        it("should raise an exception when replacing an element before the beginning of the list", function() {
+            var replcingItemBeforeBeginningOfList = function() {
+                list.replace(-1, 3);
+            };
+
+            expect(replcingItemBeforeBeginningOfList).toThrow("Cannot replace element at index that does not exist: -1");
+        });
+
+        it("should reverse the order of items", function() {
+            list.reverse();
+            assertListContents(list, [1, 2, 3, 6, 5, 4]);
+        });
+
+        it("should be able to insert a single item", function() {
+            list.insert(3, 99);
+            assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
+        });
+
+        it("should be able to insert an array of items", function() {
+            list.insertAll(2, [55, 66, 77]);
+            assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
+        });
+
+        it("should be able to insert variable arguments", function() {
+            list.insertAll(2, 55, 66, 77);
+            assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
+        });
+
+        it("should be able to insert elements of a list", function() {
+            var otherList = new fp.List([55, 66, 77]);
+            list.insertAll(2, otherList);
+            assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
         });
     });
 

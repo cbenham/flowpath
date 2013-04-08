@@ -344,6 +344,24 @@ fp = {};
             this.items.push(item);
         };
 
+        fp.List.prototype.prepend = function(item) {
+            this.items.unshift(item);
+        };
+
+        fp.List.prototype.prependAll = function() {
+            var itemArguments = arguments;
+            if(arguments.length === 1) {
+                itemArguments = arguments[0];
+                if (arguments[0] instanceof fp.List) {
+                    itemArguments = arguments[0].items;
+                }
+            }
+
+            for(var index = itemArguments.length - 1; index >= 0; index--) {
+                this.prepend(itemArguments[index]);
+            }
+        };
+
         fp.List.prototype.get = function(index) {
             return this.items[index];
         };
@@ -404,6 +422,45 @@ fp = {};
         fp.List.prototype.deleteAt = function(index) {
             this.items.splice(index, 1);
         };
+
+        fp.List.prototype.replace = function(index, item) {
+            if(index < 0 || index > this.items.length) {
+                throw 'Cannot replace element at index that does not exist: ' + index;
+            }
+            var previousValue = this.items[index];
+            this.items[index] = item;
+            return previousValue;
+        };
+
+        fp.List.prototype.reverse = function() {
+            this.items.reverse();
+        };
+
+        fp.List.prototype.insert = function(insertionIndex, item) {
+            this.items.splice(insertionIndex, 0, item);
+        };
+
+        fp.List.prototype.insertAll = function() {
+            var insertionIndex = arguments[0];
+            var sourceIndex = 1;
+            var itemsToInsert = arguments;
+            if(arguments.length === 2) {
+                sourceIndex = 0;
+                itemsToInsert = extractItemsToInsert(arguments[1]);
+            }
+
+            for(var index = (itemsToInsert.length - 1); index >= sourceIndex; index--) {
+                this.items.splice(insertionIndex, 0, itemsToInsert[index]);
+            }
+        };
+
+        function extractItemsToInsert(collection) {
+            var collectionToInsert = collection;
+            if (collection instanceof fp.List) {
+                collectionToInsert = collection.items;
+            }
+            return collectionToInsert;
+        }
     })();
 
 })();
