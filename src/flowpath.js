@@ -344,6 +344,17 @@ fp = {};
             this.items.push(item);
         };
 
+        fp.List.prototype.addAll = function() {
+            var itemArguments = arguments;
+            if(arguments.length === 1) {
+                var firstArgument = arguments[0];
+                itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
+            }
+            for(var index = 0; index < itemArguments.length; index++) {
+                this.add(itemArguments[index]);
+            }
+        };
+
         fp.List.prototype.prepend = function(item) {
             this.items.unshift(item);
         };
@@ -380,17 +391,6 @@ fp = {};
 
         fp.List.prototype.last = function() {
             return this.get(this.size() - 1);
-        };
-
-        fp.List.prototype.addAll = function() {
-            var itemArguments = arguments;
-            if(arguments.length === 1) {
-                var firstArgument = arguments[0];
-                itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
-            }
-            for(var index = 0; index < itemArguments.length; index++) {
-                this.add(itemArguments[index]);
-            }
         };
 
         fp.List.prototype.each = function(closure) {

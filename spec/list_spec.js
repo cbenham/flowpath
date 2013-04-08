@@ -24,7 +24,7 @@ describe("List", function() {
             expect(list.size()).toBe(0);
         });
 
-        it("should be able to add contents of a list", function() {
+        it("should be able to add contents of an array", function() {
             var expected = [3, 4, 5, 6];
             list.addAll(expected);
             assertListContents(list, expected);
