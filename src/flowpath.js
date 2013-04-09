@@ -340,127 +340,134 @@ fp = {};
             }
         };
 
-        fp.List.prototype.add = function(item) {
-            this.items.push(item);
-        };
+        (function mutators() {
+            fp.List.prototype.add = function(item) {
+                this.items.push(item);
+            };
 
-        fp.List.prototype.addAll = function() {
-            var itemArguments = arguments;
-            if(arguments.length === 1) {
-                var firstArgument = arguments[0];
-                itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
-            }
-            for(var index = 0; index < itemArguments.length; index++) {
-                this.add(itemArguments[index]);
-            }
-        };
-
-        fp.List.prototype.prepend = function(item) {
-            this.items.unshift(item);
-        };
-
-        fp.List.prototype.prependAll = function() {
-            var itemArguments = arguments;
-            if(arguments.length === 1) {
-                itemArguments = arguments[0];
-                if (arguments[0] instanceof fp.List) {
-                    itemArguments = arguments[0].items;
+            fp.List.prototype.addAll = function() {
+                var itemArguments = arguments;
+                if(arguments.length === 1) {
+                    var firstArgument = arguments[0];
+                    itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
                 }
-            }
-
-            for(var index = itemArguments.length - 1; index >= 0; index--) {
-                this.prepend(itemArguments[index]);
-            }
-        };
-
-        fp.List.prototype.get = function(index) {
-            return this.items[index];
-        };
-
-        fp.List.prototype.isEmpty = function() {
-            return this.size() === 0;
-        };
-
-        fp.List.prototype.size = function() {
-            return this.items.length;
-        };
-
-        fp.List.prototype.first = function() {
-            return this.get(0);
-        };
-
-        fp.List.prototype.last = function() {
-            return this.get(this.size() - 1);
-        };
-
-        fp.List.prototype.each = function(closure) {
-            for(var index = 0; index < this.items.length; index++) {
-                closure(this.items[index], index);
-            }
-        };
-
-        fp.List.prototype.eachWith = function(closure) {
-            var continueIterating = true;
-            for(var index = 0; index < this.items.length && continueIterating; index++) {
-                continueIterating = closure(this.items[index], index);
-            }
-        };
-
-        fp.List.prototype.indexOf = function(findable) {
-            for(var index = 0; index < this.items.length; index++) {
-                if(this.items[index] === findable) {
-                    return index;
+                for(var index = 0; index < itemArguments.length; index++) {
+                    this.add(itemArguments[index]);
                 }
+            };
+
+            fp.List.prototype.prepend = function(item) {
+                this.items.unshift(item);
+            };
+
+            fp.List.prototype.prependAll = function() {
+                var itemArguments = arguments;
+                if(arguments.length === 1) {
+                    itemArguments = arguments[0];
+                    if (arguments[0] instanceof fp.List) {
+                        itemArguments = arguments[0].items;
+                    }
+                }
+
+                for(var index = itemArguments.length - 1; index >= 0; index--) {
+                    this.prepend(itemArguments[index]);
+                }
+            };
+            fp.List.prototype.deleteAt = function(index) {
+                this.items.splice(index, 1);
+            };
+
+            fp.List.prototype.replace = function(index, item) {
+                if(index < 0 || index > this.items.length) {
+                    throw 'Cannot replace element at index that does not exist: ' + index;
+                }
+                var previousValue = this.items[index];
+                this.items[index] = item;
+                return previousValue;
+            };
+
+            fp.List.prototype.reverse = function() {
+                this.items.reverse();
+            };
+
+            fp.List.prototype.insert = function(insertionIndex, item) {
+                this.items.splice(insertionIndex, 0, item);
+            };
+
+            fp.List.prototype.insertAll = function() {
+                var insertionIndex = arguments[0];
+                var sourceIndex = 1;
+                var itemsToInsert = arguments;
+                if(arguments.length === 2) {
+                    sourceIndex = 0;
+                    itemsToInsert = extractItemsToInsert(arguments[1]);
+                }
+
+                for(var index = (itemsToInsert.length - 1); index >= sourceIndex; index--) {
+                    this.items.splice(insertionIndex, 0, itemsToInsert[index]);
+                }
+            };
+
+            function extractItemsToInsert(collection) {
+                var collectionToInsert = collection;
+                if (collection instanceof fp.List) {
+                    collectionToInsert = collection.items;
+                }
+                return collectionToInsert;
             }
-            return -1;
-        };
+        })();
 
-        fp.List.prototype.contains = function(findable) {
-            return this.indexOf(findable) >= 0;
-        };
+        (function accessors() {
+            fp.List.prototype.get = function(index) {
+                return this.items[index];
+            };
 
-        fp.List.prototype.deleteAt = function(index) {
-            this.items.splice(index, 1);
-        };
+            fp.List.prototype.isEmpty = function() {
+                return this.size() === 0;
+            };
 
-        fp.List.prototype.replace = function(index, item) {
-            if(index < 0 || index > this.items.length) {
-                throw 'Cannot replace element at index that does not exist: ' + index;
-            }
-            var previousValue = this.items[index];
-            this.items[index] = item;
-            return previousValue;
-        };
+            fp.List.prototype.first = function() {
+                return this.get(0);
+            };
 
-        fp.List.prototype.reverse = function() {
-            this.items.reverse();
-        };
+            fp.List.prototype.last = function() {
+                return this.get(this.size() - 1);
+            };
+        })();
 
-        fp.List.prototype.insert = function(insertionIndex, item) {
-            this.items.splice(insertionIndex, 0, item);
-        };
+        (function queries() {
+            fp.List.prototype.size = function() {
+                return this.items.length;
+            };
 
-        fp.List.prototype.insertAll = function() {
-            var insertionIndex = arguments[0];
-            var sourceIndex = 1;
-            var itemsToInsert = arguments;
-            if(arguments.length === 2) {
-                sourceIndex = 0;
-                itemsToInsert = extractItemsToInsert(arguments[1]);
-            }
+            fp.List.prototype.contains = function(findable) {
+                return this.indexOf(findable) >= 0;
+            };
 
-            for(var index = (itemsToInsert.length - 1); index >= sourceIndex; index--) {
-                this.items.splice(insertionIndex, 0, itemsToInsert[index]);
-            }
-        };
+            fp.List.prototype.indexOf = function(findable) {
+                for(var index = 0; index < this.items.length; index++) {
+                    if(this.items[index] === findable) {
+                        return index;
+                    }
+                }
+                return -1;
+            };
+        })();
 
-        function extractItemsToInsert(collection) {
-            var collectionToInsert = collection;
-            if (collection instanceof fp.List) {
-                collectionToInsert = collection.items;
-            }
-            return collectionToInsert;
-        }
+        (function iterators() {
+            fp.List.prototype.each = function(closure) {
+                for(var index = 0; index < this.items.length; index++) {
+                    closure(this.items[index], index);
+                }
+            };
+
+            fp.List.prototype.eachWith = function(closure) {
+                var continueIterating = true;
+                for(var index = 0; index < this.items.length && continueIterating; index++) {
+                    continueIterating = closure(this.items[index], index);
+                }
+            };
+        })();
     })();
 
 })();
