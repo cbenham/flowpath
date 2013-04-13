@@ -333,10 +333,12 @@ fp = {};
     (function listFunctions() {
         fp.List = function() {
             this.items = [];
-            if(arguments.length === 1) {
-                var firstArgument = arguments[0];
-                var itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
-                this.addAll(itemArguments);
+            this.comparator = new fp.AscendingRelationalComparator();
+            if(arguments.length > 0) {
+                this.addAll((arguments[0] instanceof fp.List) ? arguments[0].items : arguments[0]);
+                if(arguments.length > 1) {
+                    this.comparator = arguments[1];
+                }
             }
         };
 
@@ -440,13 +442,13 @@ fp = {};
                 return this.items.length;
             };
 
-            fp.List.prototype.contains = function(findable) {
-                return this.indexOf(findable) >= 0;
+            fp.List.prototype.contains = function(target) {
+                return this.indexOf(target) >= 0;
             };
 
-            fp.List.prototype.indexOf = function(findable) {
+            fp.List.prototype.indexOf = function(target) {
                 for(var index = 0; index < this.items.length; index++) {
-                    if(this.items[index] === findable) {
+                    if(this.comparator.compare(this.items[index], target) === 0) {
                         return index;
                     }
                 }
@@ -461,7 +463,7 @@ fp = {};
                 }
             };
 
-            fp.List.prototype.eachWith = function(closure) {
+            fp.List.prototype.eachWhile = function(closure) {
                 var continueIterating = true;
                 for(var index = 0; index < this.items.length && continueIterating; index++) {
                     continueIterating = closure(this.items[index], index);

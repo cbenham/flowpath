@@ -1,6 +1,22 @@
 describe("List", function() {
     var list;
 
+    var Item = function(value) {
+        this.value = value;
+    };
+
+    var AscendingItemComparator = function() {
+    };
+    AscendingItemComparator.prototype.compare = function(left, right) {
+        if(left.value < right.value) {
+            return -1;
+        } else if(left.value === right.value) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     beforeEach(function() {
         list = new fp.List();
     });
@@ -40,6 +56,22 @@ describe("List", function() {
             list = new fp.List(expected);
             assertListContents(list, expected);
         });
+
+        it("should be able to find the index of a complex object when constructed with array of items", function() {
+            var unwantedItem = new Item(3);
+            var storedWantedItem = new Item(4);
+            var targetItem = new Item(4);
+            list = new fp.List([unwantedItem, storedWantedItem], new AscendingItemComparator());
+            expect(list.indexOf(targetItem)).toBe(1);
+        });
+
+        it("should be able to find the index of a complex object when constructed with list of items", function() {
+            var unwantedItem = new Item(3);
+            var storedWantedItem = new Item(4);
+            var targetItem = new Item(4);
+            list = new fp.List(new fp.List([unwantedItem, storedWantedItem]), new AscendingItemComparator());
+            expect(list.indexOf(targetItem)).toBe(1);
+        });
     });
 
     describe("with one element", function() {
@@ -66,12 +98,11 @@ describe("List", function() {
     });
 
     describe("with many elements", function() {
-        var initialItems = [4, 5, 6, 3, 2, 1];
+        var initialItems;
 
         beforeEach(function() {
-            for(var index in initialItems) {
-                list.add(initialItems[index]);
-            }
+            initialItems = [4, 5, 6, 3, 2, 1];
+            list.addAll(initialItems);
         });
 
         it("should yield the first element", function() {
@@ -94,6 +125,30 @@ describe("List", function() {
             assertListContents(secondList, initialItems);
         });
 
+        it("should copy contents of supplied array upon construction so changes do not affect the new list", function() {
+            list = new fp.List(initialItems);
+            initialItems.push(444);
+            assertListContents(list, [4, 5, 6, 3, 2, 1 ]);
+        });
+
+        it("should copy contents of supplied list upon construction so changes do not affect the new list", function() {
+            var newList = new fp.List(list);
+            list.add(444);
+            assertListContents(newList, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should copy supplied array upon construction with comparator so new list is change tolerant", function() {
+            list = new fp.List(initialItems, new AscendingItemComparator());
+            initialItems.push(999);
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should copy contents of supplied list upon construction with comparator for change tolerance", function() {
+            var newList = new fp.List(list, new AscendingItemComparator());
+            list.add(77);
+            assertListContents(newList, [4, 5, 6, 3, 2, 1]);
+        });
+
         it("should be able to iterate over each item", function() {
             var eachElement = [];
             var eachIndex = [];
@@ -109,7 +164,7 @@ describe("List", function() {
         it("should be able to iterate over each item while condition holds true", function() {
             var eachElement = [];
             var eachIndex = [];
-            list.eachWith(function(item, index) {
+            list.eachWhile(function(item, index) {
                 eachElement.push(item);
                 eachIndex.push(index);
                 return item != 6;
