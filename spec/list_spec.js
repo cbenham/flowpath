@@ -161,6 +161,12 @@ describe("List", function() {
             assertArraysEqual([1, 2, 3, 4, 5, 6], eachIndex);
         });
 
+        it("should set the list as the receiver when calling each", function() {
+            list.each(function(item, index) {
+                expect(this instanceof fp.List).toBe(true);
+            });
+        });
+
         it("should be able to iterate over each item while condition holds true", function() {
             var eachElement = [];
             var eachIndex = [];
@@ -172,6 +178,12 @@ describe("List", function() {
 
             assertArraysEqual(eachElement, [4, 5, 6]);
             assertArraysEqual(eachIndex, [1, 2, 3]);
+        });
+        
+        it("should set the list as the receiver when calling each while", function() {
+            list.eachWhile(function(item, index) {
+                expect(this instanceof fp.List).toBe(true);
+            });
         });
 
         it("should find the index for a specified item", function() {
@@ -198,6 +210,16 @@ describe("List", function() {
         it("should remove an item at a given location", function() {
             list.deleteAt(2);
             assertListContents(list, [4, 5, 3, 2, 1]);
+        });
+
+        it("should return true when an item was found and deleted from the list", function() {
+            expect(list.deleteItem(6)).toBe(true);
+            assertListContents(list, [4, 5, 3, 2, 1]);
+        });
+
+        it("should return false when attempting to delete an item that cannot be found", function() {
+            expect(list.deleteItem(999)).toBe(false);
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
         });
 
         it("should add items to the beginning", function() {

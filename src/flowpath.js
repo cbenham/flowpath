@@ -348,11 +348,7 @@ fp = {};
             };
 
             fp.List.prototype.addAll = function() {
-                var itemArguments = arguments;
-                if(arguments.length === 1) {
-                    var firstArgument = arguments[0];
-                    itemArguments = (firstArgument instanceof fp.List) ? firstArgument.items : firstArgument;
-                }
+                var itemArguments = convertToArguments(arguments);
                 for(var index = 0; index < itemArguments.length; index++) {
                     this.add(itemArguments[index]);
                 }
@@ -363,20 +359,27 @@ fp = {};
             };
 
             fp.List.prototype.prependAll = function() {
-                var itemArguments = arguments;
-                if(arguments.length === 1) {
-                    itemArguments = arguments[0];
-                    if (arguments[0] instanceof fp.List) {
-                        itemArguments = arguments[0].items;
-                    }
-                }
-
+                var itemArguments = convertToArguments(arguments);
                 for(var index = itemArguments.length - 1; index >= 0; index--) {
                     this.prepend(itemArguments[index]);
                 }
             };
+
             fp.List.prototype.deleteAt = function(index) {
                 this.items.splice(index, 1);
+            };
+
+            fp.List.prototype.deleteItem = function(itemToDelete) {
+                var itemDeleted = false;
+                this.eachWhile(function(item, index) {
+                    if(this.comparator.compare(item, itemToDelete) === 0) {
+                        this.deleteAt(index);
+                        itemDeleted = true;
+                        return false;
+                    }
+                    return true;
+                });
+                return itemDeleted;
             };
 
             fp.List.prototype.replace = function(index, item) {
@@ -411,11 +414,14 @@ fp = {};
             };
 
             function extractItemsToInsert(collection) {
-                var collectionToInsert = collection;
-                if (collection instanceof fp.List) {
-                    collectionToInsert = collection.items;
+                return collection instanceof fp.List ? collection.items : collection;
+            }
+
+            function convertToArguments(args) {
+                if(args.length === 1) {
+                    return (args[0] instanceof fp.List) ? args[0].items : args[0];
                 }
-                return collectionToInsert;
+                return args;
             }
         })();
 
@@ -456,17 +462,25 @@ fp = {};
             };
         })();
 
-        (function iterators() {
+        (function iteration() {
+            /**
+             * Sets the receiver to the list itself.
+             * @param closure
+             */
             fp.List.prototype.each = function(closure) {
                 for(var index = 0; index < this.items.length; index++) {
-                    closure(this.items[index], index);
+                    closure.call(this, this.items[index], index);
                 }
             };
 
+            /**
+             * Sets the receiver to the list itself.
+             * @param closure
+             */
             fp.List.prototype.eachWhile = function(closure) {
                 var continueIterating = true;
                 for(var index = 0; index < this.items.length && continueIterating; index++) {
-                    continueIterating = closure(this.items[index], index);
+                    continueIterating = closure.call(this, this.items[index], index);
                 }
             };
         })();
