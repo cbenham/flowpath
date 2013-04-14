@@ -354,6 +354,10 @@ fp = {};
                 }
             };
 
+            fp.List.prototype.clear = function() {
+                this.items.splice(0, this.items.length);
+            };
+
             fp.List.prototype.prepend = function(item) {
                 this.items.unshift(item);
             };

@@ -291,6 +291,11 @@ describe("List", function() {
             list.insertAll(2, otherList);
             assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
         });
+
+        it("should be possible to clear the list", function() {
+            list.clear();
+            expect(list.isEmpty()).toBe(true);
+        });
     });
 
 });
