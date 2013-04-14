@@ -296,6 +296,22 @@ describe("List", function() {
             list.clear();
             expect(list.isEmpty()).toBe(true);
         });
+
+        it("should yield an array of the contained elements when converting to an array", function() {
+            var copy = list.toArray();
+            assertListContents(list, copy);
+        });
+
+        it("should yield an array as a copy of the list such that modifications have not effect", function() {
+            var copy =  list.toArray();
+            copy.push(888);
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
+
+            var expected = [4, 5, 6, 3, 2, 1, 888]
+            for(var index = 0; index < copy.length; index++) {
+                expect(copy[index]).toBe(expected[index]);
+            }
+        });
     });
 
 });

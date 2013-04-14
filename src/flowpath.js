@@ -445,6 +445,14 @@ fp = {};
             fp.List.prototype.last = function() {
                 return this.get(this.size() - 1);
             };
+
+            fp.List.prototype.toArray = function() {
+                var copy = [];
+                this.each(function(item) {
+                    copy.push(item);
+                });
+                return copy;
+            };
         })();
 
         (function queries() {
