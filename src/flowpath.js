@@ -453,6 +453,10 @@ fp = {};
                 });
                 return copy;
             };
+
+            fp.List.prototype.clone = function() {
+                return new fp.List(this.items, this.comparator);
+            };
         })();
 
         (function queries() {

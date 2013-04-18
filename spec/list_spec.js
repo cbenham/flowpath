@@ -302,15 +302,27 @@ describe("List", function() {
             assertListContents(list, copy);
         });
 
-        it("should yield an array as a copy of the list such that modifications have not effect", function() {
+        it("should yield an array as a copy of the list such that modifications have no effect", function() {
             var copy =  list.toArray();
             copy.push(888);
             assertListContents(list, [4, 5, 6, 3, 2, 1]);
 
-            var expected = [4, 5, 6, 3, 2, 1, 888]
+            var expected = [4, 5, 6, 3, 2, 1, 888];
             for(var index = 0; index < copy.length; index++) {
                 expect(copy[index]).toBe(expected[index]);
             }
+        });
+
+        it("should be able to clone the original list", function() {
+            var clone = list.clone();
+            assertListContents(clone, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should include the comparator of the original list when cloning it", function() {
+            var expectedItem = new Item(9);
+            var items = [new Item(3), expectedItem, new Item(5)];
+            list = new fp.List(items, new AscendingItemComparator()).clone();
+            expect(list.indexOf(expectedItem)).toBe(1);
         });
     });
 
