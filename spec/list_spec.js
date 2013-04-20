@@ -351,10 +351,10 @@ describe("List", function() {
 
         it("should collect each item returned by the supplied function and use the original comparator", function() {
             list = new fp.List([new Item(2), new Item(4), new Item(6)], new AscendingItemComparator());
-            var result = list.collect(function(item) {
-                return new Item(item.value * 3);
+            var result = list.collect(function(item, index) {
+                return new Item(item.value * index);
             });
-            expect(result.indexOf(new Item(12))).toBe(1);
+            expect(result.indexOf(new Item(12))).toBe(2);
         });
     });
 

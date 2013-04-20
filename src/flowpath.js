@@ -519,9 +519,9 @@ fp = {};
             };
 
             fp.List.prototype.collect = function(closure) {
-                var result = new fp.List([], this.comparator);
-                this.each(function(item) {
-                    result.add(closure(item));
+                var result = new fp.List(this.comparator);
+                this.each(function(item, index) {
+                    result.add(closure(item, index));
                 });
                 return result;
             };
