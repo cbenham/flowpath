@@ -87,6 +87,14 @@ describe("List", function() {
             expect(constructListWithMoreThanTwoArguments).toThrow('May only construct a list with one or two arguments,'
                 + ' please refer to the "flowpath" documentation for details.');
         });
+
+        it("should yield null when finding the minimum value", function() {
+            expect(list.min()).toBeNull();
+        });
+
+        it("should yield null when finding the maximum value", function() {
+            expect(list.max()).toBeNull();
+        });
     });
 
     describe("with one element", function() {
@@ -361,6 +369,23 @@ describe("List", function() {
             var result = list.inject(10, function(accumulator, item) { return accumulator + item + this.get(0); });
             expect(result).toBe(55);
         });
+    });
+
+    describe("with arbitrary objects", function() {
+
+        beforeEach(function() {
+            list = new fp.List([new Item(4), new Item(9), new Item(5), new Item(3), new Item(7), new Item(8)],
+                new AscendingItemComparator());
+        });
+
+        it("should be able to find the minimum value", function() {
+            expect(list.min()).toBe(list.get(3));
+        });
+
+        it("should be able to find the maximum value", function() {
+            expect(list.max()).toBe(list.get(1));
+        });
+
     });
 
 });

@@ -494,6 +494,30 @@ fp = {};
                 }
                 return -1;
             };
+
+            fp.List.prototype.min = function() {
+                if (this.isEmpty()) {
+                    return null;
+                }
+                return this.inject(this.get(0), function(minValue, currentItem) {
+                    if(this.comparator.compare(minValue, currentItem) > 0) {
+                        return currentItem;
+                    }
+                    return minValue;
+                });
+            };
+
+            fp.List.prototype.max = function() {
+                if(this.isEmpty()) {
+                    return null;
+                }
+                return this.inject(this.get(0), function(maxValue, currentItem) {
+                    if(this.comparator.compare(maxValue, currentItem) < 0){
+                        return currentItem;
+                    }
+                    return maxValue;
+                });
+            };
         })();
 
         (function iteration() {
