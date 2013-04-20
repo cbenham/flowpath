@@ -496,28 +496,23 @@ fp = {};
             };
 
             fp.List.prototype.min = function() {
-                if (this.isEmpty()) {
-                    return null;
-                }
-                return this.inject(this.get(0), function(minValue, currentItem) {
-                    if(this.comparator.compare(minValue, currentItem) > 0) {
-                        return currentItem;
-                    }
-                    return minValue;
+                return findExtremeValue.call(this, function(minValue, currentItem) {
+                    return this.comparator.compare(minValue, currentItem) > 0 ? currentItem : minValue;
                 });
             };
 
             fp.List.prototype.max = function() {
+                return findExtremeValue.call(this, function(maxValue, currentItem) {
+                    return this.comparator.compare(maxValue, currentItem) < 0 ? currentItem : maxValue;
+                });
+            };
+
+            function findExtremeValue(closure) {
                 if(this.isEmpty()) {
                     return null;
                 }
-                return this.inject(this.get(0), function(maxValue, currentItem) {
-                    if(this.comparator.compare(maxValue, currentItem) < 0){
-                        return currentItem;
-                    }
-                    return maxValue;
-                });
-            };
+                return this.inject(this.get(0), closure);
+            }
         })();
 
         (function iteration() {
