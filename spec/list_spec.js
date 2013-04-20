@@ -72,6 +72,21 @@ describe("List", function() {
             list = new fp.List(new fp.List([unwantedItem, storedWantedItem]), new AscendingItemComparator());
             expect(list.indexOf(targetItem)).toBe(1);
         });
+
+        it("should be able to take a comparator as the sole argument upon construction", function() {
+            list = new fp.List(new AscendingItemComparator());
+            list.addAll([new Item(2), new Item(4), new Item(6)]);
+            expect(list.indexOf(new Item(4))).toBe(1);
+        });
+
+        it("should raise an exception when constructed with more than two arguments", function() {
+            var constructListWithMoreThanTwoArguments = function() {
+                new fp.List(1, 2, 3);
+            };
+
+            expect(constructListWithMoreThanTwoArguments).toThrow('May only construct a list with one or two arguments,'
+                + ' please refer to the "flowpath" documentation for details.');
+        });
     });
 
     describe("with one element", function() {
@@ -259,11 +274,11 @@ describe("List", function() {
         });
 
         it("should raise an exception when replacing an element before the beginning of the list", function() {
-            var replcingItemBeforeBeginningOfList = function() {
+            var replacingItemBeforeBeginningOfList = function() {
                 list.replace(-1, 3);
             };
 
-            expect(replcingItemBeforeBeginningOfList).toThrow("Cannot replace element at index that does not exist: -1");
+            expect(replacingItemBeforeBeginningOfList).toThrow("Cannot replace element at index that does not exist: -1");
         });
 
         it("should reverse the order of items", function() {
@@ -323,6 +338,23 @@ describe("List", function() {
             var items = [new Item(3), expectedItem, new Item(5)];
             list = new fp.List(items, new AscendingItemComparator()).clone();
             expect(list.indexOf(expectedItem)).toBe(1);
+        });
+
+        it("should provide direct access to the underlying array backing the list", function() {
+            expect(list.raw()).toBe(list.items);
+        });
+
+        it("should collect each item returned by the supplied function", function() {
+            var result = list.collect(function(item) { return item * 2; });
+            assertListContents(result, [8, 10, 12, 6, 4, 2]);
+        });
+
+        it("should collect each item returned by the supplied function and use the original comparator", function() {
+            list = new fp.List([new Item(2), new Item(4), new Item(6)], new AscendingItemComparator());
+            var result = list.collect(function(item) {
+                return new Item(item.value * 3);
+            });
+            expect(result.indexOf(new Item(12))).toBe(1);
         });
     });
 

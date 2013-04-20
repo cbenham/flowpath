@@ -295,7 +295,7 @@ fp = {};
 
         fp.Map.prototype.put = function(key, value) {
             var hashCode = this.hashFunction.hashCode(key);
-            if (!this.contains(key)) {
+            if(!this.contains(key)) {
                 this.count++;
             }
             this.entries[hashCode] = value;
@@ -334,13 +334,27 @@ fp = {};
         fp.List = function() {
             this.items = [];
             this.comparator = new fp.AscendingRelationalComparator();
-            if(arguments.length > 0) {
+
+            if(arguments.length === 1) {
+                handleConstructionWithSingleArgument.call(this, arguments);
+            } else if(arguments.length === 2) {
                 this.addAll((arguments[0] instanceof fp.List) ? arguments[0].items : arguments[0]);
-                if(arguments.length > 1) {
-                    this.comparator = arguments[1];
-                }
+                this.comparator = arguments[1];
+            } else if(arguments.length > 2) {
+                throw new Error('May only construct a list with one or two arguments,' +
+                    ' please refer to the "flowpath" documentation for details.');
             }
         };
+
+        function handleConstructionWithSingleArgument(constructorArguments) {
+            if(constructorArguments[0] instanceof fp.List) {
+                this.addAll(constructorArguments[0].items);
+            } else if(constructorArguments[0] instanceof Array) {
+                this.addAll(constructorArguments[0]);
+            } else {
+                this.comparator = constructorArguments[0];
+            }
+        }
 
         (function mutators() {
             fp.List.prototype.add = function(item) {
@@ -457,6 +471,10 @@ fp = {};
             fp.List.prototype.clone = function() {
                 return new fp.List(this.items, this.comparator);
             };
+
+            fp.List.prototype.raw = function() {
+                return this.items;
+            };
         })();
 
         (function queries() {
@@ -498,6 +516,14 @@ fp = {};
                 for(var index = 0; index < this.items.length && continueIterating; index++) {
                     continueIterating = closure.call(this, this.items[index], index);
                 }
+            };
+
+            fp.List.prototype.collect = function(closure) {
+                var result = new fp.List([], this.comparator);
+                this.each(function(item) {
+                    result.add(closure(item));
+                });
+                return result;
             };
         })();
     })();
