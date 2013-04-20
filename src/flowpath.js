@@ -520,10 +520,14 @@ fp = {};
 
             fp.List.prototype.collect = function(closure) {
                 var result = new fp.List(this.comparator);
-                this.each(function(item, index) {
-                    result.add(closure(item, index));
-                });
+                this.each(function(item, index) { result.add(closure.call(this, item, index)); });
                 return result;
+            };
+
+            fp.List.prototype.inject = function(seed, closure) {
+                var accumulation = seed;
+                this.each(function(item) { accumulation = closure.call(this, accumulation, item); });
+                return accumulation;
             };
         })();
     })();
