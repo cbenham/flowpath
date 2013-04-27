@@ -218,7 +218,7 @@ describe("List", function() {
         });
 
         it("should return -1 if the item cannot be found", function() {
-            expect(list.indexOf(9999)).toBe(-1);
+            expect(list.indexOf(9999)).toBe(null);
         });
 
         it("should return true if the list contains a given element", function() {
@@ -414,6 +414,11 @@ describe("List", function() {
             var nestedList = new fp.List([7, 8, [9, 10], innerNestedList, 13, 14]);
             list = new fp.List([1, 2, [3, 4, [5, 6], nestedList, 15, 16]]);
             assertListContents(list.flatten(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+        });
+
+        it("should use the comparator of the parent list when flattening", function() {
+            list = new fp.List([new Item(1), [new Item(2)], new Item(3)], new AscendingItemComparator());
+            expect(list.flatten().indexOf(new Item(2))).toBe(1);
         });
     });
 

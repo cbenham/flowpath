@@ -483,7 +483,7 @@ fp = {};
             };
 
             fp.List.prototype.contains = function(target) {
-                return this.indexOf(target) >= 0;
+                return this.indexOf(target) !== null;
             };
 
             fp.List.prototype.indexOf = function(target) {
@@ -492,7 +492,7 @@ fp = {};
                         return index;
                     }
                 }
-                return -1;
+                return null;
             };
 
             fp.List.prototype.min = function() {
@@ -552,7 +552,7 @@ fp = {};
 
         (function factories() {
             fp.List.prototype.flatten = function() {
-                var result = new fp.List();
+                var result = new fp.List(this.comparator);
                 this.each(function(item) {
                     if (item instanceof fp.List) {
                         result.addAll(item.flatten());
