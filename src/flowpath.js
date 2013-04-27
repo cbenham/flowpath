@@ -188,8 +188,8 @@ fp = {};
          * Adds multiple items to the queue. This method should be used to add the contents of an array, var args or
          * another queue to this queue. Use {@link fp.PriorityQueue#add|add} to add an array or another queue as an
          * item in this queue.
-         * @param {Array|Varargs|fp.PriorityQueue} Adds the contents of the supplied collection, leaving the
-         * parameter collection unchanged.
+         * @param {Array|Varargs|fp.PriorityQueue} collectionOfItems Adds the contents of the supplied collection,
+         * leaving the parameter collection unchanged.
          * @throws an exception when an attempt is made to add a null or undefined item.
          */
         fp.PriorityQueue.prototype.addAll = function() {
@@ -331,6 +331,18 @@ fp = {};
     })();
 
     (function listFunctions() {
+        /**
+         * Creates a new List. The list can be seeded with items or be left empty.
+         * @param {Array|fp.List} [collection] A collection of items that will be copied into this list. Changes to
+         * the collection will not affect the newly constructed list, vice versa changes to the list will not affect
+         * the collection.
+         * @param {Comparator} [comparator] the comparator that will be used when items need to be detected. The
+         * comparator should have a method called compare, that takes two arguments (the items to compare) and returns
+         * -1, 0 or 1 when the left hand argument is less than, equal to or greater than the right hand argument.
+         * Unless otherwise specified, this comparator will be copied over to any lists that are returned as the result
+         * of any operations.
+         * @constructor
+         */
         fp.List = function() {
             this.items = [];
             this.comparator = new fp.AscendingRelationalComparator();
@@ -341,7 +353,7 @@ fp = {};
                 this.addAll((arguments[0] instanceof fp.List) ? arguments[0].items : arguments[0]);
                 this.comparator = arguments[1];
             } else if(arguments.length > 2) {
-                throw new Error('May only construct a list with one or two arguments,' +
+                throw new Error('May only construct a List with one or two arguments,' +
                     ' please refer to the "flowpath" documentation for details.');
             }
         };
@@ -551,6 +563,11 @@ fp = {};
         })();
 
         (function factories() {
+            /**
+             * Recursively copies elements of all nested Arrays and {@link fp.List|Lists} into a new list so all
+             * elements are at the same level.
+             * @returns {fp.List} a new list with all elements copied into it.
+             */
             fp.List.prototype.flatten = function() {
                 var result = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
                 this.each(function(item) {
