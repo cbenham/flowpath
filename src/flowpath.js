@@ -549,6 +549,24 @@ fp = {};
                 return accumulation;
             };
         })();
+
+        (function factories() {
+            fp.List.prototype.flatten = function() {
+                var result = new fp.List();
+                this.each(function(item) {
+                    if (item instanceof fp.List) {
+                        result.addAll(item.flatten());
+                    } else if(item instanceof Array) {
+                        var listArray = new fp.List();
+                        listArray.items = item; //Avoid having the constructor copy the array of items over.
+                        result.addAll(listArray.flatten());
+                    } else {
+                        result.add(item);
+                    }
+                });
+                return result;
+            };
+        })();
     })();
 
 })();

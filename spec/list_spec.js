@@ -95,6 +95,10 @@ describe("List", function() {
         it("should yield null when finding the maximum value", function() {
             expect(list.max()).toBeNull();
         });
+
+        it("should return an empty list when flattening", function() {
+            expect(list.flatten().isEmpty()).toBe(true);
+        });
     });
 
     describe("with one element", function() {
@@ -369,6 +373,11 @@ describe("List", function() {
             var result = list.inject(10, function(accumulator, item) { return accumulator + item + this.get(0); });
             expect(result).toBe(55);
         });
+        
+        it("should create a duplicate list when flattening", function() {
+            var result = list.flatten();
+            assertListContents(result, [4, 5, 6, 3, 2, 1]);
+        });
     });
 
     describe("with arbitrary objects", function() {
@@ -386,6 +395,26 @@ describe("List", function() {
             expect(list.max()).toBe(list.get(1));
         });
 
+    });
+
+    describe("with nested collections", function() {
+        it("should create a new list with a nested set of array elements", function() {
+            list = new fp.List([1, 2, [3, 4], 5, 6]);
+            assertListContents(list.flatten(), [1, 2, 3, 4, 5, 6]);
+        });
+
+        it("should create a new list with nested set of list elements", function() {
+            var nested = new fp.List([3, 4]);
+            list = new fp.List([1, 2, nested, 5, 6]);
+            assertListContents(list.flatten(), [1, 2, 3, 4, 5, 6]);
+        });
+
+        it("should be able to flatten over multiple depths", function() {
+            var innerNestedList = new fp.List([11, 12]);
+            var nestedList = new fp.List([7, 8, [9, 10], innerNestedList, 13, 14]);
+            list = new fp.List([1, 2, [3, 4, [5, 6], nestedList, 15, 16]]);
+            assertListContents(list.flatten(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+        });
     });
 
 });
