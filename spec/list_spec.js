@@ -420,6 +420,11 @@ describe("List", function() {
             list = new fp.List([new Item(1), [new Item(2)], new Item(3)], new AscendingItemComparator());
             expect(list.flatten().indexOf(new Item(2))).toBe(1);
         });
+
+        it("should use the supplied comparator when flattening", function() {
+            list = new fp.List([new Item(1), [new Item(2)], new Item(3)]);
+            expect(list.flatten(new AscendingItemComparator()).indexOf(new Item(2))).toBe(1);
+        });
     });
 
 });

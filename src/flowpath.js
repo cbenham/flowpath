@@ -552,7 +552,7 @@ fp = {};
 
         (function factories() {
             fp.List.prototype.flatten = function() {
-                var result = new fp.List(this.comparator);
+                var result = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
                 this.each(function(item) {
                     if (item instanceof fp.List) {
                         result.addAll(item.flatten());
