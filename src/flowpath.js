@@ -565,32 +565,28 @@ fp = {};
         (function factories() {
             /**
              * Recursively copies elements of all nested Arrays and {@link fp.List|Lists} into a new list so all
-             * elements are at the same level.
+             * elements are at the same level. The elements will appear in the order they are encountered.
              * @returns {fp.List} a new list with all elements copied into it.
              */
             fp.List.prototype.flatten = function() {
                 var accumulator = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
                 this.each(function(item) {
-                    this.doFlatten(accumulator, item);
+                    flattenAndAccumulate.call(this, accumulator, item);
                 });
                 return accumulator;
             };
 
-            fp.List.prototype.doFlatten = function(accumulator, itemToAdd) {
+            function flattenAndAccumulate(accumulator, itemToAdd) {
                 if (itemToAdd instanceof fp.List) {
-                    itemToAdd.each(function(item) {
-                        itemToAdd.doFlatten(accumulator, item);
-                    });
+                    itemToAdd.each(function(item) { flattenAndAccumulate.call(itemToAdd, accumulator, item); });
                 } else if (itemToAdd instanceof Array) {
                     var listArray = new fp.List();
                     listArray.items = itemToAdd; //Avoid having the constructor copy the array of items over.
-                    listArray.each(function(item) {
-                        listArray.doFlatten(accumulator, item);
-                    });
+                    listArray.each(function(item) { flattenAndAccumulate.call(listArray, accumulator, item); });
                 } else {
                     accumulator.add(itemToAdd);
                 }
-            };
+            }
         })();
     })();
 
