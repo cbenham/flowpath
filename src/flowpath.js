@@ -353,7 +353,7 @@ fp = {};
                 this.addAll((arguments[0] instanceof fp.List) ? arguments[0].items : arguments[0]);
                 this.comparator = arguments[1];
             } else if(arguments.length > 2) {
-                throw new Error('May only construct a List with one or two arguments,' +
+                throw new Error('May only construct a list with one or two arguments,' +
                     ' please refer to the "flowpath" documentation for details.');
             }
         };
@@ -569,19 +569,27 @@ fp = {};
              * @returns {fp.List} a new list with all elements copied into it.
              */
             fp.List.prototype.flatten = function() {
-                var result = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
+                var accumulator = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
                 this.each(function(item) {
-                    if (item instanceof fp.List) {
-                        result.addAll(item.flatten());
-                    } else if(item instanceof Array) {
-                        var listArray = new fp.List();
-                        listArray.items = item; //Avoid having the constructor copy the array of items over.
-                        result.addAll(listArray.flatten());
-                    } else {
-                        result.add(item);
-                    }
+                    this.doFlatten(accumulator, item);
                 });
-                return result;
+                return accumulator;
+            };
+
+            fp.List.prototype.doFlatten = function(accumulator, itemToAdd) {
+                if (itemToAdd instanceof fp.List) {
+                    itemToAdd.each(function(item) {
+                        itemToAdd.doFlatten(accumulator, item);
+                    });
+                } else if (itemToAdd instanceof Array) {
+                    var listArray = new fp.List();
+                    listArray.items = itemToAdd; //Avoid having the constructor copy the array of items over.
+                    listArray.each(function(item) {
+                        listArray.doFlatten(accumulator, item);
+                    });
+                } else {
+                    accumulator.add(itemToAdd);
+                }
             };
         })();
     })();
