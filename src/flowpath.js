@@ -556,15 +556,43 @@ fp = {};
                 }
             };
 
+            /**
+             * Returns a new list containing the results returned by the supplied closure. The receiver of the closure
+             * is the list itself.
+             * @param closure the closure that will invoked for every element in the list. The closure is called with
+             * two arguments:
+             * <ol>
+             *     <li>item: the current item in the list</li>
+             *     <li>index: the index of the current item in the list</li>
+             * </ol>
+             * @returns {fp.List} a new list with the results of calling the closure for every element in the list.
+             */
             fp.List.prototype.collect = function(closure) {
                 var result = new fp.List(this.comparator);
                 this.each(function(item, index) { result.add(closure.call(this, item, index)); });
                 return result;
             };
 
-            fp.List.prototype.inject = function(seed, closure) {
-                var accumulation = seed;
-                this.each(function(item) { accumulation = closure.call(this, accumulation, item); });
+            /**
+             * Invokes the supplied closure, once for each element in this list. The closure is supplied with an
+             * accumulated value every iteration. This accumulation is the result of the accumulation from a previous
+             * call of the closure. The closure is passed the return value of the previous call to the closure, with the
+             * exception of the first invocation where the accumulation is taken as the initialValue parameter. The
+             * receiver of the closure is the list itself.
+             * @param initialValue the initial value of the accumulation, it is this value that will be first
+             * passed to the closure.
+             * @param closure a closure that is invoked, once for every item in the list. The closure is called
+             * with up to three arguments in the following order:
+             * <ol>
+             *     <li>accumulation: the currently accumulated value</li>
+             *     <li>item: the current item in the list</li>
+             *     <li>index: the index of the current item</li>
+             * </ol>
+             * @returns {*} the value of the accumulation after the final invocation of the closure.
+             */
+            fp.List.prototype.inject = function(initialValue, closure) {
+                var accumulation = initialValue;
+                this.each(function(item, index) { accumulation = closure.call(this, accumulation, item, index); });
                 return accumulation;
             };
         })();
@@ -572,14 +600,13 @@ fp = {};
         (function factories() {
             /**
              * Recursively copies elements of all nested Arrays and {@link fp.List|Lists} into a new list so all
-             * elements are at the same level. The elements will appear in the order they are encountered.
+             * elements are at the same level. The elements will appear in the order they are encountered. The receiver
+             * of the closure is the list itself.
              * @returns {fp.List} a new list with all elements copied into it.
              */
             fp.List.prototype.flatten = function() {
                 var accumulator = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
-                this.each(function(item) {
-                    flattenAndAccumulate.call(this, accumulator, item);
-                });
+                this.each(function(item) { flattenAndAccumulate.call(this, accumulator, item); });
                 return accumulator;
             };
 

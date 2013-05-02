@@ -370,8 +370,8 @@ describe("List", function() {
         });
 
         it("should be able to accumulate on the array while injecting", function() {
-            var result = list.inject(10, function(accumulator, item) { return accumulator + item + this.get(0); });
-            expect(result).toBe(55);
+            var result = list.inject(10, function(accumulator, item, index) { return accumulator + item + index + this.get(0); });
+            expect(result).toBe(70);
         });
         
         it("should create a duplicate list when flattening", function() {
