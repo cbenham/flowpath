@@ -333,6 +333,13 @@ fp = {};
     (function listFunctions() {
         /**
          * Creates a new List. The list can be seeded with items or be left empty.
+         * <ul>
+         *     <li>Zero parameters: creates an empty list.</li>
+         *     <li>One parameter: when an array or list, will add contents of said structure. Otherwise will
+         *         treat parameter as a comparator resulting in an empty list.</li>
+         *     <li>Two parameters: the first parameter is expected to be either an array or list whose elements
+         *         will be added to this new list. Second parameter is treated as a comparator.</li>
+         * </ul>
          * @param {Array|fp.List} [collection] A collection of items that will be copied into this list. Changes to
          * the collection will not affect the newly constructed list, vice versa changes to the list will not affect
          * the collection.
