@@ -604,8 +604,9 @@ fp = {};
              * Inspects the list to determine if there are any elements meeting the conditions specified by the
              * closure. Iterates over each element while the condition specified by the closure is not met. Iteration
              * ceases when an element meets the requirements of the closure.
-             * @param {Function} closure a function that will be called once for each item. The closure takes two
-             * arguments:
+             * @param {Function} [closure] a function that will be called once for each item. If not supplied, the list
+             * will be examined for non-null and non-undefined elements, if the list only contains such elements false
+             * will be returned, true otherwise. The closure takes two arguments:
              * <ol>
              *     <li>item: the current item</li>
              *     <li>index: the index of the current item</li>
@@ -614,13 +615,26 @@ fp = {};
              * false will be returned.
              */
             fp.List.prototype.any = function(closure) {
+                var closureToUse = closure === undefined ? yieldArgumentClosure : closure;
                 var result = false;
                 this.eachWhile(function(item, index) {
-                    result = closure(item, index);
+                    result = closureToUse(item, index);
                     return !result;
                 });
-                return !!result;
+                return isTruthy(result);
             };
+
+            function isTruthy(value) {
+                //Use Number.isNaN and not isNaN because isNaN(undefined) is true while Number.isNaN(undefined) is not.
+                if(value === 0 || Number.isNaN(value) || value === '') {
+                    return true;
+                }
+                return !!value;
+            }
+
+            function yieldArgumentClosure(item) {
+                return item;
+            }
         })();
 
         (function factories() {

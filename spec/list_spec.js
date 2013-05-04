@@ -426,6 +426,21 @@ describe("List", function() {
             expect(list.max()).toBe(list.get(1));
         });
 
+        it("should return true when checking for any truthy elements, no closure is supplied and one truthy element" +
+            " exists", function() {
+            list = new fp.List([null, 3]);
+            expect(list.any()).toBe(true);
+        });
+
+        it("should return false when there aren't any truthy elements and no closure is supplied", function() {
+            list = new fp.List([null, undefined]);
+            expect(list.any()).toBe(false);
+        });
+
+        it("should return true when there are only any empty strings, 0 and NaN and no closure is supplied", function() {
+            list = new fp.List([0, NaN, '']);
+            expect(list.any()).toBe(true);
+        });
     });
 
     describe("with nested collections", function() {
