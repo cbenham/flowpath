@@ -99,6 +99,10 @@ describe("List", function() {
         it("should return an empty list when flattening", function() {
             expect(list.flatten().isEmpty()).toBe(true);
         });
+
+        it("should return false when checking if any elements meet the requirements", function() {
+            expect(list.any(function() {})).toBe(false);
+        });
     });
 
     describe("with one element", function() {
@@ -377,6 +381,33 @@ describe("List", function() {
         it("should create a duplicate list when flattening", function() {
             var result = list.flatten();
             assertListContents(result, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should return true when the first meets the required any value", function() {
+            var actualIndexOfLastItem = null;
+            var actualValueOfLastItem = null;
+            var actualOutcome = list.any(function(item, index) {
+                actualIndexOfLastItem = index;
+                actualValueOfLastItem = item;
+                return item === 6;
+            });
+            expect(actualOutcome).toBe(true);
+            expect(actualIndexOfLastItem).toBe(2);
+            expect(actualValueOfLastItem).toBe(6);
+        });
+
+        it("should return false when none of the values meets the required any value", function() {
+            expect(list.any(function() { return false; })).toBe(false);
+        });
+        
+        it("should not have any values that match null when there are no null items in the list", function() {
+            var actualResult = list.any(function() { return null; });
+            expect(actualResult).toBe(false);
+        });
+
+        it("should not have any undefined values when there are no undefined items in the list", function() {
+            var actualResult = list.any(function() { return undefined; });
+            expect(actualResult).toBe(false);
         });
     });
 

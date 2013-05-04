@@ -7,11 +7,13 @@ fp = {};
      */
     fp.AscendingRelationalComparator = function() {
     };
+
     /**
-     * Compares two objects to determine which is greater.
-     * @param left the left hand object to compare.
-     * @param right the right hand object to compare.
-     * @returns {number} -1, 0 or 1 as the left hand object is less than, equal to and greater than the right hand.
+     * Compares two objects to determine which is greater. The arguments must be able to respond to the operators:
+     * < and >
+     * @param {*} left the left hand object to compare.
+     * @param {*} right the right hand object to compare.
+     * @returns {Number} -1, 0 or 1 as the left hand object is less than, equal to and greater than the right hand.
      * object
      */
     fp.AscendingRelationalComparator.prototype.compare = function(left, right) {
@@ -25,17 +27,36 @@ fp = {};
     };
 
     /**
+     * Comparator for creating descending orders.
+     * @constructor
+     */
+    fp.DescendingRelationalComparator = function() {
+        this.delegateComparator = new fp.NegationComparator(new fp.AscendingRelationalComparator());
+    };
+    /**
+     * Compares two objects to determine which is greater. The arguments must be able to respond to the operators:
+     * < and >
+     * @param {*} left the left hand object to compare.
+     * @param {*} right the right hand object to compare.
+     * @returns {Number} 1, 0 or -1 as the left hand object is greater than, equal to or less than the right hand.
+     */
+    fp.DescendingRelationalComparator.prototype.compare = function(left, right) {
+        return this.delegateComparator.compare(left, right);
+    };
+
+    /**
      * Compares two objects by delegating to the compareTo method on the object itself.
      * @constructor
      */
     fp.CompareToComparator = function() {
     };
+
     /**
      * Compares two objects by delegating to the compareTo method on the left hand object. The compareTo method will
      * be passed a single argument which will be the right hand object.
-     * @param left the object on which compareTo(Object) will be called.
-     * @param right the object that is passed to the compareTo method.
-     * @returns {number} returns the result of the call to the compareTo method. For ascending order, the compareTo
+     * @param {*} left the object on which compareTo(Object) will be called.
+     * @param {*} right the object that is passed to the compareTo method.
+     * @returns {Number} returns the result of the call to the compareTo method. For ascending order, the compareTo
      * method should return -1, 0 or 1 as the left hand object is less than, equal to or greater than the right hand
      * object. For descending order, the compareTo method should return 1, 0 or -1 as the left hand object is
      * greater than, equal to or less than the right hand object.
@@ -46,7 +67,7 @@ fp = {};
 
     /**
      * Delegates to another comparator to negate it's outcome.
-     * @param delegateComparator the comparator that will be delegated to for negation.
+     * @param {Comparator} delegateComparator the comparator that will be delegated to for negation.
      * @constructor
      */
     fp.NegationComparator = function(delegateComparator) {
@@ -54,9 +75,9 @@ fp = {};
     };
     /**
      * Negates the outcome of the underlying comparator.
-     * @param left the left hand object to compare.
-     * @param right the right hand object to compare.
-     * @returns {number} the opposite of the underlying delegate. The following will be returned for given results from
+     * @param {*} left the left hand object to compare.
+     * @param {*} right the right hand object to compare.
+     * @returns {Number} the opposite of the underlying delegate. The following will be returned for given results from
      * the delegate:
      * <ul>
      *   <li>when the delegate returns -1, this object will return 1</li>
@@ -66,23 +87,6 @@ fp = {};
      */
     fp.NegationComparator.prototype.compare = function(left, right) {
         return this.delegateComparator.compare(left, right) * -1;
-    };
-
-    /**
-     * Comparator for creating descending orders.
-     * @constructor
-     */
-    fp.DescendingRelationalComparator = function() {
-        this.delegateComparator = new fp.NegationComparator(new fp.AscendingRelationalComparator());
-    };
-    /**
-     * Compares two objects to determine which is greater.
-     * @param left the left hand object to compare.
-     * @param right the right hand object to compare.
-     * @returns {number} 1, 0 or -1 as the left hand object is greater than, equal to or less than the right hand.
-     */
-    fp.DescendingRelationalComparator.prototype.compare = function(left, right) {
-        return this.delegateComparator.compare(left, right);
     };
 })();
 
@@ -537,7 +541,7 @@ fp = {};
         (function iteration() {
             /**
              * Sets the receiver to the list itself.
-             * @param closure
+             * @param {Function} closure
              */
             fp.List.prototype.each = function(closure) {
                 for(var index = 0; index < this.items.length; index++) {
@@ -547,7 +551,7 @@ fp = {};
 
             /**
              * Sets the receiver to the list itself.
-             * @param closure
+             * @param {Function} closure
              */
             fp.List.prototype.eachWhile = function(closure) {
                 var continueIterating = true;
@@ -559,8 +563,8 @@ fp = {};
             /**
              * Returns a new list containing the results returned by the supplied closure. The receiver of the closure
              * is the list itself.
-             * @param closure the closure that will invoked for every element in the list. The closure is called with
-             * two arguments:
+             * @param {Function} closure the closure that will invoked for every element in the list. The closure is
+             * called with two arguments:
              * <ol>
              *     <li>item: the current item in the list</li>
              *     <li>index: the index of the current item in the list</li>
@@ -579,10 +583,10 @@ fp = {};
              * call of the closure. The closure is passed the return value of the previous call to the closure, with the
              * exception of the first invocation where the accumulation is taken as the initialValue parameter. The
              * receiver of the closure is the list itself.
-             * @param initialValue the initial value of the accumulation, it is this value that will be first
+             * @param {*} initialValue the initial value of the accumulation, it is this value that will be first
              * passed to the closure.
-             * @param closure a closure that is invoked, once for every item in the list. The closure is called
-             * with up to three arguments in the following order:
+             * @param {Function} closure a closure that is invoked, once for every item in the list. The closure is
+             * called with up to three arguments in the following order:
              * <ol>
              *     <li>accumulation: the currently accumulated value</li>
              *     <li>item: the current item in the list</li>
@@ -595,17 +599,41 @@ fp = {};
                 this.each(function(item, index) { accumulation = closure.call(this, accumulation, item, index); });
                 return accumulation;
             };
+
+            /**
+             * Inspects the list to determine if there are any elements meeting the conditions specified by the
+             * closure. Iterates over each element while the condition specified by the closure is not met. Iteration
+             * ceases when an element meets the requirements of the closure.
+             * @param {Function} closure a function that will be called once for each item. The closure takes two
+             * arguments:
+             * <ol>
+             *     <li>item: the current item</li>
+             *     <li>index: the index of the current item</li>
+             * </ol>
+             * @returns {boolean} true if any of the elements meet the condition specified by the closure, otherwise
+             * false will be returned.
+             */
+            fp.List.prototype.any = function(closure) {
+                var result = false;
+                this.eachWhile(function(item, index) {
+                    result = closure(item, index);
+                    return !result;
+                });
+                return !!result;
+            };
         })();
 
         (function factories() {
             /**
              * Recursively copies elements of all nested Arrays and {@link fp.List|Lists} into a new list so all
              * elements are at the same level. The elements will appear in the order they are encountered. The receiver
-             * of the closure is the list itself.
+             * of the closure is the source list itself.
+             * @param {Comparator} [comparator] the comparator used by the returned list. Left unspecified, the
+             * comparator used by the source list will be copied across.
              * @returns {fp.List} a new list with all elements copied into it.
              */
-            fp.List.prototype.flatten = function() {
-                var accumulator = new fp.List(arguments.length > 0 ? arguments[0] : this.comparator);
+            fp.List.prototype.flatten = function(comparator) {
+                var accumulator = new fp.List(comparator === undefined ? this.comparator : arguments[0]);
                 this.each(function(item) { flattenAndAccumulate.call(this, accumulator, item); });
                 return accumulator;
             };
