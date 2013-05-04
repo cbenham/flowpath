@@ -437,7 +437,7 @@ describe("List", function() {
             expect(list.any()).toBe(false);
         });
 
-        it("should return true when there are only any empty strings, 0 and NaN and no closure is supplied", function() {
+        it("should treat empty strings, 0 and NaN as truthy when checking any and no closure is supplied", function() {
             list = new fp.List([0, NaN, '']);
             expect(list.any()).toBe(true);
         });
