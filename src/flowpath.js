@@ -175,7 +175,7 @@ fp = {};
         };
 
         /**
-         * Adds a single item to the queue. Use this method to add items of type Array.
+         * Adds a single item to the queue. Use this method to add items of type array.
          * To add multiple items at once consider using {@link fp.PriorityQueue#addAll|addAll}.
          * @param item the item to add, Arrays will be added to the queue (as opposed its elements).
          * @throws an exception when an attempt is made to add a null or undefined item.
@@ -336,20 +336,21 @@ fp = {};
 
     (function listFunctions() {
         /**
-         * Creates a new List. The list can be seeded with items or be left empty.
+         * Creates a new list. The list can be initially be empty or seeded with items.
          * <ul>
          *     <li>Zero parameters: creates an empty list.</li>
-         *     <li>One parameter: when an array or list, will add contents of said structure. Otherwise will
-         *         treat parameter as a comparator resulting in an empty list.</li>
+         *     <li>One parameter: when an array or list, will add its contents. Otherwise the parameter will
+         *         be treated as a comparator, resulting in an empty list.</li>
          *     <li>Two parameters: the first parameter is expected to be either an array or list whose elements
-         *         will be added to this new list. Second parameter is treated as a comparator.</li>
+         *         will be added to the new list. The second parameter will be treated as a comparator.</li>
          * </ul>
          * @param {Array|fp.List} [collection] A collection of items that will be copied into this list. Changes to
          * the collection will not affect the newly constructed list, vice versa changes to the list will not affect
          * the collection.
-         * @param {Comparator} [comparator] the comparator that will be used when items need to be detected. The
+         * @param {Comparator} [comparator] The comparator that will be used when items need to be compared. The
          * comparator should have a method called compare, that takes two arguments (the items to compare) and returns
-         * -1, 0 or 1 when the left hand argument is less than, equal to or greater than the right hand argument.
+         * -1, 0 or 1 when the left hand argument is less than, equal to or greater than the right hand argument:
+         * <pre><code>compare(left, right)</code></pre>
          * Unless otherwise specified, this comparator will be copied over to any lists that are returned as the result
          * of any operations.
          * @constructor
@@ -380,10 +381,22 @@ fp = {};
         }
 
         (function mutators() {
+            /**
+             * Adds an item to the list.
+             * @param {*} item The item to be added.
+             */
             fp.List.prototype.add = function(item) {
                 this.items.push(item);
             };
 
+            /**
+             * Adds the contents of the supplied collection but not the collection itself. The contents will be added
+             * to the end in the order they are found.
+             * @param {Array|fp.List|varargs} arguments The collection or varargs which are to be added. When the first
+             * argument is an array or list its contents will be added in order. When the first argument is neither an
+             * array or list, the arguments will be treated as variable arguments such that each argument will be
+             * added in turn.
+             */
             fp.List.prototype.addAll = function() {
                 var itemArguments = convertToArguments(arguments);
                 for(var index = 0; index < itemArguments.length; index++) {
@@ -391,14 +404,29 @@ fp = {};
                 }
             };
 
+            /**
+             * Empties the list.
+             */
             fp.List.prototype.clear = function() {
-                this.items.splice(0, this.items.length);
+                this.items.length = 0;
             };
 
+            /**
+             * Adds a single item to the beginning of the list, pushing all elements along one position.
+             * @param {*} item The item to be prepended.
+             */
             fp.List.prototype.prepend = function(item) {
                 this.items.unshift(item);
             };
 
+            /**
+             * Prepends the contents of the supplied collection but not the collection itself. The contents will be
+             * added to the beginning of the list in the same order they appear in the source collection.
+             * @param {Array|fp.List|varargs} arguments The collection or varargs which are to be prepended. When
+             * the first argument is an array or list, its contents will be added in order. When the first argument is
+             * neither an array or list, the arguments will be treated as variable arguments such that each argument
+             * will be prepended.
+             */
             fp.List.prototype.prependAll = function() {
                 var itemArguments = convertToArguments(arguments);
                 for(var index = itemArguments.length - 1; index >= 0; index--) {
@@ -563,13 +591,13 @@ fp = {};
             /**
              * Returns a new list containing the results returned by the supplied closure. The receiver of the closure
              * is the list itself.
-             * @param {Function} closure the closure that will invoked for every element in the list. The closure is
+             * @param {Function} closure The closure that will invoked for every element in the list. The closure is
              * called with two arguments:
              * <ol>
              *     <li>item: the current item in the list</li>
              *     <li>index: the index of the current item in the list</li>
              * </ol>
-             * @returns {fp.List} a new list with the results of calling the closure for every element in the list.
+             * @returns {fp.List} A new list with the results of calling the closure for every element in the list.
              */
             fp.List.prototype.collect = function(closure) {
                 var result = new fp.List(this.comparator);
@@ -592,7 +620,7 @@ fp = {};
              *     <li>item: the current item in the list</li>
              *     <li>index: the index of the current item</li>
              * </ol>
-             * @returns {*} the value of the accumulation after the final invocation of the closure.
+             * @returns {*} The value of the accumulation after the final invocation of the closure.
              */
             fp.List.prototype.inject = function(initialValue, closure) {
                 var accumulation = initialValue;
@@ -604,14 +632,14 @@ fp = {};
              * Inspects the list to determine if there are any elements meeting the conditions specified by the
              * closure. Iterates over each element while the condition specified by the closure is not met. Iteration
              * ceases when an element meets the requirements of the closure.
-             * @param {Function} [closure] a function that will be called once for each item. If not supplied, the list
+             * @param {Function} [closure] A function that will be called once for each item. If not supplied, the list
              * will be examined for non-null and non-undefined elements, if the list only contains such elements false
              * will be returned, true otherwise. The closure takes two arguments:
              * <ol>
              *     <li>item: the current item</li>
              *     <li>index: the index of the current item</li>
              * </ol>
-             * @returns {boolean} true if any of the elements meet the condition specified by the closure, otherwise
+             * @returns {boolean} True if any of the elements meet the condition specified by the closure, otherwise
              * false will be returned.
              */
             fp.List.prototype.any = function(closure) {
@@ -639,12 +667,12 @@ fp = {};
 
         (function factories() {
             /**
-             * Recursively copies elements of all nested Arrays and {@link fp.List|Lists} into a new list so all
-             * elements are at the same level. The elements will appear in the order they are encountered. The receiver
-             * of the closure is the source list itself.
-             * @param {Comparator} [comparator] the comparator used by the returned list. Left unspecified, the
+             * Recursively copies elements of all nested arrays and lists into a new list so all elements are at the
+             * same level. The elements will appear in the order they are encountered. The receiver of the closure is
+             * the source list itself.
+             * @param {Comparator} [comparator] The comparator used by the returned list. Left unspecified, the
              * comparator used by the source list will be copied across.
-             * @returns {fp.List} a new list with all elements copied into it.
+             * @returns {fp.List} A new list with all elements copied into it.
              */
             fp.List.prototype.flatten = function(comparator) {
                 var accumulator = new fp.List(comparator === undefined ? this.comparator : arguments[0]);
