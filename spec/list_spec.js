@@ -103,6 +103,14 @@ describe("List", function() {
         it("should return false when checking if any elements meet the requirements", function() {
             expect(list.any(function() {})).toBe(false);
         });
+
+        it("should yield null when getting the first element from an empty list", function() {
+            expect(list.first()).toBeNull();
+        });
+
+        it("should yield null when getting the last element from an empty list", function() {
+            expect(list.last()).toBeNull();
+        });
     });
 
     describe("with one element", function() {

@@ -471,6 +471,9 @@ fp = {};
                 return previousValue;
             };
 
+            /**
+             * Reverses the order of this list.
+             */
             fp.List.prototype.reverse = function() {
                 this.items.reverse();
             };
@@ -510,15 +513,33 @@ fp = {};
                 return this.items[index];
             };
 
+            /**
+             * Checks if the list is empty.
+             * @returns {boolean} Returns true if this list contains no items.
+             */
             fp.List.prototype.isEmpty = function() {
                 return this.size() === 0;
             };
 
+            /**
+             * Returns the first item in the list.
+             * @returns {*} The first item in the list or null if the list is empty.
+             */
             fp.List.prototype.first = function() {
+                if (this.isEmpty()) {
+                    return null;
+                }
                 return this.get(0);
             };
 
+            /**
+             * Returns the last item in the list.
+             * @returns {*} The last item in the list or null if the list is empty.
+             */
             fp.List.prototype.last = function() {
+                if (this.isEmpty()) {
+                    return null;
+                }
                 return this.get(this.size() - 1);
             };
 
