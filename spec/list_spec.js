@@ -238,9 +238,40 @@ describe("List", function() {
             expect(list.contains(4)).toBe(true);
         });
 
-        it("should remove an item at a given location", function() {
-            list.deleteAt(2);
+        it("should remove and return an item at a given location", function() {
+            expect(list.deleteAt(2)).toBe(6);
             assertListContents(list, [4, 5, 3, 2, 1]);
+        });
+
+        it("should remove an referenced with a negative index and return the removed item", function() {
+            expect(list.deleteAt(-3)).toBe(3);
+            assertListContents(list, [4, 5, 6, 2, 1]);
+        });
+
+        it("should not remove anything and yield null when deleting an index greater than the list length", function() {
+            expect(list.deleteAt(list.size())).toBeNull();
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should not remove anything and yield null when deleting an index greater than the negative length of the" +
+            " list", function() {
+            expect(list.deleteAt((list.size() + 1) * -1)).toBeNull();
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should be able to remove the first element using a negative index", function() {
+            expect(list.deleteAt(list.size() * -1)).toBe(4);
+            assertListContents(list, [5, 6, 3, 2, 1]);
+        });
+        
+        it("should return null when deleting an element beyond the end of the list", function() {
+            expect(list.deleteAt(list.size() + 2)).toBeNull();
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
+        });
+
+        it("should return null when deleting an element using a negative index bigger than the list size", function() {
+            expect(list.deleteAt((list.size() + 2) * -1)).toBeNull();
+            assertListContents(list, [4, 5, 6, 3, 2, 1]);
         });
 
         it("should return true when an item was found and deleted from the list", function() {

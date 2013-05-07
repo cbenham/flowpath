@@ -434,8 +434,19 @@ fp = {};
                 }
             };
 
+            /**
+             * Deletes the item at the specified index.
+             * @param [Number] index The index of the element to delete. Can use negative numbers to delete from
+             * a specific number of elements from the end of the list toward the beginning of the list.
+             * @returns {*} The object at the index that is being deleted. Null will be returned when the
+             * supplied index is greater than the size of the list or when the index is greater than the
+             * negative size of the list.
+             */
             fp.List.prototype.deleteAt = function(index) {
-                this.items.splice(index, 1);
+                if(index >= this.size() || index <= (this.size() + 1) * -1) {
+                    return null;
+                }
+                return this.items.splice(index, 1)[0];
             };
 
             fp.List.prototype.deleteItem = function(itemToDelete) {
@@ -529,6 +540,10 @@ fp = {};
         })();
 
         (function queries() {
+            /**
+             * Counts the number of items in the list.
+             * @returns {Number} The number of items in the list.
+             */
             fp.List.prototype.size = function() {
                 return this.items.length;
             };
