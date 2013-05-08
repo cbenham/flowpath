@@ -543,6 +543,11 @@ fp = {};
                 return this.get(this.size() - 1);
             };
 
+            /**
+             * Builds an array from the list.
+             * @returns {Array} Copy of the list as an array. Being a copy, changes to the returned array will have no
+             * effects on the list and vice versa.
+             */
             fp.List.prototype.toArray = function() {
                 var copy = [];
                 this.each(function(item) {
@@ -551,10 +556,21 @@ fp = {};
                 return copy;
             };
 
+            /**
+             * Creates a new list which is a copy of this list. The comparator used in the source list will be used
+             * in the cloned list.
+             * @returns {fp.List} Copy of the list as a new list. Being a copy, changes to the returned list will have
+             * no effects on the source list and vice versa.
+             */
             fp.List.prototype.clone = function() {
                 return new fp.List(this.items, this.comparator);
             };
 
+            /**
+             * Retrieves the array that backs the list.
+             * @returns {Array} The array backing the list, changes to the list will affect the array while
+             * changes to the array will affect the list.
+             */
             fp.List.prototype.raw = function() {
                 return this.items;
             };
@@ -685,10 +701,10 @@ fp = {};
                     result = closureToUse(item, index);
                     return !result;
                 });
-                return isTruthy(result);
+                return isIntuitivelyTruthy(result);
             };
 
-            function isTruthy(value) {
+            function isIntuitivelyTruthy(value) {
                 //Use Number.isNaN and not isNaN because isNaN(undefined) is true while Number.isNaN(undefined) is not.
                 if(value === 0 || Number.isNaN(value) || value === '') {
                     return true;
