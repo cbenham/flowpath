@@ -381,10 +381,35 @@ describe("List", function() {
             assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
         });
 
+        it("should be able to insert a single variable argument", function() {
+            list.insertAll(3, 99);
+            assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
+        });
+
         it("should be able to insert elements of a list", function() {
             var otherList = new fp.List([55, 66, 77]);
             list.insertAll(2, otherList);
             assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
+        });
+        
+        it("should insert all elements beyond end of list", function() {
+            list.insertAll(list.size() + 3, [97, 98, 99]);
+            assertListContents(list, [4, 5, 6, 3, 2, 1, null, null, null, 97, 98, 99]);
+        });
+        
+        it("should insert all elements using a negative index", function() {
+            list.insertAll(list.size() - 2, [96, 97, 98, 99]);
+            assertListContents(list, [4, 5, 6, 3, 96, 97, 98, 99, 2, 1]);
+        });
+
+        it("should raise an exception when inserting an item using a negative index greater" +
+            " than negative list length", function() {
+            var insertionIndex = -list.size() - 1;
+            var insertIntoList = function() {
+                list.insertAll(insertionIndex, 96, 97, 98, 99);
+            };
+            expect(insertIntoList).toThrow("Index out of range: " + insertionIndex + " too small, minimum: "
+                + -list.size());
         });
 
         it("should be possible to clear the list", function() {

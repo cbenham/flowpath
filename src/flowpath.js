@@ -502,8 +502,21 @@ fp = {};
                 }
             };
 
-            fp.List.prototype.insertAll = function() {
-                var insertionIndex = arguments[0];
+            /**
+             * Inserts a list, array or varargs at the specified index. By specifying a single vararg it is possible
+             * to insert a single item.
+             * @param {Number} insertionIndex The location at which the item will be inserted, shifting all succeeding
+             * items to the right of the inserted items by one. Items can be inserted beyond the end of the list. In
+             * such a case, all items between the end of the list and the final resting place will be null. By using a
+             * negative number, items can be inserted, counting from the end of the list. To insert items in the last
+             * element of the list and beyond, use -1, for second last use -2 etc. Negative indexes must be no less than
+             * the negative size of the list.
+             * @param {*} items The items that will be inserted at the specified index. These can be in the form of
+             * another list, an array or variable arguments. It may also be a single argument by using a single
+             * variable argument.
+             * @throws {Error} If the <i>insertionIndex</i> is greater than the negative size of the list.
+             */
+            fp.List.prototype.insertAll = function(insertionIndex) {
                 var sourceIndex = 1;
                 var itemsToInsert = arguments;
                 if(arguments.length === 2) {
@@ -511,13 +524,36 @@ fp = {};
                     itemsToInsert = extractItemsToInsert(arguments[1]);
                 }
 
-                for(var index = (itemsToInsert.length - 1); index >= sourceIndex; index--) {
-                    this.items.splice(insertionIndex, 0, itemsToInsert[index]);
+                if (insertionIndex > this.size()) {
+                    insertBeyondLength.call(this, insertionIndex, itemsToInsert);
+                } else if (insertionIndex < -this.size()) {
+                    throw new Error('Index out of range: ' + insertionIndex + ' too small, minimum: ' + -this.size());
+                } else {
+                    spliceIn.call(this, itemsToInsert, sourceIndex, insertionIndex);
                 }
             };
 
-            function extractItemsToInsert(collection) {
-                return collection instanceof fp.List ? collection.items : collection;
+            function extractItemsToInsert(argument) {
+                if (argument instanceof fp.List || argument instanceof Array) {
+                    return argument instanceof fp.List ? argument.items : argument;
+                }
+                return [argument];
+            }
+
+            function insertBeyondLength(insertionIndex, itemsToInsert) {
+                var counter;
+                for(counter = this.size(); counter < insertionIndex; counter++) {
+                    this.items.push(null);
+                }
+                for(counter = 0; counter < itemsToInsert.length; counter++) {
+                    this.items.push(itemsToInsert[counter]);
+                }
+            }
+
+            function spliceIn(itemsToInsert, sourceIndex, insertionIndex) {
+                for(var index = (itemsToInsert.length - 1); index >= sourceIndex; index--) {
+                    this.items.splice(insertionIndex, 0, itemsToInsert[index]);
+                }
             }
 
             function convertToArguments(args) {
