@@ -220,10 +220,37 @@ describe("List", function() {
         });
         
         it("should set the list as the receiver when calling each while", function() {
+            var count = 0;
             list.eachWhile(function(item, index) {
+                count++;
                 expect(this instanceof fp.List).toBe(true);
+                return true;
             });
+            expect(count).toBe(list.size());
         });
+
+        it("should cease iterating over each item when null is returned", function() {
+            var f = function() {
+                return null;
+            };
+            assertNumberOfEachWhileIterations(f, 1);
+        });
+
+        it("should continue over each item while the closure returns 0", function() {
+            var f = function() {
+                return 0;
+            };
+            assertNumberOfEachWhileIterations(f, list.size());
+        });
+
+        function assertNumberOfEachWhileIterations(callback, expectedNumberOfCalls) {
+            var count = 0;
+            list.eachWhile(function() {
+                count++;
+                return callback();
+            });
+            expect(count).toBe(expectedNumberOfCalls);
+        }
 
         it("should find the index for a specified item", function() {
             expect(list.indexOf(2)).toBe(4);
