@@ -654,12 +654,22 @@ fp = {};
                 return null;
             };
 
+            /**
+             * Finds the object with the lowest value. Comparative values are determined using the comparator the list
+             * list was constructed with or the default if none was specified at construction time.
+             * @returns {*} The object with the least value or null if the list is empty.
+             */
             fp.List.prototype.min = function() {
                 return findExtremeValue.call(this, function(minValue, currentItem) {
                     return this.comparator.compare(minValue, currentItem) > 0 ? currentItem : minValue;
                 });
             };
 
+            /**
+             * Finds the object with the greatest value. Comparative values are determined using the comparator the list
+             * was constructed with or the default if none was specified at construction time.
+             * @returns {*} The object with the least value or null if the list is empty.
+             */
             fp.List.prototype.max = function() {
                 return findExtremeValue.call(this, function(maxValue, currentItem) {
                     return this.comparator.compare(maxValue, currentItem) < 0 ? currentItem : maxValue;
