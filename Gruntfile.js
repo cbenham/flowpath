@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                 trailing: true,
                 maxparams: 3,
                 maxdepth: 3,
-                maxstatements: 13,
+                maxstatements: 14,
                 maxcomplexity: 4,
                 maxlen: 120,
                 globals: {
@@ -72,7 +72,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('default', ['jasmine_node', 'jshint', 'uglify']);
-    grunt.registerTask('doc', ['jsdoc']);
     grunt.registerTask('release', ['clean', 'jasmine_node', 'jshint', 'uglify', 'jsdoc']);
     grunt.registerTask("ci", ['jasmine_node', 'jshint']);
 };
