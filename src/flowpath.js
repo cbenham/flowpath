@@ -478,8 +478,28 @@ fp = {};
                 this.items.reverse();
             };
 
+            /**
+             * Inserts a single item at the specified index.
+             * @param {Number} insertionIndex The location at which the item will be inserted, shifting all succeeding
+             * items to the right of the inserted item by one. Items can be inserted beyond the end of the list. In such
+             * a case, all elements between the end of the list and the final resting place will be null. By using a
+             * negative number, items can be inserted, counting from the end of the list. To insert an item in the last
+             * element of the list use -1, second last use -2 etc. Negative indexes must be no less than the negative
+             * size of the list.
+             * @param {*} item The item that will be inserted at the specified index.
+             * @throws {Error} If the <i>insertionIndex</i> is greater than the negative size of the list.
+             */
             fp.List.prototype.insert = function(insertionIndex, item) {
-                this.items.splice(insertionIndex, 0, item);
+                if (insertionIndex > this.size()) {
+                    for(var i = this.size(); i < insertionIndex; i++) {
+                        this.items.push(null);
+                    }
+                    this.items.push(item);
+                } else if (insertionIndex < -this.size()) {
+                    throw new Error('Index out of range: ' + insertionIndex + ' too small, minimum: ' + -this.size());
+                } else {
+                    this.items.splice(insertionIndex, 0, item);
+                }
             };
 
             fp.List.prototype.insertAll = function() {

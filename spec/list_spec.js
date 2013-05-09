@@ -341,9 +341,34 @@ describe("List", function() {
             assertListContents(list, [1, 2, 3, 6, 5, 4]);
         });
 
-        it("should be able to insert a single item", function() {
+        it("should be able to insert a single item into the middle of the list", function() {
             list.insert(3, 99);
             assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
+        });
+
+        it("should be able to insert a single item beyond the end of the list, filling the gaps with null", function() {
+            list.insert(list.size() + 2, 99);
+            assertListContents(list, [4, 5, 6, 3, 2, 1, null, null, 99]);
+        });
+
+        it("should be able to insert a single item immediately after the last item", function() {
+            list.insert(list.size(), 99);
+            assertListContents(list, [4, 5, 6, 3, 2, 1, 99]);
+        });
+
+        it("should be able to insert an element using a negative index less than the negative list length", function() {
+            list.insert(-3, 99);
+            assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
+        });
+        
+        it("should raise an exception when inserting an item using negative" +
+            " index greater than negative list length", function() {
+            var insertionIndex = -list.size() - 1;
+            var insertValueIntoList = function() {
+                list.insert(insertionIndex, 99);
+            };
+            expect(insertValueIntoList).toThrow("Index out of range: " + insertionIndex
+                + " too small, minimum: " + -list.size());
         });
 
         it("should be able to insert an array of items", function() {
