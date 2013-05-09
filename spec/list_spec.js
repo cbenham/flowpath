@@ -368,34 +368,65 @@ describe("List", function() {
             assertListContents(list, [1, 2, 3, 6, 5, 4]);
         });
 
+        it("should be able to insert a single item into the middle of the list", function() {
+            list.insert(3, 99);
+            assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
+        });
+
+        it("should be able to insert a single item beyond the end of the list, filling the gaps with null", function() {
+            list.insert(list.size() + 2, 99);
+            assertListContents(list, [4, 5, 6, 3, 2, 1, null, null, 99]);
+        });
+
+        it("should be able to insert a single item immediately after the last item", function() {
+            list.insert(list.size(), 99);
+            assertListContents(list, [4, 5, 6, 3, 2, 1, 99]);
+        });
+
+        it("should be able to insert an element using a negative index less than the negative list length", function() {
+            list.insert(-3, 99);
+            assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
+        });
+
+        it("should raise an exception when inserting an item using negative" +
+                " index greater than negative list length", function() {
+            var insertionIndex = -list.size() - 1;
+            var insertValueIntoList = function() {
+                list.insert(insertionIndex, 99);
+            };
+
+            expect(insertValueIntoList).toThrow("Index out of range: " + insertionIndex
+                + " too small, minimum: " + -list.size());
+        });
+
         it("should be able to insert an array of items", function() {
-            list.insert(2, [55, 66, 77]);
+            list.insertAll(2, [55, 66, 77]);
             assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
         });
 
         it("should be able to insert variable arguments", function() {
-            list.insert(2, 55, 66, 77);
+            list.insertAll(2, 55, 66, 77);
             assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
         });
 
         it("should be able to insert a single variable argument", function() {
-            list.insert(3, 99);
+            list.insertAll(3, 99);
             assertListContents(list, [4, 5, 6, 99, 3, 2, 1]);
         });
 
         it("should be able to insert elements of a list", function() {
             var otherList = new fp.List([55, 66, 77]);
-            list.insert(2, otherList);
+            list.insertAll(2, otherList);
             assertListContents(list, [4, 5, 55, 66, 77, 6, 3, 2, 1]);
         });
         
         it("should insert all elements beyond end of list", function() {
-            list.insert(list.size() + 3, [97, 98, 99]);
+            list.insertAll(list.size() + 3, [97, 98, 99]);
             assertListContents(list, [4, 5, 6, 3, 2, 1, null, null, null, 97, 98, 99]);
         });
         
         it("should insert all elements using a negative index", function() {
-            list.insert(list.size() - 2, [96, 97, 98, 99]);
+            list.insertAll(list.size() - 2, [96, 97, 98, 99]);
             assertListContents(list, [4, 5, 6, 3, 96, 97, 98, 99, 2, 1]);
         });
 
@@ -403,7 +434,7 @@ describe("List", function() {
             " than negative list length", function() {
             var insertionIndex = -list.size() - 1;
             var insertIntoList = function() {
-                list.insert(insertionIndex, 96, 97, 98, 99);
+                list.insertAll(insertionIndex, 96, 97, 98, 99);
             };
             expect(insertIntoList).toThrow("Index out of range: " + insertionIndex + " too small, minimum: "
                 + -list.size());
