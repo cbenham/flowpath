@@ -662,8 +662,14 @@ fp = {};
 
         (function iteration() {
             /**
-             * Sets the receiver to the list itself.
-             * @param {Function} closure
+             * Iterates over each element in the list passing it as arguments to the supplied closure. The receiver of
+             * the closure is the list itself.
+             * @param {Function} closure A closure that will be called, once for each item in the list. The closure
+             * will be passed two arguments:
+             * <ol>
+             *     <li>item: the current item in the list</li>
+             *     <li>index: the index of the current item in the list</li>
+             * </ol>
              */
             fp.List.prototype.each = function(closure) {
                 for(var index = 0; index < this.items.length; index++) {
@@ -672,12 +678,20 @@ fp = {};
             };
 
             /**
-             * Sets the receiver to the list itself.
-             * @param {Function} closure
+             * Iterates over each element in the list while the supplied closure returns true. The receiver of the
+             * closure is the list itself. Iteration continues while there remain items that haven't been iterated over
+             * and while the closure returns true. To terminate iteration early, the closure must return false, null or
+             * undefined.
+             * @param {Function} closure A closure that will be called, once for each item in the list while it returns
+             * true. The closure will be passed two arguments:
+             * <ol>
+             *     <li>item: the current item in the list</li>
+             *     <li>index: the index of the current item in the list</li>
+             * </ol>
              */
             fp.List.prototype.eachWhile = function(closure) {
                 var continueIterating = true;
-                for(var index = 0; index < this.items.length && continueIterating; index++) {
+                for(var index = 0; index < this.items.length && isIntuitivelyTruthy(continueIterating); index++) {
                     continueIterating = closure.call(this, this.items[index], index);
                 }
             };
