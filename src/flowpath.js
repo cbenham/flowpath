@@ -462,9 +462,19 @@ fp = {};
                 return itemDeleted;
             };
 
+            /**
+             * Replaces the item at the given index.
+             * @param {Number} index The index at which the item will be placed. The index must be between negative size
+             * and size - 1 inclusive.
+             * @param {*} item The item that will replace the existing item.
+             * @returns {*} The item that was previously at the given index.
+             */
             fp.List.prototype.replace = function(index, item) {
-                if(index < 0 || index > this.items.length) {
-                    throw 'Cannot replace element at index that does not exist: ' + index;
+                if(index < (-this.size()) || index > this.items.length - 1) {
+                    throw new Error('Index out of range: ' + index + ', minimum: ' +
+                        -this.size() + ', maximum: ' + (this.size() - 1));
+                } else if(index < 0) {
+                    index = this.size() + index;
                 }
                 var previousValue = this.items[index];
                 this.items[index] = item;

@@ -346,21 +346,25 @@ describe("List", function() {
             assertListContents(list, [4, 5, 6, 3, 2, 99]);
         });
 
-        it("should raise an exception when replacing an element beyond the length of the list", function() {
-            var replacingItemBeyondEndOfList = function() {
-                list.replace(initialItems.length + 1, 8);
-            };
-
-            expect(replacingItemBeyondEndOfList).toThrow("Cannot replace element at index that does not exist: "
-                + (initialItems.length + 1));
+        it("should be able to replace elements with a negative index greater than the negative list size", function() {
+            expect(list.replace(-4, 99)).toBe(6);
+            assertListContents(list, [4, 5, 99, 3, 2, 1]);
         });
 
-        it("should raise an exception when replacing an element before the beginning of the list", function() {
-            var replacingItemBeforeBeginningOfList = function() {
-                list.replace(-1, 3);
+        it("should raise an exception when replacing an element beyond the length of the list", function() {
+            var replacingItemBeyondEndOfList = function() {
+                list.replace(list.size(), 8);
             };
 
-            expect(replacingItemBeforeBeginningOfList).toThrow("Cannot replace element at index that does not exist: -1");
+            expect(replacingItemBeyondEndOfList).toThrow("Index out of range: 6, minimum: -6, maximum: 5");
+        });
+
+        it("should raise an exception when replacing an element before the negative size of the list", function() {
+            var replacingItemBeforeBeginningOfList = function() {
+                list.replace(-list.size() - 1, 3);
+            };
+
+            expect(replacingItemBeforeBeginningOfList).toThrow("Index out of range: -7, minimum: -6, maximum: 5");
         });
 
         it("should reverse the order of items", function() {
