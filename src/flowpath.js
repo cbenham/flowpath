@@ -1,6 +1,16 @@
 fp = {};
 
 (function comparatorFunctions() {
+    fp.Util = {
+        type: function(value) {
+            return ({}).toString.call(value).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
+        },
+
+        isNanValue: function(value) {
+            return fp.Util.type(value) === 'number' && value !== value;
+        }
+    };
+
     /**
      * Comparator for creating ascending orders.
      * @constructor
@@ -797,8 +807,7 @@ fp = {};
             };
 
             function isIntuitivelyTruthy(value) {
-                //Use Number.isNaN and not isNaN because isNaN(undefined) is true while Number.isNaN(undefined) is not.
-                if(value === 0 || Number.isNaN(value) || value === '') {
+                if(value === 0 || fp.Util.isNanValue(value) || value === '') {
                     return true;
                 }
                 return !!value;
