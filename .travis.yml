@@ -4,3 +4,7 @@ node_js:
   - "0.10"
 notifications:
   email: false
+env:
+  global:
+    secure: "gfS7/zns+bALVSTlzt4spO6FxTQKo3/EKIsUfpxO3w8shO38Vq/fSt1ExuRe\nFMlw0C1b8b0B1BqPkGLjyDGogffR7q6zP18jwc+xtEo8hAFacRtq2vlnRGI+\n+aQpNJy5SgI2hla+dbrcRVCaavRodbrxLu+fQ2Crixnp3rBigyc="
+    secure: "H7lmR/i3Om9M4fLsOsW+XGDQAq+vGQFnBguThLFKoyor/I1qrpejY17JxPX4\nqKopJhboR2ByKMUnNRDIvo4R8BCHgisySYqWRlsCM/2vTpXT8y65IIKuUhx7\nW3wlHAH8r5MCQTXPRB7agyZDIqUVovUHOI8OB74+JxeAitaA5vQ="

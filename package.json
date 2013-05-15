@@ -11,7 +11,10 @@
         "grunt-contrib-jshint":"0.2.0",
         "grunt-contrib-watch":"0.3.1",
         "grunt-jsdoc":"0.2.4",
-        "grunt-contrib-clean":"0.4.0"
+        "grunt-contrib-clean":"0.4.0",
+        "wd":"0.0.32",
+        "q":"0.9.3",
+        "assert":"0.4.9"
     },
     "scripts": {
         "test": "grunt ci --verbose"
