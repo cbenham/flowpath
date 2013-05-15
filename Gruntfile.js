@@ -1,12 +1,12 @@
 module.exports = function(grunt) {
     var browsers = [
-        { browserName: 'firefox', version: '19', platform: 'XP' },
-        { browserName: 'chrome', platform: 'XP' },
-        { browserName: 'chrome', platform: 'linux' },
-        { browserName: 'internet explorer', platform: 'WIN8', version: '10' },
-        { browserName: 'internet explorer', platform: 'VISTA', version: '9' },
-        { browserName: 'internet explorer', platform: 'XP', version: '8' },
-        { browserName: 'opera', platform: 'Windows 2008', version: '12' }
+        { browserName: 'firefox', version: '19', platform: 'XP' }
+//        { browserName: 'chrome', platform: 'XP' },
+//        { browserName: 'chrome', platform: 'linux' },
+//        { browserName: 'internet explorer', platform: 'WIN8', version: '10' },
+//        { browserName: 'internet explorer', platform: 'VISTA', version: '9' },
+//        { browserName: 'internet explorer', platform: 'XP', version: '8' },
+//        { browserName: 'opera', platform: 'Windows 2008', version: '12' }
     ];
 
     grunt.initConfig({
@@ -61,12 +61,11 @@ module.exports = function(grunt) {
         'saucelabs-jasmine': {
             all: {
                 options: {
-                    username: process.env.SAUCE_USERNAME,
-                    key: process.env.SAUCE_ACCESS_KEY,
+                    username: 'cbenham',
+                    key: '22324028-99c7-4ed1-9505-6ae9cf500de0',
                     urls: ['https://rawgithub.com/cbenham/flowpath/master/spec/SpecRunner.html'],
                     tunneled: false,
-                    testTimeout: 20000,
-                    detailedError: 'true',
+                    detailedError: true,
                     testTimeout: 15000,
                     testInterval: 1000,
                     testReadyTimeout: 1000,
