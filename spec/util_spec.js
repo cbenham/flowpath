@@ -1,9 +1,5 @@
 describe("Util", function() {
     describe("type", function() {
-        it("should purposely break", function() {
-            expect(1).toBe(2);
-        });
-
         it("should capture the name of the type of the object", function() {
             expect(fp.Util.type(123)).toBe("number");
         });
