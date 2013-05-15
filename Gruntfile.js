@@ -62,7 +62,7 @@ module.exports = function(grunt) {
             all: {
                 options: {
                     username: process.env.SAUCE_USERNAME,
-                    key: 'd3fd5aee-3736-44c5-91ba-b681374498a5',
+                    key: process.env.SAUCE_ACCESS_KEY,
                     urls: ['https://rawgithub.com/cbenham/flowpath/master/spec/SpecRunner.html'],
                     tunneled: false,
                     testTimeout: 20000,
