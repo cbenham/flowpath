@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+    grunt.log.writeln("Attempting to show the value of key SPIKE: " + process.env.SPIKE);
+    console.log("Attempting to show the value of key SPIKE: " + process.env.SPIKE);
     var browsers = [
         { browserName: 'internet explorer', platform: 'XP', version: '6' },
         { browserName: 'internet explorer', platform: 'XP', version: '7' },
