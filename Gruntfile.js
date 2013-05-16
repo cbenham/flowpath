@@ -69,8 +69,8 @@ module.exports = function(grunt) {
         'saucelabs-jasmine': {
             all: {
                 options: {
-                    username: 'cbenham',
-                    key: '74f5ef64-8ce7-44fe-8dac-4244c01b4c7e',
+                    username: process.env.SAUCE_USERNAME,
+                    key: process.env.SAUCE_ACCESS_KEY,
                     urls: ['https://rawgithub.com/cbenham/flowpath/master/spec/SpecRunner.html'],
                     tunneled: false,
                     detailedError: true,
