@@ -1,5 +1,9 @@
 describe("Util", function() {
     describe("type", function() {
+        it("should purposely break the build, temporarily", function() {
+            expect("the build").toBe("broken");
+        });
+
         it("should capture the name of the type of the object", function() {
             expect(fp.Util.type(123)).toBe("number");
         });
