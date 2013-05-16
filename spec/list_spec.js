@@ -319,6 +319,12 @@ describe("List", function() {
             assertListContents(list, [4, 5, 6, 3, 2, 1]);
         });
 
+        it("should remove only the first occurrence of an item", function() {
+            list.add(list.first());
+            expect(list.deleteItem());
+            assertListContents(list, [5, 6, 3, 2, 1, 4]);
+        });
+
         it("should add items to the beginning", function() {
             list.prepend(99);
             assertListContents(list, [99].concat(initialItems));

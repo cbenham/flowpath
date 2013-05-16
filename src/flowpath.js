@@ -459,6 +459,11 @@ fp = {};
                 return this.items.splice(index, 1)[0];
             };
 
+            /**
+             * Finds the first occurrence of the provided item in the list and removes it.
+             * @param [*] itemToDelete The item which shall be removed from the list.
+             * @returns {boolean} true if the item was removed, false otherwise.
+             */
             fp.List.prototype.deleteItem = function(itemToDelete) {
                 var itemDeleted = false;
                 this.eachWhile(function(item, index) {
