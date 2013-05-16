@@ -1,12 +1,19 @@
 module.exports = function(grunt) {
     var browsers = [
-        { browserName: 'firefox', version: '19', platform: 'XP' }
-//        { browserName: 'chrome', platform: 'XP' },
-//        { browserName: 'chrome', platform: 'linux' },
-//        { browserName: 'internet explorer', platform: 'WIN8', version: '10' },
-//        { browserName: 'internet explorer', platform: 'VISTA', version: '9' },
-//        { browserName: 'internet explorer', platform: 'XP', version: '8' },
-//        { browserName: 'opera', platform: 'Windows 2008', version: '12' }
+        { browserName: 'internet explorer', platform: 'XP', version: '6' },
+        { browserName: 'internet explorer', platform: 'XP', version: '7' },
+        { browserName: 'internet explorer', platform: 'XP', version: '8' },
+        { browserName: 'chrome', platform: 'XP' },
+        { browserName: 'chrome', platform: 'OS X 10.8' },
+        { browserName: 'safari', platform: 'OS X 10.6', version: '5' },
+        { browserName: 'safari', platform: 'OS X 10.8', version: '6' },
+        { browserName: 'iphone', platform: 'ios', version: '4.3' },
+        { browserName: 'ipad', platform: 'ios', version: '4.3' },
+        { browserName: 'opera', platform: 'XP', version: '11' },
+        { browserName: 'opera', platform: 'XP', version: '12' },
+        { browserName: 'firefox', platform: 'XP', version: '3' },
+        { browserName: 'firefox', platform: 'OS X 10.6', version: '21' },
+        { browserName: 'android', platform: 'Linux', version: '4' }
     ];
 
     grunt.initConfig({
@@ -61,17 +68,21 @@ module.exports = function(grunt) {
         'saucelabs-jasmine': {
             all: {
                 options: {
-                    username: 'cbenham',
-                    key: '22324028-99c7-4ed1-9505-6ae9cf500de0',
+                    username: process.env.SAUCE_USERNAME,
+                    key: process.env.SAUCE_ACCESS_KEY,
                     urls: ['https://rawgithub.com/cbenham/flowpath/master/spec/SpecRunner.html'],
                     tunneled: false,
                     detailedError: true,
                     testTimeout: 15000,
                     testInterval: 1000,
                     testReadyTimeout: 1000,
+                    concurrency: 3,
                     testname: 'Flowpath Jasmine Spec',
                     tags: ['travis_ci'],
-                    browsers: browsers
+                    build: process.env.TRAVIS_BUILD_NUMBER,
+                    browsers: browsers,
+                    'command-timeout':30,
+                    'idle-timeout':30
                 }
             }
         },
