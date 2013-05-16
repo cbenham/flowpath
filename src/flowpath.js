@@ -7,8 +7,7 @@ fp = {};
         },
 
         isNanValue: function(value) {
-//            return fp.Util.type(value) === 'number' && value !== value;
-            return Number.isNaN(value);
+            return fp.Util.type(value) === 'number' && value !== value;
         }
     };
 
