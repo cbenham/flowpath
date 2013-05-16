@@ -1,6 +1,4 @@
 module.exports = function(grunt) {
-    console.log("Attempting to show the value of key SAUCE_USERNAME: '" + process.env.SAUCE_USERNAME + "'");
-    console.log("Attempting to show the value of key SAUCE_ACCESS_KEY: '" + process.env.SAUCE_ACCESS_KEY + "'");
     var browsers = [
         { browserName: 'internet explorer', platform: 'XP', version: '6' },
         { browserName: 'internet explorer', platform: 'XP', version: '7' },
