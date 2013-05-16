@@ -58,7 +58,6 @@ module.exports = function(grunt) {
                     fp: true
                 }
             }
-
         },
         jasmine_node: {
             specNameMatcher:"*(spec|flowpath)",
