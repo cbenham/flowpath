@@ -592,8 +592,20 @@ fp = {};
         })();
 
         (function accessors() {
+
+            /**
+             * Gets the element at the specified index.
+             * @param {Number} index The index of the element that is to be returned. Indexes in the range negative size
+             * to size minus one inclusive are acceptable. Indexes outside of that range will result in null being
+             * returned.
+             * @returns {*} The object at the specified index or null if the index is outside of the expected range.
+             */
             fp.List.prototype.get = function(index) {
-                return this.items[index];
+                var size = this.size();
+                if (index >= size || index < -size) {
+                    return null;
+                }
+                return this.items[index < 0 ? size + index : index];
             };
 
             /**

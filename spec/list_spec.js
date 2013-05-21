@@ -111,6 +111,14 @@ describe("List", function() {
         it("should yield null when getting the last element from an empty list", function() {
             expect(list.last()).toBeNull();
         });
+
+        it("should yield null when getting element zero", function() {
+            expect(list.get(0)).toBeNull();
+        });
+        
+        it("should yield null when getting element -1", function() {
+            
+        });
     });
 
     describe("with one element", function() {
@@ -118,8 +126,12 @@ describe("List", function() {
             list.add(5);
         });
 
-        it("should take an item and store it", function() {
+        it("should get an item at index zero", function() {
             expect(list.get(0)).toBe(5);
+        });
+
+        it("should get the item at -1", function() {
+            expect(list.get(-1)).toBe(5);
         });
 
         it("should append newly added items to the end of the list", function() {
@@ -150,6 +162,26 @@ describe("List", function() {
 
         it("should yield the last element", function() {
             expect(list.last()).toBe(1);
+        });
+
+        it("should be able to get the last element using -1", function() {
+            expect(list.get(-1)).toBe(1);
+        });
+
+        it("should be able to get the first element using the negative size", function() {
+            expect(list.get(-list.size())).toBe(4);
+        });
+
+        it("should get null when retrieving element less than the negative size", function() {
+            expect(list.get(-list.size() - 1)).toBeNull();
+        });
+
+        it("should yield null when retrieving an element at the size of the list", function() {
+            expect(list.get(list.size())).toBeNull();
+        });
+
+        it("should yield null when retrieving an element one greater than the size of the list", function() {
+            expect(list.get(list.size() + 1)).toBeNull();
         });
 
         it("should be able to add contents of one list to another", function() {
@@ -242,15 +274,6 @@ describe("List", function() {
             };
             assertNumberOfEachWhileIterations(f, list.size());
         });
-
-        function assertNumberOfEachWhileIterations(callback, expectedNumberOfCalls) {
-            var count = 0;
-            list.eachWhile(function() {
-                count++;
-                return callback();
-            });
-            expect(count).toBe(expectedNumberOfCalls);
-        }
 
         it("should find the index for a specified item", function() {
             expect(list.indexOf(2)).toBe(4);
@@ -536,6 +559,15 @@ describe("List", function() {
             var actualResult = list.any(function() { return undefined; });
             expect(actualResult).toBe(false);
         });
+
+        function assertNumberOfEachWhileIterations(callback, expectedNumberOfCalls) {
+            var count = 0;
+            list.eachWhile(function() {
+                count++;
+                return callback();
+            });
+            expect(count).toBe(expectedNumberOfCalls);
+        }
     });
 
     describe("with arbitrary objects", function() {
