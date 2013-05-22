@@ -21,14 +21,18 @@ describe("List", function() {
         list = new fp.List();
     });
 
-    var assertListContents = function(list, expected) {
-        var expectedArguments = expected.join(", ");
-        var actualArguments = list.items.join(", ");
+    var assertListContents = function(listOfActualItems, arrayOfExpectedItems) {
+        var expectedArguments = arrayOfExpectedItems.join(", ");
+        var actualArguments = listOfActualItems.items.join(", ");
         expect(actualArguments).toBe(expectedArguments);
     };
 
-    var assertArraysEqual = function(expectedItems, item) {
-        expect(expectedItems.length).toBe(item.length);
+    var assertArraysEqual = function(arrayOfActualItems, arrayOfExpectedItems) {
+        expect(arrayOfActualItems.length).toBe(arrayOfExpectedItems.length);
+
+        var stringOfActualItems = arrayOfActualItems.join(", ");
+        var stringOfExpectedItems = arrayOfExpectedItems.join(", ");
+        expect(stringOfActualItems).toBe(stringOfExpectedItems);
     };
 
     describe("with no elements", function() {
@@ -228,8 +232,8 @@ describe("List", function() {
                 eachIndex.push(index);
             });
 
-            assertArraysEqual(initialItems, eachElement);
-            assertArraysEqual([1, 2, 3, 4, 5, 6], eachIndex);
+            assertArraysEqual(eachElement, initialItems);
+            assertArraysEqual(eachIndex, [0, 1, 2, 3, 4, 5]);
         });
 
         it("should set the list as the receiver when calling each", function() {
@@ -248,7 +252,7 @@ describe("List", function() {
             });
 
             assertArraysEqual(eachElement, [4, 5, 6]);
-            assertArraysEqual(eachIndex, [1, 2, 3]);
+            assertArraysEqual(eachIndex, [0, 1, 2]);
         });
         
         it("should set the list as the receiver when calling each while", function() {
