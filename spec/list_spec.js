@@ -15,7 +15,7 @@ describe("List", function() {
         } else {
             return 1;
         }
-    }
+    };
 
     beforeEach(function() {
         list = new fp.List();
@@ -62,11 +62,21 @@ describe("List", function() {
         });
 
         it("should be able to find the index of a complex object when constructed with array of items", function() {
-            var unwantedItem = new Item(3);
             var storedWantedItem = new Item(4);
             var targetItem = new Item(4);
-            list = new fp.List([unwantedItem, storedWantedItem], new AscendingItemComparator());
+            list = new fp.List([new Item(3), storedWantedItem], new AscendingItemComparator());
             expect(list.indexOf(targetItem)).toBe(1);
+        });
+
+        it("should yield null when finding last index of an item", function() {
+            expect(list.indexOf(999)).toBeNull();
+        });
+        
+        it("should be able to find last index of a complex object when constructed with array of items", function() {
+            var storedWantedItem = new Item(4);
+            var targetItem = new Item(4);
+            list = new fp.List([new Item(3), storedWantedItem, new Item(5)], new AscendingItemComparator());
+            expect(list.lastIndexOf(targetItem)).toBe(1);
         });
 
         it("should be able to find the index of a complex object when constructed with list of items", function() {
@@ -237,7 +247,7 @@ describe("List", function() {
         });
 
         it("should set the list as the receiver when calling each", function() {
-            list.each(function(item, index) {
+            list.each(function() {
                 expect(this instanceof fp.List).toBe(true);
             });
         });
@@ -245,14 +255,30 @@ describe("List", function() {
         it("should be able to iterate over each item while condition holds true", function() {
             var eachElement = [];
             var eachIndex = [];
-            list.eachWhile(function(item, index) {
+            var indexAtWhichIterationCeased = list.eachWhile(function(item, index) {
                 eachElement.push(item);
                 eachIndex.push(index);
                 return item != 6;
             });
 
+            expect(indexAtWhichIterationCeased).toBe(2);
             assertArraysEqual(eachElement, [4, 5, 6]);
             assertArraysEqual(eachIndex, [0, 1, 2]);
+        });
+
+        it("should continue iterating over elements while there are elments to iterate over", function() {
+            expect(list.eachWhile(function() { return true; })).toBeNull();
+        });
+
+        it("should cease iterating and yield null index when the list is empty", function() {
+            list = new fp.List();
+            var indexAtWhicIterationCeased = list.eachWhile(function() { throw "Should not be invoked"; });
+            expect(indexAtWhicIterationCeased).toBeNull();
+        });
+
+        it("should yield index zero when the item is found in the first element", function() {
+            var indexAtWhicIterationCeased = list.eachWhile(function() { return false; });
+            expect(indexAtWhicIterationCeased).toBe(0)
         });
         
         it("should set the list as the receiver when calling each while", function() {
@@ -281,6 +307,19 @@ describe("List", function() {
 
         it("should find the index for a specified item", function() {
             expect(list.indexOf(2)).toBe(4);
+        });
+
+        it("should find the last index of an item that occurs only once", function() {
+            expect(list.lastIndexOf(6)).toBe(2);
+        });
+
+        it("should find the last index of a specified item", function() {
+            list.addAll(4, 5, 6);
+            expect(list.lastIndexOf(5)).toBe(7);
+        });
+
+        it("should yield null when finding the last index of an item that is not found", function() {
+            expect(list.lastIndexOf(999)).toBeNull();
         });
 
         it("should return -1 if the item cannot be found", function() {

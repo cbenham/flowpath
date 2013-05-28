@@ -685,7 +685,11 @@ fp = {};
             };
 
             fp.List.prototype.indexOf = function(target) {
-                for(var index = 0; index < this.items.length; index++) {
+                return this.eachWhile(function(item) { return this.comparator.compare(item, target) !== 0; });
+            };
+
+            fp.List.prototype.lastIndexOf = function(target) {
+                for(var index = this.size() - 1; index > 0; index--) {
                     if(this.comparator.compare(this.items[index], target) === 0) {
                         return index;
                     }
@@ -751,12 +755,15 @@ fp = {};
              *     <li>item: the current item in the list</li>
              *     <li>index: the index of the current item in the list</li>
              * </ol>
+             * @returns {Number} A number representing the index at which iteration ceased. Null will be returned when
+             *
              */
             fp.List.prototype.eachWhile = function(closure) {
                 var continueIterating = true;
                 for(var index = 0; index < this.items.length && isIntuitivelyTruthy(continueIterating); index++) {
                     continueIterating = closure.call(this, this.items[index], index);
                 }
+                return continueIterating ? null : index - 1;
             };
 
             /**
