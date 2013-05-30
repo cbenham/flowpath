@@ -4,6 +4,9 @@ describe("List", function() {
     var Item = function(value) {
         this.value = value;
     };
+    Item.prototype.getValue = function() {
+        return this.value;
+    };
 
     var AscendingItemComparator = function() {
     };
@@ -564,6 +567,18 @@ describe("List", function() {
                 return new Item(item.value * index + this.get(0).value);
             });
             expect(result.indexOf(new Item(14))).toBe(2);
+        });
+
+        it("should treat a string as the name of a method on each item whose return value should be collected", function () {
+            list = new fp.List([new Item(1), new Item(2), new Item(3), new Item(4)]);
+            var result = list.collect("getValue");
+            assertListContents(result, [1, 2, 3, 4]);
+        });
+
+        it("should treat a string whose value is not a function as a value to collect", function() {
+            list = new fp.List([new Item(1), new Item(2), new Item(3), new Item(4)]);
+            var result = list.collect("value");
+            assertListContents(result, [1, 2, 3, 4]);
         });
 
         it("should be able to accumulate on the array while injecting", function() {

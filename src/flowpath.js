@@ -5,9 +5,14 @@ fp = {};
         type: function(value) {
             return ({}).toString.call(value).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
         },
-
         isNanValue: function(value) {
             return fp.Util.type(value) === 'number' && value !== value;
+        },
+        isString: function(value) {
+            return fp.Util.type(value) === 'string';
+        },
+        isFunction: function(value) {
+            return fp.Util.type(value) === 'function';
         }
     };
 
@@ -767,17 +772,29 @@ fp = {};
             };
 
             /**
-             * Returns a new list containing the results returned by the supplied closure. The receiver of the closure
-             * is the list itself.
-             * @param {Function} closure The closure that will invoked for every element in the list. The closure is
-             * called with two arguments:
+             * Returns a new list containing the results returned by the supplied closure or specified attribute.
+             * Collect accepts both a closure and a string that represents the name of an attribute on items in
+             * the list that will be collected. When a closure is supplied, the receiver of the closure is the list
+             * itself.
+             * @param {Function | String} finder A closure or name of and attribute that will be collected.
+             * When invoked with a string, the attributes with the given name will be collected. When the type of
+             * the attribute with the given name is a function the results of invoking the function will be
+             * collected. When the finder is a closure, it will be invoked for every element in the list.
+             * The following arguments will be passed to the closure, in order:
              * <ol>
              *     <li>item: the current item in the list</li>
              *     <li>index: the index of the current item in the list</li>
              * </ol>
-             * @returns {fp.List} A new list with the results of calling the closure for every element in the list.
+             * @returns {fp.List} A new list with the collected results.
              */
-            fp.List.prototype.collect = function(closure) {
+            fp.List.prototype.collect = function(finder) {
+                var closure = finder;
+                if (fp.Util.isString(finder)) {
+                    closure = function(item) {
+                        var attribute = item[finder];
+                        return fp.Util.isFunction(attribute) ? attribute.apply(item) : attribute;
+                    };
+                }
                 var result = new fp.List(this.comparator);
                 this.each(function(item, index) { result.add(closure.call(this, item, index)); });
                 return result;

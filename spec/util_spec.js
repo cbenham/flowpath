@@ -5,6 +5,24 @@ describe("Util", function() {
         });
     });
 
+    describe("type checking functions", function() {
+        it("should identify when an object is a string", function() {
+            expect(fp.Util.isString("this is a string")).toBe(true);
+        });
+
+        it("should not identify a number as a string", function() {
+            expect(fp.Util.isString(13)).toBe(false);
+        });
+
+        it("should itentify when an object is a function", function() {
+            expect(fp.Util.isFunction(function() {})).toBe(true);
+        });
+
+        it("should not identify a number as a function", function() {
+            expect(fp.Util.isFunction(13)).toBe(false);
+        });
+    });
+
     describe("isNanValue", function() {
         it("should indicate that a string is not a number", function() {
             expect(fp.Util.isNanValue("this is not NaN")).toBe(false);
