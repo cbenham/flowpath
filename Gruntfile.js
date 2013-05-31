@@ -75,7 +75,7 @@ module.exports = function(grunt) {
                     testTimeout: 15000,
                     testInterval: 1000,
                     testReadyTimeout: 1000,
-                    concurrency: 2,
+                    concurrency: 1,
                     testname: 'Flowpath Jasmine Spec',
                     tags: ['travis_ci'],
                     build: process.env.TRAVIS_BUILD_NUMBER,
