@@ -134,7 +134,11 @@ describe("List", function() {
         });
         
         it("should yield null when getting element -1", function() {
-            
+            expect(list.get(-1)).toBeNull();
+        });
+
+        it("should yield null when popping", function() {
+            expect(list.pop()).toBeNull();
         });
     });
 
@@ -162,6 +166,11 @@ describe("List", function() {
 
         it("should have a size greater than zero when it has some content", function() {
             expect(list.size()).toBe(1);
+        });
+
+        it("should remove the element when popping", function() {
+            expect(list.pop()).toBe(5);
+            assertListContents(list, []);
         });
     });
 
@@ -616,6 +625,11 @@ describe("List", function() {
         it("should not have any undefined values when there are no undefined items in the list", function() {
             var actualResult = list.any(function() { return undefined; });
             expect(actualResult).toBe(false);
+        });
+
+        it("should remove the last item when popping", function() {
+            expect(list.pop()).toBe(1);
+            assertListContents(list, [4, 5, 6, 3, 2]);
         });
 
         function assertNumberOfEachWhileIterations(callback, expectedNumberOfCalls) {

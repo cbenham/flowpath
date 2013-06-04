@@ -395,7 +395,7 @@ fp = {};
             }
         }
 
-        (function mutators() {
+        (function enhancingMutators() {
             /**
              * Adds an item to the list.
              * @param {*} item The item to be added.
@@ -417,13 +417,6 @@ fp = {};
                 for(var index = 0; index < itemArguments.length; index++) {
                     this.add(itemArguments[index]);
                 }
-            };
-
-            /**
-             * Empties the list.
-             */
-            fp.List.prototype.clear = function() {
-                this.items.length = 0;
             };
 
             /**
@@ -450,76 +443,17 @@ fp = {};
             };
 
             /**
-             * Deletes the item at the specified index.
-             * @param [Number] index The index of the element to delete. Can use negative numbers to delete from
-             * a specific number of elements from the end of the list toward the beginning of the list.
-             * @returns {*} The object at the index that is being deleted. Null will be returned when the
-             * supplied index is greater than the size of the list or when the index is greater than the
-             * negative size of the list.
+             * Inserts a single item at the specified index. Use this method instead of
+             * {@link fp.List#insertAll|insertAll} when attempting to add a collection object to the list.
+             * @param {Number} insertionIndex The location at which the item will be inserted, shifting all succeeding
+             * items to the right of the inserted item by one. Items can be inserted beyond the end of the list. In such
+             * a case, all elements between the end of the list and the final resting place will be null. By using a
+             * negative number, items can be inserted, counting from the end of the list. To insert an item in the last
+             * element of the list use -1, second last use -2 etc. Negative indexes must be no less than the negative
+             * size of the list.
+             * @param {*} item The item that will be inserted at the specified index.
+             * @throws {Error} If the <i>insertionIndex</i> is greater than the negative size of the list.
              */
-            fp.List.prototype.deleteAt = function(index) {
-                if(index >= this.size() || index <= (this.size() + 1) * -1) {
-                    return null;
-                }
-                return this.items.splice(index, 1)[0];
-            };
-
-            /**
-             * Finds the first occurrence of the provided item in the list and removes it.
-             * @param [*] itemToDelete The item which shall be removed from the list.
-             * @returns {boolean} true if the item was removed, false otherwise.
-             */
-            fp.List.prototype.deleteItem = function(itemToDelete) {
-                var itemDeleted = false;
-                this.eachWhile(function(item, index) {
-                    if(this.comparator.compare(item, itemToDelete) === 0) {
-                        this.deleteAt(index);
-                        itemDeleted = true;
-                        return false;
-                    }
-                    return true;
-                });
-                return itemDeleted;
-            };
-
-            /**
-             * Replaces the item at the given index.
-             * @param {Number} index The index at which the item will be placed. The index must be between negative size
-             * and size - 1 inclusive.
-             * @param {*} item The item that will replace the existing item.
-             * @returns {*} The item that was previously at the given index.
-             */
-            fp.List.prototype.replace = function(index, item) {
-                if(index < (-this.size()) || index > this.items.length - 1) {
-                    throw new Error('Index out of range: ' + index + ', minimum: ' +
-                        -this.size() + ', maximum: ' + (this.size() - 1));
-                } else if(index < 0) {
-                    index = this.size() + index;
-                }
-                var previousValue = this.items[index];
-                this.items[index] = item;
-                return previousValue;
-            };
-
-            /**
-             * Reverses the order of this list.
-             */
-            fp.List.prototype.reverse = function() {
-                this.items.reverse();
-            };
-
-           /**
-            * Inserts a single item at the specified index. Use this method instead of
-            * {@link fp.List#insertAll|insertAll} when attempting to add a collection object to the list.
-            * @param {Number} insertionIndex The location at which the item will be inserted, shifting all succeeding
-            * items to the right of the inserted item by one. Items can be inserted beyond the end of the list. In such
-            * a case, all elements between the end of the list and the final resting place will be null. By using a
-            * negative number, items can be inserted, counting from the end of the list. To insert an item in the last
-            * element of the list use -1, second last use -2 etc. Negative indexes must be no less than the negative
-            * size of the list.
-            * @param {*} item The item that will be inserted at the specified index.
-            * @throws {Error} If the <i>insertionIndex</i> is greater than the negative size of the list.
-            */
             fp.List.prototype.insert = function(insertionIndex, item) {
                 if (insertionIndex > this.size()) {
                     for(var i = this.size(); i < insertionIndex; i++) {
@@ -596,8 +530,83 @@ fp = {};
             }
         })();
 
-        (function accessors() {
+        (function reducingMutators() {
+            /**
+             * Empties the list.
+             */
+            fp.List.prototype.clear = function() {
+                this.items.length = 0;
+            };
 
+            /**
+             * Deletes the item at the specified index.
+             * @param [Number] index The index of the element to delete. Can use negative numbers to delete from
+             * a specific number of elements from the end of the list toward the beginning of the list.
+             * @returns {*} The object at the index that is being deleted. Null will be returned when the
+             * supplied index is greater than the size of the list or when the index is greater than the
+             * negative size of the list.
+             */
+            fp.List.prototype.deleteAt = function(index) {
+                if(index >= this.size() || index <= (this.size() + 1) * -1) {
+                    return null;
+                }
+                return this.items.splice(index, 1)[0];
+            };
+
+            /**
+             * Finds the first occurrence of the provided item in the list and removes it.
+             * @param [*] itemToDelete The item which shall be removed from the list.
+             * @returns {boolean} true if the item was removed, false otherwise.
+             */
+            fp.List.prototype.deleteItem = function(itemToDelete) {
+                var itemDeleted = false;
+                this.eachWhile(function(item, index) {
+                    if(this.comparator.compare(item, itemToDelete) === 0) {
+                        this.deleteAt(index);
+                        itemDeleted = true;
+                        return false;
+                    }
+                    return true;
+                });
+                return itemDeleted;
+            };
+
+            fp.List.prototype.pop = function() {
+                var result = this.last();
+                this.deleteAt(this.size() - 1);
+                return result;
+            };
+        })();
+
+        (function miscellaneousMutators() {
+            /**
+             * Replaces the item at the given index.
+             * @param {Number} index The index at which the item will be placed. The index must be between negative size
+             * and size - 1 inclusive.
+             * @param {*} item The item that will replace the existing item.
+             * @returns {*} The item that was previously at the given index.
+             */
+            fp.List.prototype.replace = function(index, item) {
+                if(index < (-this.size()) || index > this.items.length - 1) {
+                    throw new Error('Index out of range: ' + index + ', minimum: ' +
+                        -this.size() + ', maximum: ' + (this.size() - 1));
+                } else if(index < 0) {
+                    index = this.size() + index;
+                }
+                var previousValue = this.items[index];
+                this.items[index] = item;
+                return previousValue;
+            };
+
+            /**
+             * Reverses the order of this list.
+             */
+            fp.List.prototype.reverse = function() {
+                this.items.reverse();
+            };
+        })();
+
+        (function accessors() {
             /**
              * Gets the element at the specified index.
              * @param {Number} index The index of the element that is to be returned. Indexes in the range negative size
