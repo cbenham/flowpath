@@ -21,6 +21,17 @@ describe("List", function() {
     };
 
     beforeEach(function() {
+        this.addMatchers({
+            toBeEmpty: function() {
+                this.message = function() {
+                    var notText = this.isNot ? ' not' : '';
+                    var readableList = this.actual.isEmpty() ? 'Object' : this.actual.raw().join(' ');
+                    return 'Expected ' + readableList + notText + ' to be empty';
+                };
+
+                return this.actual.isEmpty();
+            }
+        });
         list = new fp.List();
     });
 
@@ -40,7 +51,7 @@ describe("List", function() {
 
     describe("with no elements", function() {
         it("should be empty", function() {
-            expect(list.isEmpty()).toBe(true);
+            expect(list).toBeEmpty();
         });
 
         it("should have a zero size", function() {
@@ -113,8 +124,8 @@ describe("List", function() {
             expect(list.max()).toBeNull();
         });
 
-        it("should return an empty list when flattening", function() {
-            expect(list.flatten().isEmpty()).toBe(true);
+        it("should return an empty list when flatteningtoBeEmpty", function() {
+            expect(list.flatten()).toBeEmpty();
         });
 
         it("should return false when checking if any elements meet the requirements", function() {
@@ -161,7 +172,7 @@ describe("List", function() {
         });
 
         it("should not be empty when it has some content", function() {
-            expect(list.isEmpty()).toBe(false);
+            expect(list).not.toBeEmpty();
         });
 
         it("should have a size greater than zero when it has some content", function() {
@@ -530,7 +541,7 @@ describe("List", function() {
 
         it("should be possible to clear the list", function() {
             list.clear();
-            expect(list.isEmpty()).toBe(true);
+            expect(list).toBeEmpty();
         });
 
         it("should yield an array of the contained elements when converting to an array", function() {
