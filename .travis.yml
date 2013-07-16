@@ -6,4 +6,4 @@ notifications:
   email: false
 env:
   global:
-    secure: "SChXYf9r/EYOjoSOdXYoftU5cooUXt2qQSqDnNc57bNd58/uUQhWcc3xm7bq\nSpOm1NkJyyj/3M24sQqqVsjN+goAfnDwhb4Mv/it2/KjAgtYUjWep4dDtAMt\n8OHoVceIvW4LQ2DCHIGXq9QtVoH+OX9VNfgV5xfHtelkAizRYJs="
+    secure: "aUZ62tRrInqtg5GYtU62I2vPKCX2uitdq7Pm41YtxpRSd6nQSb060GqmYGSOlpbjdGJsstFFBtxlByK5Adqj7Js7kNnecI8px65BDZxUifRgWvr45aUL5A7uTy5fVS0F78kDOMNjvRHn/FvVrX6e/6miPyiPq4ynaeqxWUHUfn0="
