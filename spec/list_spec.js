@@ -268,6 +268,11 @@ describe("List", function() {
             assertArraysEqual(eachElement, initialItems);
             assertArraysEqual(eachIndex, [0, 1, 2, 3, 4, 5]);
         });
+        
+        it("should yield the list back when cycling through each element", function() {
+            var actual = list.each(function(){});
+            expect(list).toBe(actual);
+        });
 
         it("should set the list as the receiver when calling each", function() {
             list.each(function() {

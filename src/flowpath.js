@@ -756,6 +756,7 @@ fp = {};
                 for(var index = 0; index < this.items.length; index++) {
                     closure.call(this, this.items[index], index);
                 }
+                return this;
             };
 
             /**
