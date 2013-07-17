@@ -1,5 +1,8 @@
 fp = {};
 
+
+
+
 (function comparatorFunctions() {
     fp.Util = {
         type: function(value) {
